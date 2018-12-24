@@ -1,0 +1,147 @@
+fileFormatVersion: 2
+guid: 9b7724946d1ed44449fc1d76fdb12652
+timeCreated: 1488646164
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Landscape
+    100002: ShapeIndexedFaceSet
+    100004: ShapeIndexedFaceSet.001
+    100006: ShapeIndexedFaceSet.002
+    100008: ShapeIndexedFaceSet.003
+    100010: ShapeIndexedFaceSet.004
+    100012: ShapeIndexedFaceSet.005
+    100014: ShapeIndexedFaceSet.006
+    100016: ShapeIndexedFaceSet.007
+    100018: ShapeIndexedFaceSet.008
+    100020: ShapeIndexedFaceSet.009
+    100022: ShapeIndexedFaceSet.010
+    100024: ShapeIndexedFaceSet.011
+    100026: ShapeIndexedFaceSet.012
+    100028: //RootNode
+    400000: Landscape
+    400002: ShapeIndexedFaceSet
+    400004: ShapeIndexedFaceSet.001
+    400006: ShapeIndexedFaceSet.002
+    400008: ShapeIndexedFaceSet.003
+    400010: ShapeIndexedFaceSet.004
+    400012: ShapeIndexedFaceSet.005
+    400014: ShapeIndexedFaceSet.006
+    400016: ShapeIndexedFaceSet.007
+    400018: ShapeIndexedFaceSet.008
+    400020: ShapeIndexedFaceSet.009
+    400022: ShapeIndexedFaceSet.010
+    400024: ShapeIndexedFaceSet.011
+    400026: ShapeIndexedFaceSet.012
+    400028: //RootNode
+    2300000: Landscape
+    2300002: ShapeIndexedFaceSet
+    2300004: ShapeIndexedFaceSet.001
+    2300006: ShapeIndexedFaceSet.002
+    2300008: ShapeIndexedFaceSet.003
+    2300010: ShapeIndexedFaceSet.004
+    2300012: ShapeIndexedFaceSet.005
+    2300014: ShapeIndexedFaceSet.006
+    2300016: ShapeIndexedFaceSet.007
+    2300018: ShapeIndexedFaceSet.008
+    2300020: ShapeIndexedFaceSet.009
+    2300022: ShapeIndexedFaceSet.010
+    2300024: ShapeIndexedFaceSet.011
+    2300026: ShapeIndexedFaceSet.012
+    3300000: Landscape
+    3300002: ShapeIndexedFaceSet
+    3300004: ShapeIndexedFaceSet.001
+    3300006: ShapeIndexedFaceSet.002
+    3300008: ShapeIndexedFaceSet.003
+    3300010: ShapeIndexedFaceSet.004
+    3300012: ShapeIndexedFaceSet.005
+    3300014: ShapeIndexedFaceSet.006
+    3300016: ShapeIndexedFaceSet.007
+    3300018: ShapeIndexedFaceSet.008
+    3300020: ShapeIndexedFaceSet.009
+    3300022: ShapeIndexedFaceSet.010
+    3300024: ShapeIndexedFaceSet.011
+    3300026: ShapeIndexedFaceSet.012
+    4300000: ShapeIndexedFaceSet.012
+    4300002: ShapeIndexedFaceSet.011
+    4300004: ShapeIndexedFaceSet.010
+    4300006: ShapeIndexedFaceSet.009
+    4300008: ShapeIndexedFaceSet.008
+    4300010: ShapeIndexedFaceSet.007
+    4300012: ShapeIndexedFaceSet.006
+    4300014: ShapeIndexedFaceSet.004
+    4300016: ShapeIndexedFaceSet.003
+    4300018: ShapeIndexedFaceSet.002
+    4300020: ShapeIndexedFaceSet.001
+    4300022: ShapeIndexedFaceSet
+    4300024: ShapeIndexedFaceSet.005
+    4300026: Landscape
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
