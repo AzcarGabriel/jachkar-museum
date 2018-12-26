@@ -24,12 +24,15 @@ public class UIScripts : MonoBehaviour {
     public void SpawnStone(int stoneId) {
         if (scale)
         {
+        	Debug.Log(LoadObjectFromBundle.sceneStones.Count);
             GameObject obj = Instantiate(LoadObjectFromBundle.sceneStones[stoneId - 1], spawnPoint.position, Quaternion.Euler(-90, 0, 0));
             obj.transform.localScale += new Vector3(150.0f, 150.0f, 150.0f);
         }
         else
         {
-            Instantiate(LoadObjectFromBundle.sceneStones[stoneId - 1], spawnPoint.position, Quaternion.Euler(-90, 0, 0));
+        	Debug.Log(LoadObjectFromBundle.sceneStones.Count);
+            GameObject g = LoadObjectFromBundle.sceneStones[stoneId - 1];
+            Instantiate(g, spawnPoint.position, Quaternion.Euler(-90, 0, 0));
         }
     }
 

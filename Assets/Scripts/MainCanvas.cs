@@ -18,7 +18,7 @@ public class MainCanvas : MonoBehaviour
         if (Input.GetKeyDown("h"))
         {
 
-            helpPane.SetActive(!helpPane.active);
+            helpPane.SetActive(!helpPane.activeSelf);
         }
     }
 }
