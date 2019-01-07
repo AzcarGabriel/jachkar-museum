@@ -39,7 +39,6 @@ public class UIScripts : MonoBehaviour {
     public void Load() {
         //Recover the values
         SaveGame.Load();
-        Debug.Log(SaveGame.Instance.Stones.Count);
 
         //Set values
         object[] obj = FindObjectsOfType(typeof(GameObject));
@@ -51,10 +50,11 @@ public class UIScripts : MonoBehaviour {
             {
                 if (g.name.Substring(0, 5).Equals("Stone"))
                 {
-                    SaveGame.SavedStone sStone = SearchByName(SaveGame.Instance.Stones, g.name);
-                    if (sStone != null)
+                    int ind = SaveGame.Instance.StonesNames.IndexOf(g.name);
+                    if (ind != -1)
                     {
-                        g.transform.position = sStone.GetPosition();
+                        g.transform.position = SaveGame.Instance.StonesPositions[ind];
+                        g.transform.rotation = SaveGame.Instance.StonesRotations[ind];
                     }
                     else {
                         Debug.Log("NULL");
@@ -67,7 +67,8 @@ public class UIScripts : MonoBehaviour {
     public void Save() {
         //Get the actual stone's values
         //Modify SaveGame.Instance.Stones
-        SaveGame.Instance.Stones.Clear();
+        SaveGame.Instance.Clear();
+
         object[] obj = FindObjectsOfType(typeof(GameObject));
         foreach (object o in obj) {
             GameObject g = (GameObject)o;
@@ -78,24 +79,15 @@ public class UIScripts : MonoBehaviour {
                 {
                     if (g.name.Equals("Stone01"))
                         Debug.Log(g.transform.position);
-                    SaveGame.Instance.Stones.Add(new SaveGame.SavedStone(g.name, g.transform.position, g.transform.rotation));
+                    SaveGame.Instance.StonesNames.Add(g.name);
+                    SaveGame.Instance.StonesPositions.Add(g.transform.position);
+                    SaveGame.Instance.StonesRotations.Add(g.transform.rotation);
                 }
             }
         }
 
-        Debug.Log(SaveGame.Instance.Stones.Count);
         //Save values
         SaveGame.Save();
-    }
-
-    SaveGame.SavedStone SearchByName(List<SaveGame.SavedStone> objs, string n) {
-
-        foreach (SaveGame.SavedStone ss in objs) {
-            if (ss.GetName().Equals(n))
-                return ss;
-        }
-
-        return null;
     }
 
 }

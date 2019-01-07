@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class SaveGame
 {
 
+    //Not using this because the save method doesnt allow it
     public class SavedStone {
         private string Name;
         private Vector3 Position;
@@ -31,7 +32,9 @@ public class SaveGame
     //serialized
     public string PlayerName = "Player";
     public int XP = 0;
-    public List<SavedStone> Stones = new List<SavedStone>();
+    public List<string> StonesNames = new List<string>();
+    public List<Vector3> StonesPositions = new List<Vector3>();
+    public List<Quaternion> StonesRotations = new List<Quaternion>();
 
     private static string _gameDataFileName = "data.json";
 
@@ -57,4 +60,9 @@ public class SaveGame
         _instance = FileManager.Load<SaveGame>(_gameDataFileName);
     }
 
+    public void Clear() {
+        this.StonesNames.Clear();
+        this.StonesPositions.Clear();
+        this.StonesRotations.Clear();
+    }
 }
