@@ -11,7 +11,6 @@ public class LoadObjectFromBundle : MonoBehaviour {
     
     // Use this for initialization
     void Start () {
-        Debug.Log("S");
         Debug.Log(EnvSceneGui.assetBundle);
         InstantiateTheScene(EnvSceneGui.assetBundle);
     }
@@ -19,8 +18,6 @@ public class LoadObjectFromBundle : MonoBehaviour {
 
     void InstantiateTheScene(AssetBundle bundle)
     {
-        Debug.Log("ITS");
-        Debug.Log(bundle);
         var dir = new Dictionary<string, Texture2D>();
         var light = new Dictionary<string, Texture2D>();
         sceneStones.Clear();
@@ -29,9 +26,7 @@ public class LoadObjectFromBundle : MonoBehaviour {
             Debug.Log(n);
             if (bundleName.Equals("Wall-stream") && n.Equals("stones"))
             {
-                Debug.Log("ASD2");
                 GameObject obj = bundle.LoadAsset<GameObject>(n);
-                Debug.Log("ASD");
                 Instantiate<GameObject>(obj);
                 int count = obj.transform.childCount;
                 for (int i = 0; i < count; i++)
@@ -45,7 +40,6 @@ public class LoadObjectFromBundle : MonoBehaviour {
                 GameObject obj = bundle.LoadAsset<GameObject>(n);
                 if (!bundleName.Equals("museum-stream"))
                 {
-                    Debug.Log("HLA");
                     Instantiate<GameObject>(obj);
                 }
                 sceneStones.Add(obj);
@@ -59,7 +53,7 @@ public class LoadObjectFromBundle : MonoBehaviour {
             // terrain.transform.Translate(new Vector3(-13.5f, -11.3f, -15.0f));
         }
         if (terrain != null)
-            Terrain.Instantiate<GameObject>(terrain);
+            Instantiate(terrain);
     }
 
   void Update()

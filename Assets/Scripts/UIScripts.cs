@@ -36,4 +36,66 @@ public class UIScripts : MonoBehaviour {
         }
     }
 
+    public void Load() {
+        //Recover the values
+        SaveGame.Load();
+        Debug.Log(SaveGame.Instance.Stones.Count);
+
+        //Set values
+        object[] obj = FindObjectsOfType(typeof(GameObject));
+        foreach (object o in obj)
+        {
+            GameObject g = (GameObject)o;
+
+            if (6 < g.name.Length)
+            {
+                if (g.name.Substring(0, 5).Equals("Stone"))
+                {
+                    SaveGame.SavedStone sStone = SearchByName(SaveGame.Instance.Stones, g.name);
+                    if (sStone != null)
+                    {
+                        g.transform.position = sStone.GetPosition();
+                    }
+                    else {
+                        Debug.Log("NULL");
+                    }
+                }
+            }
+        }
+    }
+
+    public void Save() {
+        //Get the actual stone's values
+        //Modify SaveGame.Instance.Stones
+        SaveGame.Instance.Stones.Clear();
+        object[] obj = FindObjectsOfType(typeof(GameObject));
+        foreach (object o in obj) {
+            GameObject g = (GameObject)o;
+
+            if (6 < g.name.Length)
+            {
+                if (g.name.Substring(0, 5).Equals("Stone"))
+                {
+                    if (g.name.Equals("Stone01"))
+                        Debug.Log(g.transform.position);
+                    SaveGame.Instance.Stones.Add(new SaveGame.SavedStone(g.name, g.transform.position, g.transform.rotation));
+                }
+            }
+        }
+
+        Debug.Log(SaveGame.Instance.Stones.Count);
+        //Save values
+        SaveGame.Save();
+    }
+
+    SaveGame.SavedStone SearchByName(List<SaveGame.SavedStone> objs, string n) {
+
+        foreach (SaveGame.SavedStone ss in objs) {
+            if (ss.GetName().Equals(n))
+                return ss;
+        }
+
+        return null;
+    }
+
 }
