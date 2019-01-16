@@ -10,8 +10,10 @@ public class EnvSceneGui : MonoBehaviour {
     public GameObject loadScreen;
     public Slider slider;
 
-	// Use this for initialization
-	void Start () {
+    private const string domain = "http://saduewa.dcc.uchile.cl/museum/AssetBundles/";
+
+    // Use this for initialization
+    void Start () {
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
     }
@@ -31,7 +33,7 @@ public class EnvSceneGui : MonoBehaviour {
             assetBundle.Unload(false);
         }
         Caching.ClearCache();
-        var www = WWW.LoadFromCacheOrDownload("31.7.162.98/" + name + "?c=3", 1); //31.7.162.98, inside aua 10.1.0.118
+        var www = WWW.LoadFromCacheOrDownload(domain + name, 1);
         loadScreen.SetActive(true);
         //
         while (!www.isDone)
