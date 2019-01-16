@@ -33,18 +33,30 @@ public class EnvSceneGui : MonoBehaviour {
             assetBundle.Unload(false);
         }
         Caching.ClearCache();
-        var www = WWW.LoadFromCacheOrDownload(domain + name, 1);
+        string[] tokens = name.Split('/');
+        string n = "";
+        if (1 < tokens.Length)
+        {
+            n = tokens[1];
+        }
+        else
+        {
+            n = name;
+        }
+
+        var www = WWW.LoadFromCacheOrDownload(domain + n, 1);
+
         loadScreen.SetActive(true);
         //
         while (!www.isDone)
         {
-            Debug.Log(www.progress);
+            //Debug.Log(www.progress);
             slider.value = www.progress;
             yield return null;
         }
         Debug.Log("Downloaded");
         assetBundle = www.assetBundle;
-        SceneManager.LoadScene(name, LoadSceneMode.Single);
+        SceneManager.LoadScene(n, LoadSceneMode.Single);
         Debug.Log(assetBundle);
     }
 

@@ -50,7 +50,7 @@ public class UIScripts : MonoBehaviour {
             {
                 if (g.name.Substring(0, 5).Equals("Stone"))
                 {
-                    int ind = SaveGame.Instance.StonesNames.IndexOf(g.name);
+                    int ind = SaveGame.Instance.StonesNames.IndexOf(g.scene.name+g.name);
                     if (ind != -1)
                     {
                         g.transform.position = SaveGame.Instance.StonesPositions[ind];
@@ -72,14 +72,11 @@ public class UIScripts : MonoBehaviour {
         object[] obj = FindObjectsOfType(typeof(GameObject));
         foreach (object o in obj) {
             GameObject g = (GameObject)o;
-
             if (6 < g.name.Length)
             {
                 if (g.name.Substring(0, 5).Equals("Stone"))
                 {
-                    if (g.name.Equals("Stone01"))
-                        Debug.Log(g.transform.position);
-                    SaveGame.Instance.StonesNames.Add(g.name);
+                    SaveGame.Instance.StonesNames.Add(g.scene.name + g.name);
                     SaveGame.Instance.StonesPositions.Add(g.transform.position);
                     SaveGame.Instance.StonesRotations.Add(g.transform.rotation);
                 }
