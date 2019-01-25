@@ -141,6 +141,7 @@ public class SelectionScript : MonoBehaviour {
                 selection = null;
                 panning = false;
             }
+
         }
     }
     

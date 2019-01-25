@@ -24,7 +24,7 @@ public class LoadObjectFromBundle : MonoBehaviour {
         assetNames.ForEach(n =>
         {
             Debug.Log(n);
-            if (bundleName.Equals("Wall-stream") && n.Equals("stones"))
+            if (bundleName.Equals("Wall") && n.Equals("stones"))
             {
                 GameObject obj = bundle.LoadAsset<GameObject>(n);
                 Instantiate<GameObject>(obj);
@@ -38,7 +38,7 @@ public class LoadObjectFromBundle : MonoBehaviour {
             else
             {
                 GameObject obj = bundle.LoadAsset<GameObject>(n);
-                if (!bundleName.Equals("museum-stream"))
+                if (!bundleName.Equals("museum"))
                 {
                     Instantiate<GameObject>(obj);
                 }
@@ -48,7 +48,7 @@ public class LoadObjectFromBundle : MonoBehaviour {
         });
 
         GameObject terrain = (GameObject)bundle.LoadAsset(terrainName);
-        if (bundleName.Equals("echmiadzinally-stream"))
+        if (bundleName.Equals("echmiadzinally"))
         {
             // terrain.transform.Translate(new Vector3(-13.5f, -11.3f, -15.0f));
         }
