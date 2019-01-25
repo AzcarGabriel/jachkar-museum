@@ -11,6 +11,8 @@ public class CameraChange : MonoBehaviour {
     bool flag = true;
 
     public GameObject FPS;
+    public Canvas stonesSpawn;
+    public Canvas saveButtons;
 
     private GameObject hand;
 
@@ -23,6 +25,8 @@ public class CameraChange : MonoBehaviour {
         Cursor.visible = false;
         hand.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
+        stonesSpawn.enabled = false;
+        saveButtons.enabled = false;
     }
 
 
@@ -51,9 +55,11 @@ public class CameraChange : MonoBehaviour {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
             mainView.enabled = false;
-            topView.enabled  = true;
+            topView.enabled = true;
             hand.SetActive(true);
-           
+            stonesSpawn.enabled = true;
+            saveButtons.enabled = true;
+
         }
 
         if (Input.GetKey("p"))
@@ -64,7 +70,9 @@ public class CameraChange : MonoBehaviour {
             Cursor.visible   = false;
             hand.SetActive(false);
             Cursor.lockState = CursorLockMode.Locked;
-           
+            stonesSpawn.enabled = false;
+            saveButtons.enabled = false;
+
         }
 
       

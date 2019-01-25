@@ -5,7 +5,7 @@ using UnityEngine;
 public class MainCanvas : MonoBehaviour
 {
 
-   public  GameObject helpPane;
+    public GameObject helpPane;
 
     // Use this for initialization
     void Start()
