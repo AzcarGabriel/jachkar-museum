@@ -33,6 +33,7 @@ public class EnvSceneGui : MonoBehaviour {
             assetBundle.Unload(false);
         }
         Caching.ClearCache();
+
         string[] tokens = name.Split('/');
         string n = "";
         if (1 < tokens.Length)
@@ -47,10 +48,9 @@ public class EnvSceneGui : MonoBehaviour {
         var www = WWW.LoadFromCacheOrDownload(domain + n, 1);
 
         loadScreen.SetActive(true);
-        //
+        
         while (!www.isDone)
         {
-            //Debug.Log(www.progress);
             slider.value = www.progress;
             yield return null;
         }

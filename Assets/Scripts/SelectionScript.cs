@@ -30,7 +30,7 @@ public class SelectionScript : MonoBehaviour {
 
         if (tCamera != null) {
 
-        float scroll =  Input.GetAxis("Mouse ScrollWheel");
+            float scroll =  Input.GetAxis("Mouse ScrollWheel");
 
             if(scroll != 0.0f)
             {
@@ -42,24 +42,30 @@ public class SelectionScript : MonoBehaviour {
                 tCamera.transform.position = panPosition;
             }
 
-        if (Input.GetMouseButtonDown(0)) {
+            // Moving camera
+            if (Input.GetMouseButtonDown(1))
+            {
                 prevPos = Input.mousePosition;
                 deltaHitdef.y = Mathf.Infinity;
             }
 
-            if (Input.GetMouseButton(0)) {
+            if (Input.GetMouseButton(1))
+            {
 
                 RaycastHit hit;
                 RaycastHit terrainHit;
                 Ray ray = tCamera.ScreenPointToRay(Input.mousePosition);
 
-                if (panning == false && selection == null && Physics.Raycast(ray, out hit, Mathf.Infinity, stoneMask)) {
+                if (panning == false && selection == null && Physics.Raycast(ray, out hit, Mathf.Infinity, stoneMask))
+                {
                     Transform p;
                     panel.enabled = true;
-                    
+
                     selection = hit.transform;
                     rotation = hit.transform;
-                } else if (selection == null && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) { // clicking on terrain or anything else.
+                }
+                else if (selection == null && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+                {   // Clicking on terrain or anything else (move camera).
                     delta = Input.mousePosition - prevPos;
                     //print(delta);
                     panPosition.x = delta.x * 0.1f;
@@ -71,10 +77,40 @@ public class SelectionScript : MonoBehaviour {
                     rotation = null;
                     panel.enabled = false;
                 }
+            }
 
-                if (selection != null)
-                    if(Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
-                    {
+            if (Input.GetMouseButtonUp(1))
+            {
+                selection = null;
+                panning = false;
+            }
+
+            // Moving stone
+            if (Input.GetMouseButtonDown(0))
+            {
+                prevPos = Input.mousePosition;
+                deltaHitdef.y = Mathf.Infinity;
+            }
+
+            if (Input.GetMouseButton(0))
+            {
+
+                RaycastHit hit;
+                RaycastHit terrainHit;
+                Ray ray = tCamera.ScreenPointToRay(Input.mousePosition);
+
+                if (panning == false && selection == null && Physics.Raycast(ray, out hit, Mathf.Infinity, stoneMask))
+                {
+                    Transform p;
+                    panel.enabled = true;
+
+                    selection = hit.transform;
+                    rotation = hit.transform;
+                }
+
+                if (selection != null) {
+                   if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
+                   {
                         Vector3 GroundhitPoint = hit.point;
                         if (deltaHitdef.y == Mathf.Infinity)
                         {
@@ -97,13 +133,14 @@ public class SelectionScript : MonoBehaviour {
                         selection.position = hitPoint;
                         //print(selection.position);
                     }
+                }
             }
 
             if (Input.GetMouseButtonUp(0))
             {
                 selection = null;
                 panning = false;
-             }
+            }
         }
     }
     
