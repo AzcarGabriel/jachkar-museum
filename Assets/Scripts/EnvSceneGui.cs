@@ -45,8 +45,10 @@ public class EnvSceneGui : MonoBehaviour {
             n = name;
         }
 
-        var www = WWW.LoadFromCacheOrDownload(domain + n, 1);
+       
 
+        var www = WWW.LoadFromCacheOrDownload(domain + n, 1);
+        if (n.Equals("Museum")) www = WWW.LoadFromCacheOrDownload(domain + "stones", 1);
         loadScreen.SetActive(true);
         
         while (!www.isDone)

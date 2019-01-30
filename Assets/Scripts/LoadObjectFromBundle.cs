@@ -11,6 +11,7 @@ public class LoadObjectFromBundle : MonoBehaviour {
     
     // Use this for initialization
     void Start () {
+        Debug.Log("START");
         Debug.Log(EnvSceneGui.assetBundle);
         InstantiateTheScene(EnvSceneGui.assetBundle);
     }
@@ -38,7 +39,7 @@ public class LoadObjectFromBundle : MonoBehaviour {
             else
             {
                 GameObject obj = bundle.LoadAsset<GameObject>(n);
-                if (!bundleName.Equals("museum"))
+                if (!bundleName.Equals("stones"))
                 {
                     Instantiate<GameObject>(obj);
                 }
@@ -46,6 +47,15 @@ public class LoadObjectFromBundle : MonoBehaviour {
             }
 
         });
+
+        if (bundleName.Equals("stones")) {
+            sceneStones.Clear();
+            string[] names = bundle.GetAllAssetNames();
+            for (int i = 0; i < names.Length; i++) {
+                GameObject obj = bundle.LoadAsset<GameObject>(names[i]);
+                sceneStones.Add(obj);
+            }
+        }
 
         GameObject terrain = (GameObject)bundle.LoadAsset(terrainName);
         if (bundleName.Equals("echmiadzinally"))
