@@ -100,13 +100,15 @@ public class MuseumScripts : MonoBehaviour {
 
         //Set values
         object[] obj = FindObjectsOfType(typeof(GameObject));
+        List<string> done = new List<string>();
+
+        //If stone is in the scene
         foreach (object o in obj)
         {
             GameObject g = (GameObject)o;
 
             if (6 < g.name.Length)
             {
-                //If stone is in the scene
                 if (g.name.Substring(0, 5).Equals("Stone"))
                 {
                     int ind = SaveGame.Instance.StonesNames.IndexOf(g.scene.name+g.name);
@@ -114,45 +116,60 @@ public class MuseumScripts : MonoBehaviour {
                     {
                         g.transform.position = SaveGame.Instance.StonesPositions[ind];
                         g.transform.rotation = SaveGame.Instance.StonesRotations[ind];
+                        done.Add(g.scene.name + g.name);
                     }
                     else
                     {
                         Debug.Log("NULL");
                     }
                 }
-
-                //If is not
                 else if (g.name.Contains("Clone"))
                 {
-                    string name = g.name;
-                    Vector3 pos = new Vector3(g.transform.position.x, g.transform.position.y, g.transform.position.z);
-                    Destroy(g);
-                    string[] firstSplit = name.Split('_');
-                    string[] secondSplit = firstSplit[1].Split('(');
-                    string number = secondSplit[0].Substring(5);
-                    try
+                    int ind = SaveGame.Instance.StonesNames.IndexOf(g.name);
+                    if (ind != -1)
                     {
-                        int result = Int32.Parse(number);
-                        int i = GetStoneId(result, firstSplit[0]);
-                        int ind = SaveGame.Instance.StonesNames.IndexOf(g.name);
-                        if (ind != -1)
-                        {
-                            Vector3 sp = SaveGame.Instance.StonesPositions[ind];
-                            Quaternion rt = SaveGame.Instance.StonesRotations[ind];
-                            SpawnStoneWithPositionAndRotation(i, sp, rt);
-                        }
-                        else
-                        {
-                            Debug.Log("NULL");
-                        }
+                        g.transform.position = SaveGame.Instance.StonesPositions[ind];
+                        g.transform.rotation = SaveGame.Instance.StonesRotations[ind];
+                        done.Add(g.name);
                     }
-                    catch (FormatException)
+                    else
                     {
-                        Debug.Log("ERROR");
-                        continue;
+                        Debug.Log("NULL");
                     }
                 }
             }
+        }
+
+        //If not
+        foreach (string name in SaveGame.Instance.StonesNames)
+        {
+            if (!done.Contains(name))
+            {
+                string[] firstSplit = name.Split('_');
+                string[] secondSplit = firstSplit[1].Split('(');
+                string number = secondSplit[0].Substring(5);
+                try
+                {
+                    int result = Int32.Parse(number);
+                    int i = GetStoneId(result, firstSplit[0]);
+                    int ind = SaveGame.Instance.StonesNames.IndexOf(name);
+                    if (ind != -1)
+                    {
+                        Vector3 sp = SaveGame.Instance.StonesPositions[ind];
+                        Quaternion rt = SaveGame.Instance.StonesRotations[ind];
+                        SpawnStoneWithPositionAndRotation(i, sp, rt);
+                    }
+                    else
+                    {
+                        Debug.Log("NULL");
+                    }
+                }
+                catch (FormatException)
+                {
+                    Debug.Log("ERROR");
+                    continue;
+                }
+            }            
         }
     }
 
