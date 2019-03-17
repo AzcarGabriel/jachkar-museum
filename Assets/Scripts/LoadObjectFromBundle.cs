@@ -10,9 +10,8 @@ public class LoadObjectFromBundle : MonoBehaviour {
     public static List<GameObject> sceneStones = new List<GameObject>(); 
     
     // Use this for initialization
-    void Start () {
-        Debug.Log("START");
-        Debug.Log(EnvSceneGui.assetBundle);
+    void Start ()
+    {
         InstantiateTheScene(EnvSceneGui.assetBundle);
     }
 
@@ -24,7 +23,6 @@ public class LoadObjectFromBundle : MonoBehaviour {
         sceneStones.Clear();
         assetNames.ForEach(n =>
         {
-            Debug.Log(n);
             if (bundleName.Equals("Wall") && n.Equals("stones"))
             {
                 GameObject obj = bundle.LoadAsset<GameObject>(n);
@@ -45,13 +43,14 @@ public class LoadObjectFromBundle : MonoBehaviour {
                 }
                 sceneStones.Add(obj);
             }
-
         });
 
-        if (bundleName.Equals("stones")) {
+        if (bundleName.Equals("stones"))
+        {
             sceneStones.Clear();
             string[] names = bundle.GetAllAssetNames();
-            for (int i = 0; i < names.Length; i++) {
+            for (int i = 0; i < names.Length; i++)
+            {
                 GameObject obj = bundle.LoadAsset<GameObject>(names[i]);
                 sceneStones.Add(obj);
             }
@@ -66,13 +65,11 @@ public class LoadObjectFromBundle : MonoBehaviour {
             Instantiate(terrain);
     }
 
-  void Update()
-{
-    if (Input.GetKey("m"))
+    void Update()
     {
-        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+        if (Input.GetKey("m"))
+        {
+            SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+        }
     }
-}
-
-
 }

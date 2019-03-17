@@ -12,12 +12,14 @@ public class CameraChange : MonoBehaviour {
 
     public GameObject FPS;
     public Canvas stonesSpawn;
+    public Canvas editStoneButtons;
     public Canvas saveButtons;
 
     private GameObject hand;
 
     // Use this for initialization
-    void Start () {
+    void Start ()
+    {
         hand = GameObject.Find("SelectionManager");
         FPS.SetActive(true);
         mainView.enabled = true;
@@ -27,28 +29,28 @@ public class CameraChange : MonoBehaviour {
         Cursor.lockState = CursorLockMode.Locked;
         stonesSpawn.enabled = false;
         saveButtons.enabled = false;
+        editStoneButtons.enabled = false;
     }
 
 
-  void OnMouseEnter()
+    void OnMouseEnter()
     {
         Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
     }
+
     void OnMouseExit()
     {
         Cursor.SetCursor(null, Vector2.zero, cursorMode);
     }
     
-
     void OnGUI()
     {
-
-        
 
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update ()
+    {
         if (Input.GetKey("t"))
         {
             FPS.SetActive(false);
@@ -59,7 +61,6 @@ public class CameraChange : MonoBehaviour {
             hand.SetActive(true);
             stonesSpawn.enabled = true;
             saveButtons.enabled = true;
-
         }
 
         if (Input.GetKey("p"))
@@ -72,9 +73,7 @@ public class CameraChange : MonoBehaviour {
             Cursor.lockState = CursorLockMode.Locked;
             stonesSpawn.enabled = false;
             saveButtons.enabled = false;
-
+            editStoneButtons.enabled = false;
         }
-
-      
     }
 }

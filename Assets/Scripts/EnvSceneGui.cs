@@ -10,6 +10,8 @@ public class EnvSceneGui : MonoBehaviour {
     public GameObject loadScreen;
     public Slider slider;
 
+    public static AssetBundle assetBundle;
+
     private const string domain = "http://saduewa.dcc.uchile.cl/museum/AssetBundles/";
 
     // Use this for initialization
@@ -18,13 +20,10 @@ public class EnvSceneGui : MonoBehaviour {
         Cursor.lockState = CursorLockMode.None;
     }
 
-
     public void openScene(String name) {
         StartCoroutine(loadBundle(name));
-       
     }
-    public static AssetBundle assetBundle;
-
+    
     IEnumerator loadBundle(string name)
     {
         if (assetBundle != null)
@@ -45,8 +44,6 @@ public class EnvSceneGui : MonoBehaviour {
             n = name;
         }
 
-       
-
         var www = WWW.LoadFromCacheOrDownload(domain + n, 1);
         if (n.Equals("Museum")) www = WWW.LoadFromCacheOrDownload(domain + "stones", 1);
         loadScreen.SetActive(true);
@@ -61,7 +58,6 @@ public class EnvSceneGui : MonoBehaviour {
         SceneManager.LoadScene(n, LoadSceneMode.Single);
         Debug.Log(assetBundle);
     }
-
 
     public void exit()
     {
