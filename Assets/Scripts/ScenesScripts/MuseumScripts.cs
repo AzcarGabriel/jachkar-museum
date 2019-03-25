@@ -7,11 +7,15 @@ public class MuseumScripts : MonoBehaviour {
 
     [SerializeField]
     public Transform spawnPoint;
+    public GameObject showButton;
+    public GameObject hideButton;
+    public Canvas addStoneMenu;
+    public Canvas editStoneMenu;
 
     // Use this for initialization
     void Start()
     {
-
+        hideButton.SetActive(false);
     }
 
     // Update is called once per frame
@@ -91,6 +95,22 @@ public class MuseumScripts : MonoBehaviour {
         float scale = GetStoneScaleById(stoneId);
         GameObject obj = Instantiate(LoadObjectFromBundle.sceneStones[stoneId - 1], sp, rt);
         obj.transform.localScale *= scale;
+    }
+
+    public void ShowMenus()
+    {
+        addStoneMenu.enabled = true;
+        editStoneMenu.enabled = true;
+        showButton.SetActive(false);
+        hideButton.SetActive(true);
+    }
+
+    public void HideMenus()
+    {
+        addStoneMenu.enabled = false;
+        editStoneMenu.enabled = false;
+        showButton.SetActive(true);
+        hideButton.SetActive(false);
     }
 
     public void Load()

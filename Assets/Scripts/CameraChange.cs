@@ -14,6 +14,7 @@ public class CameraChange : MonoBehaviour {
     public Canvas stonesSpawn;
     public Canvas editStoneButtons;
     public Canvas saveButtons;
+    public Canvas showMoreButtons;
 
     private GameObject hand;
 
@@ -30,6 +31,7 @@ public class CameraChange : MonoBehaviour {
         stonesSpawn.enabled = false;
         saveButtons.enabled = false;
         editStoneButtons.enabled = false;
+        showMoreButtons.enabled = false;
     }
 
 
@@ -59,8 +61,9 @@ public class CameraChange : MonoBehaviour {
             mainView.enabled = false;
             topView.enabled = true;
             hand.SetActive(true);
-            stonesSpawn.enabled = true;
-            saveButtons.enabled = true;
+            stonesSpawn.enabled = false;
+            saveButtons.enabled = false;
+            showMoreButtons.enabled = true;
         }
 
         if (Input.GetKey("p"))
@@ -74,6 +77,7 @@ public class CameraChange : MonoBehaviour {
             stonesSpawn.enabled = false;
             saveButtons.enabled = false;
             editStoneButtons.enabled = false;
+            showMoreButtons.enabled = false;
         }
     }
 }
