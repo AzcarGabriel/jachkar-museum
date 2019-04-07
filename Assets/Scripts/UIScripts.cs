@@ -84,7 +84,7 @@ public class UIScripts : MonoBehaviour {
     public void Load()
     {
         //Recover the values
-        SaveGame.Load();
+        SaveGame.Load("save");
 
         //Set values
         object[] obj = FindObjectsOfType(typeof(GameObject));
@@ -131,7 +131,7 @@ public class UIScripts : MonoBehaviour {
         }
 
         //Save values
-        SaveGame.Save();
+        SaveGame.Save("save");
     }
 
 }

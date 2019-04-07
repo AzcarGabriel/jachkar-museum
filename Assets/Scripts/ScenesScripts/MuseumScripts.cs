@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.IO;
 
 public class MuseumScripts : MonoBehaviour {
 
@@ -11,6 +13,12 @@ public class MuseumScripts : MonoBehaviour {
     public GameObject hideButton;
     public Canvas addStoneMenu;
     public Canvas editStoneMenu;
+    public Canvas saveDialog;
+    public Canvas loadDialog;
+    public Canvas overwriteDialog;
+    public Canvas availableFiles;
+    public InputField saveInputField;
+    public InputField loadInputField;
 
     // Use this for initialization
     void Start()
@@ -100,7 +108,6 @@ public class MuseumScripts : MonoBehaviour {
     public void ShowMenus()
     {
         addStoneMenu.enabled = true;
-        editStoneMenu.enabled = true;
         showButton.SetActive(false);
         hideButton.SetActive(true);
     }
@@ -108,15 +115,57 @@ public class MuseumScripts : MonoBehaviour {
     public void HideMenus()
     {
         addStoneMenu.enabled = false;
-        editStoneMenu.enabled = false;
         showButton.SetActive(true);
         hideButton.SetActive(false);
     }
 
-    public void Load()
+    public void ShowSaveDialog()
     {
+        saveDialog.enabled = true;
+    }
+
+    public void ShowLoadDialog()
+    {
+        loadDialog.enabled = true;
+    }
+
+    public void ShowAvailableFiles()
+    {
+        availableFiles.enabled = true;
+
+        List<string> jsonFiles = new List<string>();
+        foreach (string file in System.IO.Directory.GetFiles(Application.persistentDataPath))
+        {
+            if (file.Contains(".json"))
+            {
+                string[] f = file.Split('\\');
+                string fa = f[f.Length - 1];
+                jsonFiles.Add(fa);
+            }
+        }
+
+        string ans = "";
+        foreach (string x in jsonFiles)
+        {
+            ans = ans + x.Split('.')[0] + "\n";
+        }
+
+        Text t = availableFiles.GetComponent<Canvas>().GetComponentInChildren<Text>();
+        t.text = ans;
+        
+    }
+
+    public void Load(Boolean cancel)
+    {
+        if (cancel)
+        {
+            loadDialog.enabled = false;
+            availableFiles.enabled = false;
+            return;
+        }
+
         //Recover the values
-        SaveGame.Load();
+        SaveGame.Load(loadInputField.text);
 
         //Set values
         object[] obj = FindObjectsOfType(typeof(GameObject));
@@ -191,12 +240,31 @@ public class MuseumScripts : MonoBehaviour {
                 }
             }            
         }
+
+        loadDialog.enabled = false;
+        availableFiles.enabled = false;
+        loadInputField.text = "";
     }
 
-    public void Save()
+    public void Save(Boolean cancel)
     {
+        if (cancel)
+        {
+            saveDialog.enabled = false;
+            return;
+        }
         //Get the actual stone's values
         //Modify SaveGame.Instance.Stones
+
+        string filePath = Path.Combine(Application.persistentDataPath, saveInputField.text + ".json");
+
+        if (File.Exists(filePath))
+        {
+            overwriteDialog.enabled = true;
+            saveDialog.enabled = false;
+            return;
+        }
+
         SaveGame.Instance.Clear();
 
         object[] obj = FindObjectsOfType(typeof(GameObject));
@@ -221,7 +289,43 @@ public class MuseumScripts : MonoBehaviour {
         }
 
         //Save values
-        SaveGame.Save();
+        SaveGame.Save(saveInputField.text);
+
+        saveDialog.enabled = false;
+        saveInputField.text = "";
+    }
+
+    public void RawSave()
+    {
+        SaveGame.Instance.Clear();
+
+        object[] obj = FindObjectsOfType(typeof(GameObject));
+        foreach (object o in obj)
+        {
+            GameObject g = (GameObject)o;
+            if (6 < g.name.Length)
+            {
+                if (g.name.Contains("Clone"))
+                {
+                    SaveGame.Instance.StonesNames.Add(g.name);
+                    SaveGame.Instance.StonesPositions.Add(g.transform.position);
+                    SaveGame.Instance.StonesRotations.Add(g.transform.rotation);
+                }
+
+                if (g.name.Substring(0, 5).Equals("Stone"))
+                {
+                    SaveGame.Instance.StonesNames.Add(g.scene.name + g.name);
+                    SaveGame.Instance.StonesPositions.Add(g.transform.position);
+                    SaveGame.Instance.StonesRotations.Add(g.transform.rotation);
+                }
+            }
+        }
+
+        //Save values
+        SaveGame.Save(saveInputField.text);
+
+        overwriteDialog.enabled = false;
+        saveInputField.text = "";
     }
 
 }

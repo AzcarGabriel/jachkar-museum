@@ -15,6 +15,10 @@ public class CameraChange : MonoBehaviour {
     public Canvas editStoneButtons;
     public Canvas saveButtons;
     public Canvas showMoreButtons;
+    public Canvas saveDialog;
+    public Canvas loadDialog;
+    public Canvas overwriteDialog;
+    public Canvas availableFiles;
 
     private GameObject hand;
 
@@ -32,6 +36,10 @@ public class CameraChange : MonoBehaviour {
         saveButtons.enabled = false;
         editStoneButtons.enabled = false;
         showMoreButtons.enabled = false;
+        saveDialog.enabled = false;
+        loadDialog.enabled = false;
+        overwriteDialog.enabled = false;
+        availableFiles.enabled = false;
     }
 
 
@@ -62,7 +70,7 @@ public class CameraChange : MonoBehaviour {
             topView.enabled = true;
             hand.SetActive(true);
             stonesSpawn.enabled = false;
-            saveButtons.enabled = false;
+            saveButtons.enabled = true;
             showMoreButtons.enabled = true;
         }
 
