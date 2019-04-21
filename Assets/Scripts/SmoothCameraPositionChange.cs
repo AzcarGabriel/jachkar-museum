@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -52,34 +53,31 @@ public class SmoothCameraPositionChange : MonoBehaviour
     Quaternion quat;
     protected IEnumerator MoveCameraToPoint(Transform transform)
     {
-        var cameraToStone = transform.position - mainCamera.transform.position;
-        cameraToStone.y = 0.0f;
-        var cameraForward = mainCamera.transform.forward;
-        cameraForward.y = 0.0f;
-        var crossProduct = Vector3.Cross(cameraForward.normalized, cameraToStone.normalized);
-        var angle = Mathf.Rad2Deg * Mathf.Asin(crossProduct.y) + 22.5f;
-        Debug.Log(angle);
+        mainCamera.transform.position = transform.position + transform.up * -20.0f + transform.forward * 5.0f;
+
+        Vector3 cameraToStone = transform.position - mainCamera.transform.position;
+        Vector3 cameraForward = mainCamera.transform.forward;
+        Vector3 crossProduct = Vector3.Cross(cameraForward.normalized, cameraToStone.normalized);
+        float angle = Mathf.Rad2Deg * Mathf.Asin(crossProduct.y) + 22.5f;
         startTime = Time.time;
         quat = mainCamera.transform.rotation * Quaternion.Euler(0.0f, angle, 0.0f);
+
         while (Mathf.Abs(Quaternion.Angle(mainCamera.transform.rotation, quat)) > Mathf.Epsilon)
         {
-            //float distCovered = (Time.time - startTime) * speed;
-            //fracJourney = distCovered / journeyLength;
-            //mainCamera.transform.position = Vector3.Lerp(startMarker.position, endMarker.position + 10 * -endMarker.up, fracJourney);
-            mainCamera.transform.rotation = Quaternion.Lerp(mainCamera.transform.rotation, quat, 0.2f);
-            yield return null;
+            mainCamera.transform.rotation = Quaternion.Lerp(mainCamera.transform.rotation, quat, 1.0f);
         }
 
         start = true;
+
+        return null;
     }
-
-
 
     // Update is called once per frame
     void LateUpdate()
     {
         Transform cameraPosition = mainCamera.transform;
         RaycastHit hit;
+        Vector3 pond = new Vector3(0.0f, 1.0f, 20.0f);
         if (Input.GetKeyDown("e") && !fps.enabled)
         {
             targetGameObject = null;
@@ -87,7 +85,7 @@ public class SmoothCameraPositionChange : MonoBehaviour
             Cursor.visible = false;
             scrollView.SetActive(false);
         }
-        else if ((Physics.Raycast(cameraPosition.position, cameraPosition.forward, out hit, 15.0f, stoneMask) &&
+        else if ((Physics.Raycast(cameraPosition.position, cameraPosition.forward, out hit, 21.0f, stoneMask) &&
                      Vector3.Dot(cameraPosition.forward, hit.transform.up) > 0.0f))
         {
             targetGameObject = hit.transform;
@@ -99,23 +97,21 @@ public class SmoothCameraPositionChange : MonoBehaviour
                     Cursor.visible = true;
                     Cursor.lockState = CursorLockMode.None;
                     string name = hit.transform.gameObject.name;
-                    StartCoroutine(loadXml(name));
+                    loadXml2(name);
                     scrollView.SetActive(true);
                     if (start)
                     {
                         start = false;
-                        StartCoroutine(MoveCameraToPoint(targetGameObject.transform));
+                        MoveCameraToPoint(targetGameObject.transform);
                     }
                 }
             }
             else
             {
                 targetGameObject = null;
-
             }
         }
     }
-
 
     IEnumerator loadXml(string name)
     {
@@ -137,6 +133,30 @@ public class SmoothCameraPositionChange : MonoBehaviour
             metaText[8].text = Convert.ToString(data["ImportantFeatures"]);
             metaText[9].text = Convert.ToString(data["Referances"]);
         }
+    }
+
+    IEnumerator loadXml2(string name)
+    {
+        Debug.Log(name);
+        string filePath = Path.Combine(Application.dataPath, "Scripts/Scenes/"+name+".xml");
+        if (File.Exists(filePath))
+        {
+            Debug.Log("EXISTO");
+            string dataText = File.ReadAllText(filePath);
+            var data = SceneHelper.GetKhachkarByXML(dataText);
+            metaText[0].text = Convert.ToString(data["Location"]);
+            metaText[1].text = Convert.ToString(data["Scenario"]);
+            metaText[2].text = Convert.ToString(data["Setting"]);
+            metaText[3].text = Convert.ToString(data["Accessibility"]);
+            metaText[4].text = Convert.ToString(data["Category"]);
+            metaText[5].text = Convert.ToString(data["ProductionPeriod"]);
+            metaText[6].text = Convert.ToString(data["CoonditionOfPreservation"]);
+            metaText[7].text = Convert.ToString(data["Inscription"]);
+            metaText[8].text = Convert.ToString(data["ImportantFeatures"]);
+            metaText[9].text = Convert.ToString(data["Referances"]);
+        }
+
+        return null;
     }
 
     void update()

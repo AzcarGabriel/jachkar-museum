@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class CameraChange : MonoBehaviour {
     [SerializeField]
@@ -19,6 +20,7 @@ public class CameraChange : MonoBehaviour {
     public Canvas loadDialog;
     public Canvas overwriteDialog;
     public Canvas availableFiles;
+    public GameObject helpPane;
 
     private GameObject hand;
 
@@ -40,6 +42,7 @@ public class CameraChange : MonoBehaviour {
         loadDialog.enabled = false;
         overwriteDialog.enabled = false;
         availableFiles.enabled = false;
+        helpPane.SetActive(false);
     }
 
 
@@ -61,31 +64,45 @@ public class CameraChange : MonoBehaviour {
     // Update is called once per frame
     void Update ()
     {
-        if (Input.GetKey("t"))
+        bool writing = loadDialog.enabled || saveDialog.enabled;
+        if (!writing)
         {
-            FPS.SetActive(false);
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-            mainView.enabled = false;
-            topView.enabled = true;
-            hand.SetActive(true);
-            stonesSpawn.enabled = false;
-            saveButtons.enabled = true;
-            showMoreButtons.enabled = true;
-        }
+            if (Input.GetKey("t"))
+            {
+                FPS.SetActive(false);
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                mainView.enabled = false;
+                topView.enabled = true;
+                hand.SetActive(true);
+                stonesSpawn.enabled = false;
+                saveButtons.enabled = true;
+                showMoreButtons.enabled = true;
+            }
 
-        if (Input.GetKey("p"))
-        {
-            FPS.SetActive(true);
-            mainView.enabled = true;
-            topView.enabled  = false;
-            Cursor.visible   = false;
-            hand.SetActive(false);
-            Cursor.lockState = CursorLockMode.Locked;
-            stonesSpawn.enabled = false;
-            saveButtons.enabled = false;
-            editStoneButtons.enabled = false;
-            showMoreButtons.enabled = false;
+            if (Input.GetKey("p"))
+            {
+                FPS.SetActive(true);
+                mainView.enabled = true;
+                topView.enabled = false;
+                Cursor.visible = false;
+                hand.SetActive(false);
+                Cursor.lockState = CursorLockMode.Locked;
+                stonesSpawn.enabled = false;
+                saveButtons.enabled = false;
+                editStoneButtons.enabled = false;
+                showMoreButtons.enabled = false;
+            }
+
+            if (Input.GetKeyDown("h"))
+            {
+                helpPane.SetActive(!helpPane.activeSelf);
+            }
+
+            if (Input.GetKey("m"))
+            {
+                SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+            }
         }
     }
 }

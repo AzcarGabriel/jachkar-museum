@@ -98,16 +98,16 @@ public class SelectionScript : MonoBehaviour {
                 RaycastHit hit;
                 RaycastHit terrainHit;
                 Ray ray = tCamera.ScreenPointToRay(Input.mousePosition);
-
+                
                 if (panning == false && selection == null && Physics.Raycast(ray, out hit, Mathf.Infinity, stoneMask))
                 {
-                    Transform p;
                     panel.enabled = true;
 
                     selection = hit.transform;
                     rotation = hit.transform;
                 }
 
+                //selection is the object who collides with the cursor
                 if (selection != null) {
                    if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
                    {
@@ -131,7 +131,6 @@ public class SelectionScript : MonoBehaviour {
                         hitPoint += selection.position - hitPoint + deltaHitdef;
                         deltaHitdef = terrainHit.point;
                         selection.position = hitPoint;
-                        //print(selection.position);
                     }
                 }
             }
@@ -151,6 +150,7 @@ public class SelectionScript : MonoBehaviour {
             rotation.transform.Rotate(Vector3.forward, 20.0f);
         }
     }
+
     public void rotateDown()
     {
         if (rotation != null)

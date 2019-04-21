@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 
 public class LoadObjectFromBundle : MonoBehaviour {
@@ -67,9 +66,6 @@ public class LoadObjectFromBundle : MonoBehaviour {
 
     void Update()
     {
-        if (Input.GetKey("m"))
-        {
-            SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
-        }
+
     }
 }
