@@ -214,6 +214,8 @@ public class MuseumScripts : MonoBehaviour {
         {
             if (!done.Contains(name))
             {
+                // name is "scene_StoneNumber" 
+                // ej: "museum_Stone01(Clone)" or just "museum_Stone01"
                 string[] firstSplit = name.Split('_');
                 string[] secondSplit = firstSplit[1].Split('(');
                 string number = secondSplit[0].Substring(5);

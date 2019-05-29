@@ -67,6 +67,11 @@ public class CameraChange : MonoBehaviour {
         bool writing = loadDialog.enabled || saveDialog.enabled;
         if (!writing)
         {
+            if (Input.GetKey("m"))
+            {
+                SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+            }
+
             if (Input.GetKey("t"))
             {
                 FPS.SetActive(false);
@@ -97,11 +102,6 @@ public class CameraChange : MonoBehaviour {
             if (Input.GetKeyDown("h"))
             {
                 helpPane.SetActive(!helpPane.activeSelf);
-            }
-
-            if (Input.GetKey("m"))
-            {
-                SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
             }
         }
     }

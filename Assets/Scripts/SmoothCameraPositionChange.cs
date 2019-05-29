@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using UnityStandardAssets.Characters.FirstPerson;
 
 public class SmoothCameraPositionChange : MonoBehaviour
@@ -89,6 +90,7 @@ public class SmoothCameraPositionChange : MonoBehaviour
                      Vector3.Dot(cameraPosition.forward, hit.transform.up) > 0.0f))
         {
             targetGameObject = hit.transform;
+
             if (Input.GetKeyDown("e"))
             {
                 if (fps.enabled)
@@ -96,14 +98,19 @@ public class SmoothCameraPositionChange : MonoBehaviour
                     fps.enabled = false;
                     Cursor.visible = true;
                     Cursor.lockState = CursorLockMode.None;
-                    string name = hit.transform.gameObject.name;
+                    string name = sceneName + "_" + hit.transform.gameObject.name;
+                    StaticValues.stone_name = name;
+                    SceneManager.LoadScene("StoneDetails", LoadSceneMode.Single);
+
+                    //Old details
+                    /*
                     loadXml2(name);
                     scrollView.SetActive(true);
                     if (start)
                     {
                         start = false;
                         MoveCameraToPoint(targetGameObject.transform);
-                    }
+                    }*/
                 }
             }
             else
@@ -141,7 +148,6 @@ public class SmoothCameraPositionChange : MonoBehaviour
         string filePath = Path.Combine(Application.dataPath, "Scripts/Scenes/"+name+".xml");
         if (File.Exists(filePath))
         {
-            Debug.Log("EXISTO");
             string dataText = File.ReadAllText(filePath);
             var data = SceneHelper.GetKhachkarByXML(dataText);
             metaText[0].text = Convert.ToString(data["Location"]);
