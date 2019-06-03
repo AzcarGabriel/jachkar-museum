@@ -24,73 +24,24 @@ public class MuseumScripts : MonoBehaviour {
     void Start()
     {
         hideButton.SetActive(false);
+
+        if (StaticValues.back_from_details)
+        {
+            Debug.Log("GO");
+            Load(false);
+            StaticValues.back_from_details = false;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-
-    }
-
-    /*0 al 7 EchmiadzinAlly
-    8 al 13 Museum
-    14 al 26 Noradus
-    27 al 45 Noravank
-    46 al 58 WallStones*/
-
-    float GetStoneScaleById(int stoneId)
-    {
-        float[] scales = new float[] { 1.0f, 1.0f, 1.0f, 0.55f, 1.0f };
-        int index = 0;
-        if (stoneId <= 7)
+        if (Input.GetKeyDown("e"))
         {
-            index = 0;
+            StaticValues.back_from_details = true;
+            Save(false);
         }
-        else if (stoneId <= 13)
-        {
-            index = 1;
-        }
-        else if (stoneId <= 26)
-        {
-            index = 2;
-        }
-        else if (stoneId <= 45)
-        {
-            index = 3;
-        }
-        else if (stoneId <= 58)
-        {
-            index = 4;
-        }
-
-        return scales[index];
-    }
-
-    int GetStoneId(int number, string name)
-    {
-        int id = 0;
-        if (name.Equals("EchmiadzinAlly"))
-        {
-            id = number;
-        }
-        else if (name.Equals("museum"))
-        {
-            id = number + 7;
-        }
-        else if (name.Equals("Noradus"))
-        {
-            id = number + 13;
-        }
-        else if (name.Equals("Noravank"))
-        {
-            id = number + 26;
-        }
-        else if (name.Equals("wallStones"))
-        {
-            id = number + 45;
-        }
-
-        return id + 1;
+    
     }
 
     public void SpawnStone(int stoneId)
@@ -100,7 +51,7 @@ public class MuseumScripts : MonoBehaviour {
 
     public void SpawnStoneWithPositionAndRotation(int stoneId, Vector3 sp, Quaternion rt)
     {
-        float scale = GetStoneScaleById(stoneId);
+        float scale = StoneSpawnHelper.GetStoneScaleById(stoneId);
         GameObject obj = Instantiate(LoadObjectFromBundle.sceneStones[stoneId - 1], sp, rt);
         obj.transform.localScale *= scale;
     }
@@ -164,8 +115,18 @@ public class MuseumScripts : MonoBehaviour {
             return;
         }
 
+        string f_name = "";
+        if (StaticValues.back_from_details)
+        {
+            f_name = "temp_data_file";
+        }
+        else
+        {
+            f_name = loadInputField.text;
+        }
+
         //Recover the values
-        SaveGame.Load(loadInputField.text);
+        SaveGame.Load(f_name);
 
         //Set values
         object[] obj = FindObjectsOfType(typeof(GameObject));
@@ -189,7 +150,7 @@ public class MuseumScripts : MonoBehaviour {
                     }
                     else
                     {
-                        Debug.Log("NULL");
+                        Debug.Log("STONE NOT IN LOAD FILE " + g.scene.name + g.name);
                     }
                 }
                 else if (g.name.Contains("Clone"))
@@ -203,7 +164,7 @@ public class MuseumScripts : MonoBehaviour {
                     }
                     else
                     {
-                        Debug.Log("NULL");
+                        Debug.Log("CLONE NOT IN LOAD FILE " + g.name);
                     }
                 }
             }
@@ -222,7 +183,7 @@ public class MuseumScripts : MonoBehaviour {
                 try
                 {
                     int result = Int32.Parse(number);
-                    int i = GetStoneId(result, firstSplit[0]);
+                    int i = StoneSpawnHelper.GetStoneId(result, firstSplit[0]);
                     int ind = SaveGame.Instance.StonesNames.IndexOf(name);
                     if (ind != -1)
                     {
@@ -232,7 +193,7 @@ public class MuseumScripts : MonoBehaviour {
                     }
                     else
                     {
-                        Debug.Log("NULL");
+                        Debug.Log("NULL SPAWN " + name);
                     }
                 }
                 catch (FormatException)
@@ -255,12 +216,22 @@ public class MuseumScripts : MonoBehaviour {
             saveDialog.enabled = false;
             return;
         }
+
+        string f_name = "";
+        if (StaticValues.back_from_details)
+        {
+            f_name = "temp_data_file";
+        }
+        else
+        {
+            f_name = saveInputField.text;
+        }
+
         //Get the actual stone's values
         //Modify SaveGame.Instance.Stones
+        string filePath = Path.Combine(Application.persistentDataPath, f_name + ".json");
 
-        string filePath = Path.Combine(Application.persistentDataPath, saveInputField.text + ".json");
-
-        if (File.Exists(filePath))
+        if (File.Exists(filePath) && !StaticValues.back_from_details)
         {
             overwriteDialog.enabled = true;
             saveDialog.enabled = false;
@@ -283,6 +254,7 @@ public class MuseumScripts : MonoBehaviour {
 
                 if (g.name.Substring(0, 5).Equals("Stone"))
                 {
+                    Debug.Log(g.scene.name);
                     SaveGame.Instance.StonesNames.Add(g.scene.name + g.name);
                     SaveGame.Instance.StonesPositions.Add(g.transform.position);
                     SaveGame.Instance.StonesRotations.Add(g.transform.rotation);
@@ -291,42 +263,9 @@ public class MuseumScripts : MonoBehaviour {
         }
 
         //Save values
-        SaveGame.Save(saveInputField.text);
+        SaveGame.Save(f_name);
 
         saveDialog.enabled = false;
-        saveInputField.text = "";
-    }
-
-    public void RawSave()
-    {
-        SaveGame.Instance.Clear();
-
-        object[] obj = FindObjectsOfType(typeof(GameObject));
-        foreach (object o in obj)
-        {
-            GameObject g = (GameObject)o;
-            if (6 < g.name.Length)
-            {
-                if (g.name.Contains("Clone"))
-                {
-                    SaveGame.Instance.StonesNames.Add(g.name);
-                    SaveGame.Instance.StonesPositions.Add(g.transform.position);
-                    SaveGame.Instance.StonesRotations.Add(g.transform.rotation);
-                }
-
-                if (g.name.Substring(0, 5).Equals("Stone"))
-                {
-                    SaveGame.Instance.StonesNames.Add(g.scene.name + g.name);
-                    SaveGame.Instance.StonesPositions.Add(g.transform.position);
-                    SaveGame.Instance.StonesRotations.Add(g.transform.rotation);
-                }
-            }
-        }
-
-        //Save values
-        SaveGame.Save(saveInputField.text);
-
-        overwriteDialog.enabled = false;
         saveInputField.text = "";
     }
 

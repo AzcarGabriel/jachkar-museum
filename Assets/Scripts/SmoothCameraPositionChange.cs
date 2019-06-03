@@ -98,7 +98,10 @@ public class SmoothCameraPositionChange : MonoBehaviour
                     fps.enabled = false;
                     Cursor.visible = true;
                     Cursor.lockState = CursorLockMode.None;
-                    string name = sceneName + "_" + hit.transform.gameObject.name;
+                    string name = hit.transform.gameObject.name;
+                    if (!name.Contains(sceneName)) {
+                        name = sceneName + "_" + name;
+                    }
                     StaticValues.stone_name = name;
                     SceneManager.LoadScene("StoneDetails", LoadSceneMode.Single);
 

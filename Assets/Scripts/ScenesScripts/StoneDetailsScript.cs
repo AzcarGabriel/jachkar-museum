@@ -28,12 +28,12 @@ public class StoneDetailsScript : MonoBehaviour
         try
         {
             int result = Int32.Parse(number);
-            int i = GetStoneId(result, firstSplit[0]);
+            int i = StoneSpawnHelper.GetStoneId(result, firstSplit[0]);
             SpawnStone(i);
         }
         catch (FormatException)
         {
-            Debug.Log("ERROR");
+            Debug.Log("Start Details Error");
         }
     }
 
@@ -56,64 +56,9 @@ public class StoneDetailsScript : MonoBehaviour
         }
     }
 
-    float GetStoneScaleById(int stoneId)
-    {
-        float[] scales = new float[] { 1.0f, 1.0f, 1.0f, 0.55f, 1.0f };
-        int index = 0;
-        if (stoneId <= 7)
-        {
-            index = 0;
-        }
-        else if (stoneId <= 13)
-        {
-            index = 1;
-        }
-        else if (stoneId <= 26)
-        {
-            index = 2;
-        }
-        else if (stoneId <= 45)
-        {
-            index = 3;
-        }
-        else if (stoneId <= 58)
-        {
-            index = 4;
-        }
-
-        return scales[index];
-    }
-
-    int GetStoneId(int number, string name)
-    {
-        int id = 0;
-        if (name.Equals("EchmiadzinAlly"))
-        {
-            id = number;
-        }
-        else if (name.Equals("museum"))
-        {
-            id = number + 7;
-        }
-        else if (name.Equals("Noradus"))
-        {
-            id = number + 13;
-        }
-        else if (name.Equals("Noravank"))
-        {
-            id = number + 26;
-        }
-        else if (name.Equals("wallStones"))
-        {
-            id = number + 45;
-        }
-
-        return id + 1;
-    }
-
     public void SpawnStone(int stoneId)
     {
-        float scale = GetStoneScaleById(stoneId);
+        float scale = StoneSpawnHelper.GetStoneScaleById(stoneId);
         Vector3 pos = stone.transform.position;
         Quaternion q = stone.transform.rotation;
         stone = Instantiate(LoadObjectFromBundle.sceneStones[stoneId - 1], pos, q);
@@ -122,6 +67,10 @@ public class StoneDetailsScript : MonoBehaviour
 
     IEnumerator loadXml(string name)
     {
+        if (name.Contains("Clone")) {
+            name = name.Split('(')[0];
+        }
+
         string filePath = Path.Combine(Application.dataPath, "Scripts/Scenes/"+name+".xml");
         if (File.Exists(filePath))
         {
@@ -129,6 +78,11 @@ public class StoneDetailsScript : MonoBehaviour
             var data = SceneHelper.GetKhachkarByXML(dataText);
             metaText[0].text = Convert.ToString(data["CoonditionOfPreservation"]);
             metaText[1].text = Convert.ToString(data["ImportantFeatures"]);
+            metaText[2].text = Convert.ToString(data["Location"]);
+            metaText[3].text = Convert.ToString(data["Scenario"]);
+            metaText[4].text = Convert.ToString(data["Accessibility"]);
+            metaText[5].text = Convert.ToString(data["Category"]);
+            metaText[6].text = Convert.ToString(data["ProductionPeriod"]);
 
             /* metaText[0].text = Convert.ToString(data["Location"]);
             metaText[1].text = Convert.ToString(data["Scenario"]);

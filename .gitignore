@@ -7,6 +7,7 @@ Bin/
 UnityGenerated/
 Library/
 Assets/AssetStoreTools*
+Assets/AssetBundle*
 App/
 UWP/
 project.json
@@ -40,3 +41,4 @@ obj/
 WSATestCertificate.pfx
 WSATestCertificate.pfx.meta
 info.txt
+/Assets/_TerrainAutoUpgrade/*.terrainlayer
