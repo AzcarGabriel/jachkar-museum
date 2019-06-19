@@ -45,27 +45,11 @@ public class CameraChange : MonoBehaviour {
         helpPane.SetActive(false);
     }
 
-
-    void OnMouseEnter()
-    {
-        Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
-    }
-
-    void OnMouseExit()
-    {
-        Cursor.SetCursor(null, Vector2.zero, cursorMode);
-    }
-    
-    void OnGUI()
-    {
-
-    }
-
     // Update is called once per frame
     void Update ()
     {
-        bool writing = loadDialog.enabled || saveDialog.enabled;
-        if (!writing)
+        StaticValues.writing = loadDialog.enabled || saveDialog.enabled;
+        if (!StaticValues.writing)
         {
             if (Input.GetKey("m"))
             {
@@ -104,5 +88,20 @@ public class CameraChange : MonoBehaviour {
                 helpPane.SetActive(!helpPane.activeSelf);
             }
         }
+    }
+
+    void OnMouseEnter()
+    {
+        Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
+    }
+
+    void OnMouseExit()
+    {
+        Cursor.SetCursor(null, Vector2.zero, cursorMode);
+    }
+
+    void OnGUI()
+    {
+
     }
 }

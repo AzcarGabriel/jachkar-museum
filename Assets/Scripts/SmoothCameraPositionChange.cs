@@ -14,22 +14,25 @@ public class SmoothCameraPositionChange : MonoBehaviour
     [SerializeField]
     public List<Text> metaText;
     public GameObject scrollView;
-    public String sceneName;
     public GameObject mainCamera;
+    public String sceneName;
+    public float speed = 0.3F;
+    public CursorMode cursorMode = CursorMode.Auto;
+    public Vector2 hotSpot = Vector2.zero;
+
     private Transform endMarker;
     private Transform startMarker;
     private Transform selection = null;
+    private Transform targetGameObject;
     private int stoneMask = 1 << 9;
     private int groundMask = 1 << 10;
-    public float speed = 0.3F;
     private float startTime;
-    public CursorMode cursorMode = CursorMode.Auto;
-    public Vector2 hotSpot = Vector2.zero;
-    bool flag = true;
-    private Transform targetGameObject;
     private FirstPersonController fps;
-
     private bool start;
+
+    bool flag = true;
+    Quaternion quat;
+
     // Use this for initialization
     void Start()
     {
@@ -37,45 +40,14 @@ public class SmoothCameraPositionChange : MonoBehaviour
         fps = mainCamera.gameObject.GetComponent<FirstPersonController>();
     }
 
-    void OnGUI()
-    {
-        if (targetGameObject)
-        {
-            GUI.Label(new Rect(Screen.width / 2, Screen.height / 2, 200.0f, 20.0f), "press E to see info");
-        }
-    }
-
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(mainCamera.transform.position, mainCamera.transform.forward * 50.0f);
-    }
-
-    Quaternion quat;
-    protected IEnumerator MoveCameraToPoint(Transform transform)
-    {
-        mainCamera.transform.position = transform.position + transform.up * -20.0f + transform.forward * 5.0f;
-
-        Vector3 cameraToStone = transform.position - mainCamera.transform.position;
-        Vector3 cameraForward = mainCamera.transform.forward;
-        Vector3 crossProduct = Vector3.Cross(cameraForward.normalized, cameraToStone.normalized);
-        float angle = Mathf.Rad2Deg * Mathf.Asin(crossProduct.y) + 22.5f;
-        startTime = Time.time;
-        quat = mainCamera.transform.rotation * Quaternion.Euler(0.0f, angle, 0.0f);
-
-        while (Mathf.Abs(Quaternion.Angle(mainCamera.transform.rotation, quat)) > Mathf.Epsilon)
-        {
-            mainCamera.transform.rotation = Quaternion.Lerp(mainCamera.transform.rotation, quat, 1.0f);
-        }
-
-        start = true;
-
-        return null;
-    }
-
     // Update is called once per frame
     void LateUpdate()
     {
+        if (StaticValues.writing)
+        {
+            return;
+        }
+
         Transform cameraPosition = mainCamera.transform;
         RaycastHit hit;
         Vector3 pond = new Vector3(0.0f, 1.0f, 20.0f);
@@ -99,7 +71,8 @@ public class SmoothCameraPositionChange : MonoBehaviour
                     Cursor.visible = true;
                     Cursor.lockState = CursorLockMode.None;
                     string name = hit.transform.gameObject.name;
-                    if (!name.Contains(sceneName)) {
+                    if (!name.Contains(sceneName))
+                    {
                         name = sceneName + "_" + name;
                     }
                     StaticValues.stone_name = name;
@@ -121,6 +94,41 @@ public class SmoothCameraPositionChange : MonoBehaviour
                 targetGameObject = null;
             }
         }
+    }
+
+    void OnGUI()
+    {
+        if (targetGameObject)
+        {
+            GUI.Label(new Rect(Screen.width / 2, Screen.height / 2, 200.0f, 20.0f), "press E to see info");
+        }
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(mainCamera.transform.position, mainCamera.transform.forward * 50.0f);
+    }
+
+    protected IEnumerator MoveCameraToPoint(Transform transform)
+    {
+        mainCamera.transform.position = transform.position + transform.up * -20.0f + transform.forward * 5.0f;
+
+        Vector3 cameraToStone = transform.position - mainCamera.transform.position;
+        Vector3 cameraForward = mainCamera.transform.forward;
+        Vector3 crossProduct = Vector3.Cross(cameraForward.normalized, cameraToStone.normalized);
+        float angle = Mathf.Rad2Deg * Mathf.Asin(crossProduct.y) + 22.5f;
+        startTime = Time.time;
+        quat = mainCamera.transform.rotation * Quaternion.Euler(0.0f, angle, 0.0f);
+
+        while (Mathf.Abs(Quaternion.Angle(mainCamera.transform.rotation, quat)) > Mathf.Epsilon)
+        {
+            mainCamera.transform.rotation = Quaternion.Lerp(mainCamera.transform.rotation, quat, 1.0f);
+        }
+
+        start = true;
+
+        return null;
     }
 
     IEnumerator loadXml(string name)
@@ -166,10 +174,5 @@ public class SmoothCameraPositionChange : MonoBehaviour
         }
 
         return null;
-    }
-
-    void update()
-    {
-
     }
 }

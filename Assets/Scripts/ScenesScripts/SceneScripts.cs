@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.IO;
 
-public class MuseumScripts : MonoBehaviour {
+public class SceneScripts : MonoBehaviour {
 
     [SerializeField]
     public Transform spawnPoint;
@@ -24,10 +25,10 @@ public class MuseumScripts : MonoBehaviour {
     void Start()
     {
         hideButton.SetActive(false);
+        StaticValues.previos_scene = SceneManager.GetActiveScene().name;
 
         if (StaticValues.back_from_details)
         {
-            Debug.Log("GO");
             Load(false);
             StaticValues.back_from_details = false;
         }
@@ -36,12 +37,11 @@ public class MuseumScripts : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown("e"))
+        if (Input.GetKeyDown("e") && !StaticValues.writing)
         {
             StaticValues.back_from_details = true;
             Save(false);
         }
-    
     }
 
     public void SpawnStone(int stoneId)
@@ -254,7 +254,6 @@ public class MuseumScripts : MonoBehaviour {
 
                 if (g.name.Substring(0, 5).Equals("Stone"))
                 {
-                    Debug.Log(g.scene.name);
                     SaveGame.Instance.StonesNames.Add(g.scene.name + g.name);
                     SaveGame.Instance.StonesPositions.Add(g.transform.position);
                     SaveGame.Instance.StonesRotations.Add(g.transform.rotation);

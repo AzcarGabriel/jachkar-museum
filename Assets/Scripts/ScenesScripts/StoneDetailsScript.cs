@@ -52,7 +52,7 @@ public class StoneDetailsScript : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            SceneManager.LoadScene("Museum", LoadSceneMode.Single);
+            SceneManager.LoadScene(StaticValues.previos_scene, LoadSceneMode.Single);
         }
     }
 

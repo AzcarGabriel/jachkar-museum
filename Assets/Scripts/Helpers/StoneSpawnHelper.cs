@@ -16,25 +16,25 @@ public static class StoneSpawnHelper
 
     public static float GetStoneScaleById(int stoneId)
     {
-        float[] scales = new float[] { 1.0f, 1.0f, 1.0f, 0.55f, 1.0f };
+        float[] scales = new float[] { 1.0f, 1.0f, 1.0f, 0.55f, 20.0f };
         int index = 0;
         if (stoneId <= 7)
         {
             index = 0;
         }
-        else if (stoneId <= 13)
+        else if (stoneId <= 14)
         {
             index = 1;
         }
-        else if (stoneId <= 26)
+        else if (stoneId <= 27)
         {
             index = 2;
         }
-        else if (stoneId <= 45)
+        else if (stoneId <= 46)
         {
             index = 3;
         }
-        else if (stoneId <= 58)
+        else if (stoneId <= 59)
         {
             index = 4;
         }
@@ -49,7 +49,7 @@ public static class StoneSpawnHelper
         {
             id = number;
         }
-        else if (name.Equals("museum"))
+        else if (name.Equals("Museum"))
         {
             id = number + 7;
         }
