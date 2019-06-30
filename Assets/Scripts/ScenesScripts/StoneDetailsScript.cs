@@ -20,16 +20,12 @@ public class StoneDetailsScript : MonoBehaviour
         string name = StaticValues.stone_name;
         loadXml(name);
 
-        // name is "scene_StoneNumber" 
-        // ej: "museum_Stone01(Clone)" or just "museum_Stone01"
-        string[] firstSplit = name.Split('_');
-        string[] secondSplit = firstSplit[1].Split('(');
-        string number = secondSplit[0].Substring(5);
+        string[] firstSplit = name.Split('(');
+        string number = firstSplit[0].Substring(5);
         try
         {
-            int result = Int32.Parse(number);
-            int i = StoneSpawnHelper.GetStoneId(result, firstSplit[0]);
-            SpawnStone(i);
+            int sID = Int32.Parse(number);
+            SpawnStone(sID);
         }
         catch (FormatException)
         {

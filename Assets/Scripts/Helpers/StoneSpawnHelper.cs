@@ -41,32 +41,5 @@ public static class StoneSpawnHelper
 
         return scales[index];
     }
-
-    public static int GetStoneId(int number, string name)
-    {
-        int id = 0;
-        if (name.Equals("EchmiadzinAlly"))
-        {
-            id = number;
-        }
-        else if (name.Equals("Museum"))
-        {
-            id = number + 7;
-        }
-        else if (name.Equals("Noradus"))
-        {
-            id = number + 13;
-        }
-        else if (name.Equals("Noravank"))
-        {
-            id = number + 26;
-        }
-        else if (name.Equals("wallStones"))
-        {
-            id = number + 45;
-        }
-
-        return id + 1;
-    }
 }
 

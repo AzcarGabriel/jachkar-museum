@@ -20,6 +20,7 @@ public class SceneScripts : MonoBehaviour {
     public Canvas availableFiles;
     public InputField saveInputField;
     public InputField loadInputField;
+    private bool overwrite = false;
 
     // Use this for initialization
     void Start()
@@ -141,16 +142,16 @@ public class SceneScripts : MonoBehaviour {
             {
                 if (g.name.Substring(0, 5).Equals("Stone"))
                 {
-                    int ind = SaveGame.Instance.StonesNames.IndexOf(g.scene.name+g.name);
+                    int ind = SaveGame.Instance.StonesNames.IndexOf(g.name);
                     if (ind != -1)
                     {
                         g.transform.position = SaveGame.Instance.StonesPositions[ind];
                         g.transform.rotation = SaveGame.Instance.StonesRotations[ind];
-                        done.Add(g.scene.name + g.name);
+                        done.Add(g.name);
                     }
                     else
                     {
-                        Debug.Log("STONE NOT IN LOAD FILE " + g.scene.name + g.name);
+                        Debug.Log("STONE NOT IN LOAD FILE " + g.name);
                     }
                 }
                 else if (g.name.Contains("Clone"))
@@ -175,21 +176,17 @@ public class SceneScripts : MonoBehaviour {
         {
             if (!done.Contains(name))
             {
-                // name is "scene_StoneNumber" 
-                // ej: "museum_Stone01(Clone)" or just "museum_Stone01"
-                string[] firstSplit = name.Split('_');
-                string[] secondSplit = firstSplit[1].Split('(');
-                string number = secondSplit[0].Substring(5);
                 try
                 {
-                    int result = Int32.Parse(number);
-                    int i = StoneSpawnHelper.GetStoneId(result, firstSplit[0]);
                     int ind = SaveGame.Instance.StonesNames.IndexOf(name);
                     if (ind != -1)
                     {
                         Vector3 sp = SaveGame.Instance.StonesPositions[ind];
                         Quaternion rt = SaveGame.Instance.StonesRotations[ind];
-                        SpawnStoneWithPositionAndRotation(i, sp, rt);
+                        string string_sID = name.Substring(5).Split('(')[0];
+                        Debug.Log(string_sID);
+                        int sID = Int32.Parse(string_sID);
+                        SpawnStoneWithPositionAndRotation(sID, sp, rt);
                     }
                     else
                     {
@@ -231,12 +228,16 @@ public class SceneScripts : MonoBehaviour {
         //Modify SaveGame.Instance.Stones
         string filePath = Path.Combine(Application.persistentDataPath, f_name + ".json");
 
-        if (File.Exists(filePath) && !StaticValues.back_from_details)
+        if (File.Exists(filePath) && !StaticValues.back_from_details && !overwrite)
         {
             overwriteDialog.enabled = true;
             saveDialog.enabled = false;
+            overwrite = true;
             return;
         }
+
+        overwrite = false;
+        overwriteDialog.enabled = false;
 
         SaveGame.Instance.Clear();
 
@@ -254,7 +255,7 @@ public class SceneScripts : MonoBehaviour {
 
                 if (g.name.Substring(0, 5).Equals("Stone"))
                 {
-                    SaveGame.Instance.StonesNames.Add(g.scene.name + g.name);
+                    SaveGame.Instance.StonesNames.Add(g.name);
                     SaveGame.Instance.StonesPositions.Add(g.transform.position);
                     SaveGame.Instance.StonesRotations.Add(g.transform.rotation);
                 }
