@@ -1,4 +1,10 @@
-﻿using UnityEngine;
+﻿/*
+    SceneScripts.cs
+    
+    Gabriel Azocar
+ */
+
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;

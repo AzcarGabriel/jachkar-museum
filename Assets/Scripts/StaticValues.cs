@@ -1,4 +1,10 @@
-﻿using UnityEngine;
+﻿/*
+    StaticValues.cs
+    
+    Gabriel Azocar
+ */
+
+ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 

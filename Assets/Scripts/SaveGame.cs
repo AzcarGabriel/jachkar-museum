@@ -1,4 +1,10 @@
-﻿using UnityEngine;
+﻿/*
+    SaveGame.cs
+    
+    Gabriel Azocar
+ */
+
+ using UnityEngine;
 using System.Collections.Generic;
 
 public class SaveGame
