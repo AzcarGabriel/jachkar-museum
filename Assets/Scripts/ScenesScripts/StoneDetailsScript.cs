@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Xml;
 
 public class StoneDetailsScript : MonoBehaviour
 {
@@ -46,9 +47,22 @@ public class StoneDetailsScript : MonoBehaviour
         RaycastHit rh;
         if (Physics.Raycast(r, out rh, 1000))
         {
+            float scroll = Input.GetAxis("Mouse ScrollWheel");
+
+            if (scroll != 0.0f)
+            {
+                float trans = scroll < 0 ? 0.9f : 1.1f;
+                stone.transform.localScale *= trans;
+            }
+
             if (Input.GetMouseButton(0))
             {
                 stone.transform.Rotate(Vector3.forward, -20.0f * Input.GetAxis("Mouse X"));
+            }
+
+            if (Input.GetMouseButton(1))
+            {
+                // Mover la piedra en un plano
             }
         }
 
@@ -73,29 +87,30 @@ public class StoneDetailsScript : MonoBehaviour
             name = name.Split('(')[0];
         }
 
-        string filePath = Path.Combine(Application.dataPath, "Scripts/Scenes/"+name+".xml");
-        if (File.Exists(filePath))
+        TextAsset metadata = null;
+        for (int i = 0; i < LoadObjectFromBundle.stonesMetadata.Count; i++)
         {
-            string dataText = File.ReadAllText(filePath);
-            var data = SceneHelper.GetKhachkarByXML(dataText);
-            metaText[0].text = Convert.ToString(data["CoonditionOfPreservation"]);
-            metaText[1].text = Convert.ToString(data["ImportantFeatures"]);
-            metaText[2].text = Convert.ToString(data["Location"]);
-            metaText[3].text = Convert.ToString(data["Scenario"]);
-            metaText[4].text = Convert.ToString(data["Accessibility"]);
-            metaText[5].text = Convert.ToString(data["Category"]);
-            metaText[6].text = Convert.ToString(data["ProductionPeriod"]);
+            if (LoadObjectFromBundle.stonesMetadata[i].name.Equals(name)) {
+                metadata = LoadObjectFromBundle.stonesMetadata[i];
+                break;
+            }
+        }
+        if (metadata == null) {
+            metadata = LoadObjectFromBundle.stonesMetadata[LoadObjectFromBundle.stonesMetadata.Count - 1];
+        }
 
-            /* metaText[0].text = Convert.ToString(data["Location"]);
-            metaText[1].text = Convert.ToString(data["Scenario"]);
-            metaText[2].text = Convert.ToString(data["Setting"]);
-            metaText[3].text = Convert.ToString(data["Accessibility"]);
-            metaText[4].text = Convert.ToString(data["Category"]);
-            metaText[5].text = Convert.ToString(data["ProductionPeriod"]);
-            metaText[6].text = Convert.ToString(data["CoonditionOfPreservation"]);
-            metaText[7].text = Convert.ToString(data["Inscription"]);
-            metaText[8].text = Convert.ToString(data["ImportantFeatures"]);
-            metaText[9].text = Convert.ToString(data["Referances"]);*/
+        XmlDocument xmldoc = new XmlDocument();
+        xmldoc.LoadXml(metadata.text);
+        XmlNodeList xnList = xmldoc.SelectNodes("/Scene/Khachkars/Khachkar");
+        foreach (XmlNode xn in xnList)
+        {
+            metaText[0].text = Convert.ToString(xn["CoonditionOfPreservation"].InnerText);
+            metaText[1].text = Convert.ToString(xn["ImportantFeatures"].InnerText);
+            metaText[2].text = Convert.ToString(xn["Location"].InnerText);
+            metaText[3].text = Convert.ToString(xn["Scenario"].InnerText);
+            metaText[4].text = Convert.ToString(xn["Accessibility"].InnerText);
+            metaText[5].text = Convert.ToString(xn["Category"].InnerText);
+            metaText[6].text = Convert.ToString(xn["ProductionPeriod"].InnerText);
         }
 
         return null;

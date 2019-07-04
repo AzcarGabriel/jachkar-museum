@@ -11,6 +11,7 @@ public class EnvSceneGui : MonoBehaviour {
     public Slider slider;
 
     public static AssetBundle assetBundle;
+    public static AssetBundle metadataAssetBundle;
 
     private const string domain = "http://saduewa.dcc.uchile.cl/museum/AssetBundles/";
 
@@ -28,8 +29,8 @@ public class EnvSceneGui : MonoBehaviour {
     {
         if (assetBundle != null)
         {
-
             assetBundle.Unload(false);
+            metadataAssetBundle.Unload(false);
         }
         Caching.ClearCache();
 
@@ -44,18 +45,27 @@ public class EnvSceneGui : MonoBehaviour {
             n = name;
         }
 
-        var www = WWW.LoadFromCacheOrDownload(domain + "stones", 1);
         loadScreen.SetActive(true);
+
+        var www_metadata = WWW.LoadFromCacheOrDownload(domain + "stones_metadata", 1);
+        while (!www_metadata.isDone)
+        {
+            Debug.Log(www_metadata.progress);
+            yield return null;
+        }
+        Debug.Log("Downloaded metadata");
+        metadataAssetBundle = www_metadata.assetBundle;
+
+        var www = WWW.LoadFromCacheOrDownload(domain + "stones", 1);
         
         while (!www.isDone)
         {
             slider.value = www.progress;
             yield return null;
         }
-        Debug.Log("Downloaded");
+        Debug.Log("Downloaded bundle");
         assetBundle = www.assetBundle;
         SceneManager.LoadScene(n, LoadSceneMode.Single);
-        Debug.Log(assetBundle);
     }
 
     public void exit()

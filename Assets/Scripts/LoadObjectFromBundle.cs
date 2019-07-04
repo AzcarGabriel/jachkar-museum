@@ -6,7 +6,8 @@ public class LoadObjectFromBundle : MonoBehaviour {
     public string bundleName;
     public List<string> assetNames;
     public string terrainName;
-    public static List<GameObject> sceneStones = new List<GameObject>(); 
+    public static List<GameObject> sceneStones = new List<GameObject>();
+    public static List<TextAsset> stonesMetadata = new List<TextAsset>();
     
     // Use this for initialization
     void Start ()
@@ -62,6 +63,15 @@ public class LoadObjectFromBundle : MonoBehaviour {
         }
         if (terrain != null)
             Instantiate(terrain);
+
+        // Metadata bundle
+        stonesMetadata.Clear();
+        string[] names_metadata = EnvSceneGui.metadataAssetBundle.GetAllAssetNames();
+        for (int i = 0; i < names_metadata.Length; i++)
+        {
+            TextAsset obj = EnvSceneGui.metadataAssetBundle.LoadAsset<TextAsset> (names_metadata[i]);
+            stonesMetadata.Add(obj);
+        }
     }
 
     void Update()

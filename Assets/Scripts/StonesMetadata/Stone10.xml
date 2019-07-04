@@ -1,0 +1,22 @@
+﻿<Scene>
+  <Khachkars>
+    <Khachkar>
+      <Id>10</Id>
+      <Location>Noratus historical village, Gegharkunik Province, Armenia</Location>
+      <LatLong>40°22′48″N 45°10′48″E</LatLong>
+      <Scenario>Scenario: Freestanding sculptural object on a pedestal in Noradus cemetery</Scenario>
+      <Setting>Setting: Medieval cemetery</Setting>
+      <Landscape>Landscape: Flat land</Landscape>
+      <Accessibility>Accessibility: Normal </Accessibility>
+      <Category>Category: Standart</Category>
+      <ProductionPeriod>Production Period: Approximately  11-13th century</ProductionPeriod>
+      <CoonditionOfPreservation>Bad/the upper part is broken</CoonditionOfPreservation>
+      <Inscription>Inscription: Difficult to read because of mold and moss</Inscription>
+      <Motive>Khachkar is probably a gravestone for two, because it has two main crosses</Motive>
+      <ImportantFeatures>
+        Khachkar represents two crosses. The two wings of each khachkar have two triple- loops. The middle loops are stretched and have a form of a flower bud that gives a blossoming and vegetative appearance to the crosses. The right and the left parts of the khachkar represent various geometric and vegetative ornaments. Palm decors originate from the crosses and such a perception corresponds to the Christian notions of the crosses as all bearing trees (Petrosyan, H. 2008). The edges of palm décor transform into birds that link to the palm tree as the tree of life.
+      </ImportantFeatures>
+      <Referances>Hamlet Petrosyan, www.khachkar.am</Referances>
+    </Khachkar>
+  </Khachkars>
+</Scene>

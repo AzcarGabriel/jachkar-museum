@@ -1,0 +1,22 @@
+﻿<Scene>
+  <Khachkars>
+    <Khachkar>
+      <Id>0</Id>
+      <Location>No data</Location>
+      <LatLong>No data</LatLong>
+      <Scenario>No data</Scenario>
+      <Setting>No data</Setting>
+      <Landscape>No data</Landscape>
+      <Accessibility>No data</Accessibility>
+      <Category>No data</Category>
+      <ProductionPeriod>No data</ProductionPeriod>
+      <CoonditionOfPreservation>No data</CoonditionOfPreservation>
+      <Inscription>No data</Inscription>
+      <Motive>No data</Motive>
+      <ImportantFeatures>
+        No data
+      </ImportantFeatures>
+      <Referances>No data</Referances>
+    </Khachkar>
+  </Khachkars>
+</Scene>
