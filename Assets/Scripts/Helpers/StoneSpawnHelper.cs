@@ -14,38 +14,45 @@ using UnityEngine.SceneManagement;
 
 public static class StoneSpawnHelper
 {
-    /*0 al 7 EchmiadzinAlly
-    8 al 13 Museum
-    14 al 26 Noradus
-    27 al 45 Noravank
-    46 al 58 WallStones*/
-
     public static float GetStoneScaleById(int stoneId)
     {
-        float[] scales = new float[] { 1.0f, 1.0f, 1.0f, 0.55f, 20.0f };
-        int index = 0;
-        if (stoneId <= 7)
+        if (stoneId == 4)
         {
-            index = 0;
+            return 400.0f;
         }
-        else if (stoneId <= 14)
+        else if (stoneId == 6 || stoneId == 22 || stoneId == 23 || stoneId == 24 || stoneId == 25 || stoneId == 26)
         {
-            index = 1;
+            return 100.0f;
         }
-        else if (stoneId <= 27)
+        else if (stoneId == 49)
         {
-            index = 2;
-        }
-        else if (stoneId <= 46)
-        {
-            index = 3;
-        }
-        else if (stoneId <= 59)
-        {
-            index = 4;
+            return 50.0f;
         }
 
-        return scales[index];
+        return 200.0f;
+    }
+
+    public static Quaternion GetStoneRotationById(int stoneId)
+    {
+        if (stoneId == 6)
+        {
+            return Quaternion.Euler(-90, 0, 90);
+        }
+        else if (stoneId == 10)
+        {
+            return Quaternion.Euler(-90, 0, 180);
+        }
+
+        return Quaternion.Euler(-90, 0, 0);
+    }
+
+    public static Vector3 GetStoneSpawnPointOffsetById(int stoneId)
+    {
+        if (stoneId == 22 || stoneId == 23 || stoneId == 24 || stoneId == 25 || stoneId == 26)
+        {
+            return new Vector3(0.0f, 1.0f, 0.0f);
+        }
+        return new Vector3(0.0f, 0.0f, 0.0f);
     }
 }
 

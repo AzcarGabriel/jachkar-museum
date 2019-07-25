@@ -36,7 +36,7 @@ public class SceneScripts : MonoBehaviour {
 
         if (StaticValues.back_from_details)
         {
-            Load(false);
+            //Load(false);
             StaticValues.back_from_details = false;
         }
     }
@@ -53,7 +53,9 @@ public class SceneScripts : MonoBehaviour {
 
     public void SpawnStone(int stoneId)
     {
-        SpawnStoneWithPositionAndRotation(stoneId, spawnPoint.position, Quaternion.Euler(-90, 0, 0));
+        Quaternion rt = StoneSpawnHelper.GetStoneRotationById(stoneId);
+        Vector3 sp = spawnPoint.position + StoneSpawnHelper.GetStoneSpawnPointOffsetById(stoneId);
+        SpawnStoneWithPositionAndRotation(stoneId, sp, rt);
     }
 
     public void SpawnStoneWithPositionAndRotation(int stoneId, Vector3 sp, Quaternion rt)
