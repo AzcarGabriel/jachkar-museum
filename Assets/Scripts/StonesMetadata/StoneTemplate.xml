@@ -4,19 +4,17 @@
       <Id>0</Id>
       <Location></Location>
       <LatLong></LatLong>
-      <Scenario></Scenario>
-      <Setting></Setting>
-      <Landscape></Landscape>
-      <Accessibility></Accessibility>
+      <Scenario>Scenario: </Scenario>
+      <Setting>Setting: </Setting>
+      <Landscape>Landscape: </Landscape>
+      <Accessibility>Accessibility: </Accessibility>
       <MastersName></MastersName>
-      <Category></Category>
-      <ProductionPeriod></ProductionPeriod>
+      <Category>Category: </Category>
+      <ProductionPeriod>Production Period: </ProductionPeriod>
       <Motive></Motive>
       <CoonditionOfPreservation></CoonditionOfPreservation>
-      <Inscription></Inscription>
-      <ImportantFeatures>
-        
-      </ImportantFeatures>
+      <Inscription>Inscription: </Inscription>
+      <ImportantFeatures></ImportantFeatures>
       <BackSide></BackSide>
       <HistoryOwnership></HistoryOwnership>
       <CommemorativeActivities></CommemorativeActivities>

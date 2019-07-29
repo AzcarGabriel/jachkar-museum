@@ -76,7 +76,7 @@ public class StoneDetailsScript : MonoBehaviour
     {
         float scale = StoneSpawnHelper.GetStoneScaleById(stoneId);
         Vector3 pos = stone.transform.position;
-        Quaternion q = stone.transform.rotation;
+        Quaternion q = StoneSpawnHelper.GetStoneRotationById(stoneId);
         stone = Instantiate(LoadObjectFromBundle.sceneStones[stoneId - 1], pos, q);
         stone.transform.localScale *= scale;
     }
