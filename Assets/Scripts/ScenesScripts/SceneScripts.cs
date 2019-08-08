@@ -33,6 +33,7 @@ public class SceneScripts : MonoBehaviour {
     {
         hideButton.SetActive(false);
         StaticValues.previos_scene = SceneManager.GetActiveScene().name;
+        Cursor.lockState = CursorLockMode.Locked;
 
         if (StaticValues.back_from_details)
         {
