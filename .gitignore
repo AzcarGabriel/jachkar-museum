@@ -7,10 +7,13 @@ Bin/
 UnityGenerated/
 Library/
 Assets/AssetStoreTools*
+Assets/AssetBundle*
 App/
 UWP/
 project.json
 project.lock.json
+*.meta
+*.mat
 
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
@@ -38,3 +41,4 @@ obj/
 WSATestCertificate.pfx
 WSATestCertificate.pfx.meta
 info.txt
+/Assets/_TerrainAutoUpgrade/*.terrainlayer

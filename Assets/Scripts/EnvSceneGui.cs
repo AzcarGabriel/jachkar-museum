@@ -8,46 +8,81 @@ using UnityEngine.Networking;
 public class EnvSceneGui : MonoBehaviour {
 
     public GameObject loadScreen;
+    public GameObject enterScreen;
     public Slider slider;
+
+    public static AssetBundle assetBundle;
+    public static AssetBundle metadataAssetBundle;
 
     private const string domain = "http://saduewa.dcc.uchile.cl/museum/AssetBundles/";
 
     // Use this for initialization
-    void Start () {
+    void Start ()
+    {
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+        loadScreen.SetActive(StaticValues.init);
+        if (StaticValues.init)
+        {
+            StartCoroutine(loadBundle(name));
+        }
     }
 
-
-    public void openScene(String name) {
+    public void openScene(String name)
+    {
         StartCoroutine(loadBundle(name));
-       
     }
-    public static AssetBundle assetBundle;
-
+    
     IEnumerator loadBundle(string name)
     {
-        if (assetBundle != null)
+        string[] tokens = name.Split('/');
+        string n = "";
+        if (1 < tokens.Length)
         {
+            n = tokens[1];
+        }
+        else
+        {
+            n = name;
+        }
 
-            assetBundle.Unload(false);
-        }
-        Caching.ClearCache();
-        var www = WWW.LoadFromCacheOrDownload(domain + name, 1);
-        loadScreen.SetActive(true);
-        //
-        while (!www.isDone)
+        if (StaticValues.init)
         {
-            Debug.Log(www.progress);
-            slider.value = www.progress;
-            yield return null;
+            if (assetBundle != null)
+            {
+                assetBundle.Unload(false);
+                metadataAssetBundle.Unload(false);
+            }
+            Caching.ClearCache();
+
+            var www_metadata = WWW.LoadFromCacheOrDownload(domain + "stones_metadata", 1);
+            while (!www_metadata.isDone)
+            {
+                Debug.Log(www_metadata.progress);
+                yield return null;
+            }
+            Debug.Log("Downloaded metadata");
+            metadataAssetBundle = www_metadata.assetBundle;
+
+            var www = WWW.LoadFromCacheOrDownload(domain + "stones", 1);
+
+            while (!www.isDone)
+            {
+                slider.value = www.progress;
+                yield return null;
+            }
+            Debug.Log("Downloaded bundle");
+            assetBundle = www.assetBundle;
+
+            loadScreen.SetActive(false);
+            StaticValues.init = false;
         }
-        Debug.Log("Downloaded");
-        assetBundle = www.assetBundle;
-        SceneManager.LoadScene(name, LoadSceneMode.Single);
-        Debug.Log(assetBundle);
+        else
+        {
+            enterScreen.SetActive(true);
+            SceneManager.LoadScene(n, LoadSceneMode.Single);
+        }
     }
-
 
     public void exit()
     {

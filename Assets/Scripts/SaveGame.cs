@@ -1,4 +1,10 @@
-﻿using UnityEngine;
+﻿/*
+    SaveGame.cs
+    
+    Gabriel Azocar
+ */
+
+ using UnityEngine;
 using System.Collections.Generic;
 
 public class SaveGame
@@ -36,28 +42,26 @@ public class SaveGame
     public List<Vector3> StonesPositions = new List<Vector3>();
     public List<Quaternion> StonesRotations = new List<Quaternion>();
 
-    private static string _gameDataFileName = "data.json";
-
     private static SaveGame _instance;
     public static SaveGame Instance
     {
         get
         {
             if (_instance == null)
-                Load();
+                Load("save");
             return _instance;
         }
 
     }
 
-    public static void Save()
+    public static void Save(string file_name)
     {
-        FileManager.Save(_gameDataFileName, _instance);
+        FileManager.Save(file_name+".json", _instance);
     }
 
-    public static void Load()
+    public static void Load(string file_name)
     {
-        _instance = FileManager.Load<SaveGame>(_gameDataFileName);
+        _instance = FileManager.Load<SaveGame>(file_name + ".json");
     }
 
     public void Clear() {
