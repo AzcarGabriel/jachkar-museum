@@ -8,8 +8,8 @@ using UnityEngine.Networking;
 public class EnvSceneGui : MonoBehaviour {
 
     public GameObject loadScreen;
+    public GameObject enterScreen;
     public Slider slider;
-    public bool init;
 
     public static AssetBundle assetBundle;
     public static AssetBundle metadataAssetBundle;
@@ -79,6 +79,7 @@ public class EnvSceneGui : MonoBehaviour {
         }
         else
         {
+            enterScreen.SetActive(true);
             SceneManager.LoadScene(n, LoadSceneMode.Single);
         }
     }
