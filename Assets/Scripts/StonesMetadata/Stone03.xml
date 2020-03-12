@@ -1,0 +1,25 @@
+﻿<Scene>
+  <Khachkars>
+    <Khachkar>
+      <Id>3</Id>
+      <Location>Ejmiatsin</Location>
+      <LatLong></LatLong>
+      <Scenario>Scenario: No data</Scenario>
+      <Setting>Setting: No data</Setting>
+      <Landscape>Landscape: No data</Landscape>
+      <Accessibility>Accessibility: No data</Accessibility>
+      <MastersName>Could be Master Grigor</MastersName>
+      <Category>Category: Standart</Category>
+      <ProductionPeriod>Production Period: 21th century replicas of 17th century khachkars</ProductionPeriod>
+      <Motive>No data</Motive>
+      <CoonditionOfPreservation>Good</CoonditionOfPreservation>
+      <Inscription>Inscription: No inscription</Inscription>
+      <ImportantFeatures>
+      </ImportantFeatures>
+      <BackSide></BackSide>
+      <HistoryOwnership></HistoryOwnership>
+      <CommemorativeActivities></CommemorativeActivities>
+      <Referances>Hamlet Petrosyan, www,khachkar.am</Referances>
+    </Khachkar>
+  </Khachkars>
+</Scene>
