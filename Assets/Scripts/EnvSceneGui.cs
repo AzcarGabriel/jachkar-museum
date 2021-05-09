@@ -3,7 +3,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.Networking;
 
 public class EnvSceneGui : MonoBehaviour {
 
@@ -58,7 +57,6 @@ public class EnvSceneGui : MonoBehaviour {
             var www_metadata = WWW.LoadFromCacheOrDownload(domain + "stones_metadata", 1);
             while (!www_metadata.isDone)
             {
-                Debug.Log(www_metadata.progress);
                 yield return null;
             }
             Debug.Log("Downloaded metadata");

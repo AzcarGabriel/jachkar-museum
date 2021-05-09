@@ -56,14 +56,6 @@ public class LoadObjectFromBundle : MonoBehaviour {
             }
         }
 
-        GameObject terrain = (GameObject)bundle.LoadAsset(terrainName);
-        if (bundleName.Equals("echmiadzinally"))
-        {
-            // terrain.transform.Translate(new Vector3(-13.5f, -11.3f, -15.0f));
-        }
-        if (terrain != null)
-            Instantiate(terrain);
-
         // Metadata bundle
         stonesMetadata.Clear();
         string[] names_metadata = EnvSceneGui.metadataAssetBundle.GetAllAssetNames();

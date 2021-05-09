@@ -12,7 +12,6 @@ App/
 UWP/
 project.json
 project.lock.json
-*.meta
 *.mat
 
 # ===================================== #
