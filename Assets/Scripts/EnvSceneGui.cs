@@ -13,7 +13,7 @@ public class EnvSceneGui : MonoBehaviour {
     public static AssetBundle assetBundle;
     public static AssetBundle metadataAssetBundle;
 
-    private const string domain = "http://saduewa.dcc.uchile.cl/museum/AssetBundles/";
+    private const string domain = "https://saduewa.dcc.uchile.cl/museum/AssetBundles/";
 
     // Use this for initialization
     void Start ()
