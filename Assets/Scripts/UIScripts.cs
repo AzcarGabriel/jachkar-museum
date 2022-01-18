@@ -1,9 +1,12 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿/*
+    UIScripts.cs
+    
+    @author Gabriel Azócar Cárcamo <azocarcarcamo@gmail.com>
+ */
 
-public class UIScripts : MonoBehaviour {
-
+using UnityEngine;
+public class UIScripts : MonoBehaviour
+{
     [SerializeField]
     public Transform spawnPoint;
     public bool scale;
@@ -40,12 +43,13 @@ public class UIScripts : MonoBehaviour {
         }
     }
 
-    /*0 al 7 EchmiadzinAlly
-    8 al 13 Museum
-    14 al 26 Noradus
-    27 al 45 Noravank
-    46 al 58 WallStones*/
-
+    /*
+        0 al 7 EchmiadzinAlly
+        8 al 13 Museum
+        14 al 26 Noradus
+        27 al 45 Noravank
+        46 al 58 WallStones
+    */
     float GetStoneScale(int stoneId)
     {
         float[] scales = new float[] { 1.0f, 0.5f, 0.5f, 0.55f, 0.5f };
@@ -83,24 +87,24 @@ public class UIScripts : MonoBehaviour {
 
     public void Load()
     {
-        //Recover the values
+        // Recover the values
         SaveGame.Load("save");
 
-        //Set values
-        object[] obj = FindObjectsOfType(typeof(GameObject));
-        foreach (object o in obj)
+        // Set values
+        object[] objects = FindObjectsOfType(typeof(GameObject));
+        foreach (object o in objects)
         {
-            GameObject g = (GameObject)o;
+            GameObject gameObject = (GameObject)o;
 
-            if (6 < g.name.Length)
+            if (6 < gameObject.name.Length)
             {
-                if (g.name.Substring(0, 5).Equals("Stone"))
+                if (gameObject.name.Substring(0, 5).Equals("Stone"))
                 {
-                    int ind = SaveGame.Instance.StonesNames.IndexOf(g.scene.name+g.name);
-                    if (ind != -1)
+                    int index = SaveGame.Instance.StonesNames.IndexOf(gameObject.scene.name+gameObject.name);
+                    if (index != -1)
                     {
-                        g.transform.position = SaveGame.Instance.StonesPositions[ind];
-                        g.transform.rotation = SaveGame.Instance.StonesRotations[ind];
+                        gameObject.transform.position = SaveGame.Instance.StonesPositions[index];
+                        gameObject.transform.rotation = SaveGame.Instance.StonesRotations[index];
                     }
                     else {
                         Debug.Log("NULL");
@@ -112,8 +116,8 @@ public class UIScripts : MonoBehaviour {
 
     public void Save()
     {
-        //Get the actual stone's values
-        //Modify SaveGame.Instance.Stones
+        // Get the actual stone's values
+        // Modify SaveGame.Instance.Stones
         SaveGame.Instance.Clear();
 
         object[] obj = FindObjectsOfType(typeof(GameObject));
@@ -133,5 +137,4 @@ public class UIScripts : MonoBehaviour {
         //Save values
         SaveGame.Save("save");
     }
-
 }

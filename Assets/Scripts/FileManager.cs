@@ -41,5 +41,4 @@ public class FileManager
         File.WriteAllText(filePath, dataAsJson);
 
     }
-    
 }

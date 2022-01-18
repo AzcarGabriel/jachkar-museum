@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class EnvSceneGui : MonoBehaviour {
-
+public class EnvSceneGui : MonoBehaviour
+{
     public GameObject loadScreen;
     public GameObject enterScreen;
     public Slider slider;

@@ -1,18 +1,18 @@
 ﻿/*
     SceneScripts.cs
     
-    Gabriel Azocar
+    @author Gabriel Azócar Cárcamo <azocarcarcamo@gmail.com>
  */
 
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.IO;
 
-public class SceneScripts : MonoBehaviour {
+public class SceneScripts : MonoBehaviour
+{
 
     [SerializeField]
     public Transform spawnPoint;
@@ -277,5 +277,4 @@ public class SceneScripts : MonoBehaviour {
         saveDialog.enabled = false;
         saveInputField.text = "";
     }
-
 }

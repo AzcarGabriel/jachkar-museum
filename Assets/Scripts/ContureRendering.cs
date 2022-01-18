@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ContureRendering : MonoBehaviour {
+public class ContureRendering : MonoBehaviour
+{
 
     private Behaviour halo;
 
@@ -23,6 +24,4 @@ public class ContureRendering : MonoBehaviour {
     {
       halo.enabled = false;
     }
-
-
 }

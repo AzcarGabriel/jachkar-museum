@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-
-public class LoadObjectFromBundle : MonoBehaviour {
+public class LoadObjectFromBundle : MonoBehaviour
+{
     public string bundleName;
     public List<string> assetNames;
     public string terrainName;
@@ -14,7 +14,6 @@ public class LoadObjectFromBundle : MonoBehaviour {
     {
         InstantiateTheScene(EnvSceneGui.assetBundle);
     }
-
 
     void InstantiateTheScene(AssetBundle bundle)
     {
@@ -65,7 +64,6 @@ public class LoadObjectFromBundle : MonoBehaviour {
             stonesMetadata.Add(obj);
         }
     }
-
     void Update()
     {
 

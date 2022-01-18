@@ -9,8 +9,6 @@ using UnityStandardAssets.Characters.FirstPerson;
 
 public class SmoothCameraPositionChange : MonoBehaviour
 {
-
-
     [SerializeField]
     public List<Text> metaText;
     public GameObject scrollView;
@@ -58,8 +56,8 @@ public class SmoothCameraPositionChange : MonoBehaviour
             Cursor.visible = false;
             scrollView.SetActive(false);
         }
-        else if ((Physics.Raycast(cameraPosition.position, cameraPosition.forward, out hit, 21.0f, stoneMask) &&
-                     Vector3.Dot(cameraPosition.forward, hit.transform.up) > 0.0f))
+        else if (Physics.Raycast(cameraPosition.position, cameraPosition.forward, out hit, 21.0f, stoneMask)
+                 && Vector3.Dot(cameraPosition.forward, hit.transform.up) > 0.0f)
         {
             targetGameObject = hit.transform;
 
@@ -74,7 +72,7 @@ public class SmoothCameraPositionChange : MonoBehaviour
                     StaticValues.stone_name = name;
                     SceneManager.LoadScene("StoneDetails", LoadSceneMode.Single);
 
-                    //Old details
+                    // Old details
                     /*
                     loadXml2(name);
                     scrollView.SetActive(true);

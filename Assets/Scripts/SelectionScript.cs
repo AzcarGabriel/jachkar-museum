@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class SelectionScript : MonoBehaviour {
-
+public class SelectionScript : MonoBehaviour
+{
     public Camera tCamera;
     public Canvas panel;
 
@@ -27,14 +25,12 @@ public class SelectionScript : MonoBehaviour {
 
     // Update is called once per frame
     void LateUpdate() {
-
         if (tCamera != null) {
-
             float scroll =  Input.GetAxis("Mouse ScrollWheel");
 
             if(scroll != 0.0f)
             {
-                //print(scroll);
+                // print(scroll);
                 cameraY = tCamera.transform.position.y + (-scroll * 20.0f);
                 panPosition.x = tCamera.transform.position.x;
                 panPosition.y = Mathf.Max(Mathf.Min(cameraY,100),30);
@@ -140,7 +136,6 @@ public class SelectionScript : MonoBehaviour {
                 selection = null;
                 panning = false;
             }
-
         }
     }
     
@@ -166,5 +161,4 @@ public class SelectionScript : MonoBehaviour {
             Destroy(rotation.gameObject);
         }
     }
-
 }

@@ -1,10 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MainCanvas : MonoBehaviour
 {
-
     public GameObject helpPane;
 
     // Use this for initialization

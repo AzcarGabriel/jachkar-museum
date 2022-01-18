@@ -1,11 +1,10 @@
 ﻿/*
     StoneDetailsScript.cs
     
-    Gabriel Azocar
+    @author Gabriel Azócar Cárcamo <azocarcarcamo@gmail.com>
  */
 
 using System;
-using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -115,5 +114,4 @@ public class StoneDetailsScript : MonoBehaviour
 
         return null;
     }
-
 }

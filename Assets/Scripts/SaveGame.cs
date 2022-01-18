@@ -1,16 +1,15 @@
 ﻿/*
     SaveGame.cs
     
-    Gabriel Azocar
+    @author Gabriel Azócar Cárcamo <azocarcarcamo@gmail.com>
  */
 
- using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 
 public class SaveGame
 {
-
-    //Not using this because the save method doesnt allow it
+    // Not using this because the save method doesnt allow it
     public class SavedStone {
         private string Name;
         private Vector3 Position;
@@ -35,7 +34,7 @@ public class SaveGame
         }
     }
 
-    //serialized
+    // serialized
     public string PlayerName = "Player";
     public int XP = 0;
     public List<string> StonesNames = new List<string>();
@@ -48,7 +47,9 @@ public class SaveGame
         get
         {
             if (_instance == null)
+            {
                 Load("save");
+            }
             return _instance;
         }
 

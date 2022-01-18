@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 public static class SceneHelper
 {
@@ -9,8 +7,8 @@ public static class SceneHelper
     {
         string fileName = sceneName + ".xml";
         string path = Path.Combine(@"Assets\Scripts\Scenes\", fileName);
-        //string path = Path.Combine(@"metaInfo\", fileName);
-        //path = Path.Combine(Environment.CurrentDirectory, path);
+        // string path = Path.Combine(@"metaInfo\", fileName);
+        // path = Path.Combine(Environment.CurrentDirectory, path);
 
         Scene scene = XmlHelper.FromXmlFile<Scene>(path);
         Khachkar khachkar = scene.Khachkars.Find(x => x.Id == 1);
@@ -24,4 +22,3 @@ public static class SceneHelper
         return khachkar.ToDictionary();
     }
 }
-

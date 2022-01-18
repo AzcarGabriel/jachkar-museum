@@ -2,14 +2,14 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class CameraChange : MonoBehaviour {
+public class CameraChange : MonoBehaviour
+{
     [SerializeField]
     public Camera mainView;
     public Camera topView;
     public Texture2D cursorTexture;
     public CursorMode cursorMode = CursorMode.Auto;
     public Vector2 hotSpot = Vector2.zero;
-    bool flag = true;
 
     public GameObject FPS;
     public Canvas stonesSpawn;

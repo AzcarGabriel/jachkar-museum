@@ -1,11 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
-public class InfoContainer : MonoBehaviour {
+public class InfoContainer : MonoBehaviour
+{
     [SerializeField]
     public TextAsset asset;
     public Sprite imageAsset;
-
 }

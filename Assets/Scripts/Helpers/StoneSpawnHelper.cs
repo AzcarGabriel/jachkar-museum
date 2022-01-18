@@ -1,16 +1,10 @@
 ﻿/*
     StoneSpawnHelper.cs
     
-    Gabriel Azocar
+    @author Gabriel Azócar Cárcamo <azocarcarcamo@gmail.com>
  */
 
-using System;
-using System.IO;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public static class StoneSpawnHelper
 {
@@ -55,4 +49,3 @@ public static class StoneSpawnHelper
         return new Vector3(0.0f, 0.0f, 0.0f);
     }
 }
-

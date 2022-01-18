@@ -1,14 +1,13 @@
 ﻿/*
     StaticValues.cs
     
-    Gabriel Azocar
+    @author Gabriel Azócar Cárcamo <azocarcarcamo@gmail.com>
  */
 
- using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+using UnityEngine;
 
-public class StaticValues : MonoBehaviour {
+public class StaticValues : MonoBehaviour
+{
     public static string stone_name = "";
     public static string previos_scene = "MainMenu";
     public static bool back_from_details = false;
@@ -24,5 +23,4 @@ public class StaticValues : MonoBehaviour {
     {
 
     }
-
 }
