@@ -9,6 +9,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System;
+using System.Text;
 using System.IO;
 
 public class SceneScripts : MonoBehaviour
@@ -135,14 +136,11 @@ public class SceneScripts : MonoBehaviour
             f_name = loadInputField.text;
         }
 
-        //Recover the values
+        // Recover the values
         SaveGame.Load(f_name);
 
-        //Set values
+        // Clear stones in scene
         object[] obj = FindObjectsOfType(typeof(GameObject));
-        List<string> done = new List<string>();
-
-        //If stone is in the scene
         foreach (object o in obj)
         {
             GameObject g = (GameObject)o;
@@ -151,63 +149,19 @@ public class SceneScripts : MonoBehaviour
             {
                 if (g.name.Substring(0, 5).Equals("Stone"))
                 {
-                    int ind = SaveGame.Instance.StonesNames.IndexOf(g.name);
-                    if (ind != -1)
-                    {
-                        g.transform.position = SaveGame.Instance.StonesPositions[ind];
-                        g.transform.rotation = SaveGame.Instance.StonesRotations[ind];
-                        done.Add(g.name);
-                    }
-                    else
-                    {
-                        Debug.Log("STONE NOT IN LOAD FILE " + g.name);
-                    }
-                }
-                else if (g.name.Contains("Clone"))
-                {
-                    int ind = SaveGame.Instance.StonesNames.IndexOf(g.name);
-                    if (ind != -1)
-                    {
-                        g.transform.position = SaveGame.Instance.StonesPositions[ind];
-                        g.transform.rotation = SaveGame.Instance.StonesRotations[ind];
-                        done.Add(g.name);
-                    }
-                    else
-                    {
-                        Debug.Log("CLONE NOT IN LOAD FILE " + g.name);
-                    }
+                    Destroy(g);
                 }
             }
         }
 
-        //If not
-        foreach (string name in SaveGame.Instance.StonesNames)
+        // Load stones in scene
+        for (int i = 0; i < SaveGame.Instance.StonesNames.Count; i++)
         {
-            if (!done.Contains(name))
-            {
-                try
-                {
-                    int ind = SaveGame.Instance.StonesNames.IndexOf(name);
-                    if (ind != -1)
-                    {
-                        Vector3 sp = SaveGame.Instance.StonesPositions[ind];
-                        Quaternion rt = SaveGame.Instance.StonesRotations[ind];
-                        string string_sID = name.Substring(5).Split('(')[0];
-                        Debug.Log(string_sID);
-                        int sID = Int32.Parse(string_sID);
-                        SpawnStoneWithPositionAndRotation(sID, sp, rt);
-                    }
-                    else
-                    {
-                        Debug.Log("NULL SPAWN " + name);
-                    }
-                }
-                catch (FormatException)
-                {
-                    Debug.Log("ERROR");
-                    continue;
-                }
-            }            
+            this.SpawnStoneWithPositionAndRotation(
+                SaveGame.Instance.StonesNames[i],
+                SaveGame.Instance.StonesPositions[i],
+                SaveGame.Instance.StonesRotations[i]
+            );
         }
 
         loadDialog.enabled = false;
@@ -233,8 +187,8 @@ public class SceneScripts : MonoBehaviour
             f_name = saveInputField.text;
         }
 
-        //Get the actual stone's values
-        //Modify SaveGame.Instance.Stones
+        // Get the actual stone's values
+        // Modify SaveGame.Instance.Stones
         string filePath = Path.Combine(Application.persistentDataPath, f_name + ".json");
 
         if (File.Exists(filePath) && !StaticValues.back_from_details && !overwrite)
@@ -255,26 +209,39 @@ public class SceneScripts : MonoBehaviour
             GameObject g = (GameObject)o;
             if (6 < g.name.Length)
             {
-                if (g.name.Contains("Clone"))
-                {
-                    SaveGame.Instance.StonesNames.Add(g.name);
-                    SaveGame.Instance.StonesPositions.Add(g.transform.position);
-                    SaveGame.Instance.StonesRotations.Add(g.transform.rotation);
-                }
-
                 if (g.name.Substring(0, 5).Equals("Stone"))
                 {
-                    SaveGame.Instance.StonesNames.Add(g.name);
+                    SaveGame.Instance.StonesNames.Add(this.GetStoneIndex(g.name));
                     SaveGame.Instance.StonesPositions.Add(g.transform.position);
                     SaveGame.Instance.StonesRotations.Add(g.transform.rotation);
                 }
             }
         }
 
-        //Save values
+        // Save values
         SaveGame.Save(f_name);
 
         saveDialog.enabled = false;
         saveInputField.text = "";
+    }
+
+    public int GetStoneIndex(string stoneName)
+    {
+        string clean = stoneName.Replace("Stone", "");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < clean.Length; i++)
+        {
+            char c = clean[i];
+            if (int.TryParse(c.ToString(), out _))
+            {
+                sb.Append(c);
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return int.Parse(sb.ToString());
     }
 }
