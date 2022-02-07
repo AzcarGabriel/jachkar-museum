@@ -15,7 +15,7 @@ public class SelectionScript : MonoBehaviour
     private bool    panning = false;
     private float   cameraY = 0.0f;
 
-    private Vector3 deltaHitdef ;
+    private Vector3 deltaHitdef;
 
     // Use this for initialization
     void Start () {
