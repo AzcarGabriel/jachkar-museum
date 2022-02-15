@@ -28,6 +28,21 @@ public class FileManager
     }
 
     /// <summary>
+    /// Delete File
+    /// </summary>
+    /// <typeparam name="T">Data Model Type</typeparam>
+    /// <param name="filename">File Name</param>
+    /// <returns>Instance</returns>
+    public static void Delete<T>(string filename)
+    {
+        string filePath = Path.Combine(Application.persistentDataPath, filename);
+        if (File.Exists(filePath))
+        {
+            File.Delete(filePath);
+        }
+    }
+
+    /// <summary>
     /// Save File
     /// </summary>
     /// <typeparam name="T">Model Type</typeparam>

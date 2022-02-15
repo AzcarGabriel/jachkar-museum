@@ -38,6 +38,11 @@ public class SaveGame
         _instance = FileManager.Load<SaveGame>(file_name + ".json");
     }
 
+    public static void Delete(string file_name)
+    {
+        FileManager.Delete<SaveGame>(file_name + ".json");
+    }
+
     public void Clear() {
         this.StonesNames.Clear();
         this.StonesPositions.Clear();
