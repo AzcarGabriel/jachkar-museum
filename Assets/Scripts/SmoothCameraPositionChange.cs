@@ -18,23 +18,16 @@ public class SmoothCameraPositionChange : MonoBehaviour
     public CursorMode cursorMode = CursorMode.Auto;
     public Vector2 hotSpot = Vector2.zero;
 
-    private Transform endMarker;
-    private Transform startMarker;
-    private Transform selection = null;
     private Transform targetGameObject;
-    private int stoneMask = 1 << 9;
-    private int groundMask = 1 << 10;
+    private readonly int stoneMask = 1 << 9;
     private float startTime;
     private FirstPersonController fps;
-    private bool start;
 
-    bool flag = true;
     Quaternion quat;
 
     // Use this for initialization
     void Start()
     {
-        start = true;
         fps = mainCamera.gameObject.GetComponent<FirstPersonController>();
     }
 
@@ -71,16 +64,6 @@ public class SmoothCameraPositionChange : MonoBehaviour
                     string name = hit.transform.gameObject.name;
                     StaticValues.stone_name = name;
                     SceneManager.LoadScene("StoneDetails", LoadSceneMode.Single);
-
-                    // Old details
-                    /*
-                    loadXml2(name);
-                    scrollView.SetActive(true);
-                    if (start)
-                    {
-                        start = false;
-                        MoveCameraToPoint(targetGameObject.transform);
-                    }*/
                 }
             }
             else
@@ -119,8 +102,6 @@ public class SmoothCameraPositionChange : MonoBehaviour
         {
             mainCamera.transform.rotation = Quaternion.Lerp(mainCamera.transform.rotation, quat, 1.0f);
         }
-
-        start = true;
 
         return null;
     }

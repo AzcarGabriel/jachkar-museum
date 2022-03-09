@@ -49,12 +49,10 @@ public class SelectionScript : MonoBehaviour
             {
 
                 RaycastHit hit;
-                RaycastHit terrainHit;
                 Ray ray = tCamera.ScreenPointToRay(Input.mousePosition);
 
                 if (panning == false && selection == null && Physics.Raycast(ray, out hit, Mathf.Infinity, stoneMask))
                 {
-                    Transform p;
                     panel.enabled = true;
 
                     selection = hit.transform;

@@ -23,7 +23,6 @@ public class UIScripts : MonoBehaviour
 	
 	}
 
-    int incr = -1;
     public void SpawnStone(int stoneId)
     {
         Debug.Log(LoadObjectFromBundle.sceneStones.Count);

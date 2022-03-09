@@ -35,11 +35,9 @@ public class SceneScripts : MonoBehaviour
         hideButton.SetActive(false);
         StaticValues.previos_scene = SceneManager.GetActiveScene().name;
         Cursor.lockState = CursorLockMode.Locked;
-        SaveGame.Delete("a");
 
         if (StaticValues.back_from_details)
         {
-            //Load(false);
             StaticValues.back_from_details = false;
         }
     }
