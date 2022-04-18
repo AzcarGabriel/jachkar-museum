@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System;
 using System.Text;
 using System.IO;
+using System.Collections;
 
 public class SceneScripts : MonoBehaviour
 {
@@ -27,15 +28,22 @@ public class SceneScripts : MonoBehaviour
     public Canvas availableFiles;
     public InputField saveInputField;
     public InputField loadInputField;
+    public GameObject loadScreen;
+    public Slider slider;
     private bool overwrite = false;
+    private StoneService stoneService;
 
     // Use this for initialization
     void Start()
     {
+        stoneService = gameObject.AddComponent<StoneService>();
+        stoneService.loadScreen = this.loadScreen;
+        stoneService.slider = this.slider;
+
         hideButton.SetActive(false);
         StaticValues.previos_scene = SceneManager.GetActiveScene().name;
         Cursor.lockState = CursorLockMode.Locked;
-
+        
         if (StaticValues.back_from_details)
         {
             StaticValues.back_from_details = false;
@@ -56,14 +64,7 @@ public class SceneScripts : MonoBehaviour
     {
         Quaternion rt = StoneSpawnHelper.GetStoneRotationById(stoneId);
         Vector3 sp = spawnPoint.position + StoneSpawnHelper.GetStoneSpawnPointOffsetById(stoneId);
-        SpawnStoneWithPositionAndRotation(stoneId, sp, rt);
-    }
-
-    public void SpawnStoneWithPositionAndRotation(int stoneId, Vector3 sp, Quaternion rt)
-    {
-        float scale = StoneSpawnHelper.GetStoneScaleById(stoneId);
-        GameObject obj = Instantiate(LoadObjectFromBundle.sceneStones[stoneId - 1], sp, rt);
-        obj.transform.localScale *= scale;
+        StartCoroutine(this.stoneService.SpawnStoneWithPositionAndRotation(stoneId, sp, rt));
     }
 
     public void ShowMenus()
@@ -156,10 +157,12 @@ public class SceneScripts : MonoBehaviour
         // Load stones in scene
         for (int i = 0; i < SaveGame.Instance.StonesNames.Count; i++)
         {
-            this.SpawnStoneWithPositionAndRotation(
-                SaveGame.Instance.StonesNames[i],
-                SaveGame.Instance.StonesPositions[i],
-                SaveGame.Instance.StonesRotations[i]
+            StartCoroutine(
+                this.stoneService.SpawnStoneWithPositionAndRotation(
+                    SaveGame.Instance.StonesNames[i],
+                    SaveGame.Instance.StonesPositions[i],
+                    SaveGame.Instance.StonesRotations[i]
+                )
             );
         }
 
