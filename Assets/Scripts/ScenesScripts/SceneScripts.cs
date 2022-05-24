@@ -30,6 +30,7 @@ public class SceneScripts : MonoBehaviour
     public InputField loadInputField;
     public GameObject loadScreen;
     public Slider slider;
+    public LayoutGroup addStoneMenuGrid;
     private bool overwrite = false;
     private StoneService stoneService;
 
@@ -48,6 +49,15 @@ public class SceneScripts : MonoBehaviour
         {
             StaticValues.back_from_details = false;
         }
+
+        if (StonesValues.stonesThumbs.Count == 0)
+        {
+            StartCoroutine(this.stoneService.DownloadThumbs(this.constructAddStoneMenu));
+        } 
+        else
+        {
+            this.constructAddStoneMenu();
+        }
     }
 
     // Update is called once per frame
@@ -57,6 +67,26 @@ public class SceneScripts : MonoBehaviour
         {
             StaticValues.back_from_details = true;
             Save(false);
+        }
+    }
+
+    public void constructAddStoneMenu()
+    {
+        foreach (Sprite sprite in StonesValues.stonesThumbs)
+        {
+            GameObject thumb = new GameObject();
+            thumb.transform.SetParent(this.addStoneMenuGrid.transform);
+            thumb.AddComponent<RectTransform>();
+            thumb.AddComponent<CanvasRenderer>();
+            Image image = thumb.AddComponent<Image>();
+            image.sprite = sprite;
+            Button button = thumb.AddComponent<Button>();
+            button.onClick.AddListener(() => SpawnStone(Int32.Parse(sprite.name)));
+            thumb.AddComponent<LayoutElement>();
+
+            // Scroll
+            // Vector3 position = this.addStoneMenuGrid.transform.position;
+            // this.addStoneMenuGrid.transform.localPosition = new Vector3(500, -2740, 500);
         }
     }
 
@@ -114,7 +144,6 @@ public class SceneScripts : MonoBehaviour
 
         Text t = availableFiles.GetComponent<Canvas>().GetComponentInChildren<Text>();
         t.text = ans;
-        
     }
 
     public void Load(Boolean cancel)

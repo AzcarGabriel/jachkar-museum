@@ -105,49 +105,4 @@ public class SmoothCameraPositionChange : MonoBehaviour
 
         return null;
     }
-
-    IEnumerator loadXml(string name)
-    {
-        var w = new WWW("http://10.1.0.118:8080/Scenes/Ejmiatsin.xml");//31.7.162.98, inside aua 10.1.0.118
-
-        while (!w.isDone)
-        {
-            yield return w;
-            string s = w.text;
-            var data = SceneHelper.GetKhachkarByXML(s);
-            metaText[0].text = Convert.ToString(data["Location"]);
-            metaText[1].text = Convert.ToString(data["Scenario"]);
-            metaText[2].text = Convert.ToString(data["Setting"]);
-            metaText[3].text = Convert.ToString(data["Accessibility"]);
-            metaText[4].text = Convert.ToString(data["Category"]);
-            metaText[5].text = Convert.ToString(data["ProductionPeriod"]);
-            metaText[6].text = Convert.ToString(data["CoonditionOfPreservation"]);
-            metaText[7].text = Convert.ToString(data["Inscription"]);
-            metaText[8].text = Convert.ToString(data["ImportantFeatures"]);
-            metaText[9].text = Convert.ToString(data["Referances"]);
-        }
-    }
-
-    IEnumerator loadXml2(string name)
-    {
-        Debug.Log(name);
-        string filePath = Path.Combine(Application.dataPath, "Scripts/Scenes/"+name+".xml");
-        if (File.Exists(filePath))
-        {
-            string dataText = File.ReadAllText(filePath);
-            var data = SceneHelper.GetKhachkarByXML(dataText);
-            metaText[0].text = Convert.ToString(data["Location"]);
-            metaText[1].text = Convert.ToString(data["Scenario"]);
-            metaText[2].text = Convert.ToString(data["Setting"]);
-            metaText[3].text = Convert.ToString(data["Accessibility"]);
-            metaText[4].text = Convert.ToString(data["Category"]);
-            metaText[5].text = Convert.ToString(data["ProductionPeriod"]);
-            metaText[6].text = Convert.ToString(data["CoonditionOfPreservation"]);
-            metaText[7].text = Convert.ToString(data["Inscription"]);
-            metaText[8].text = Convert.ToString(data["ImportantFeatures"]);
-            metaText[9].text = Convert.ToString(data["Referances"]);
-        }
-
-        return null;
-    }
 }

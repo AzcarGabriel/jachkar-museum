@@ -11,17 +11,25 @@ using UnityEngine.SceneManagement;
 public class MainMenuScript : MonoBehaviour
 {
     public GameObject enterScreen;
+    public GameObject loadScreen;
+    private StoneService stoneService;
 
     // Use this for initialization
     void Start ()
     {
+        stoneService = gameObject.AddComponent<StoneService>();
+        stoneService.loadScreen = this.loadScreen;
 
+        if (StonesValues.stonesThumbs.Count == 0)
+        {
+            StartCoroutine(this.stoneService.DownloadThumbs());
+        }
     }
 
     public void OpenScene(String name)
     {
         string[] tokens = name.Split('/');
-        string n = "";
+        string n;
         if (1 < tokens.Length)
         {
             n = tokens[1];
