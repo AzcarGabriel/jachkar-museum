@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System;
 using System.Text;
 using System.IO;
-using System.Collections;
 
 public class SceneScripts : MonoBehaviour
 {
@@ -86,7 +85,7 @@ public class SceneScripts : MonoBehaviour
 
             // Scroll
             // Vector3 position = this.addStoneMenuGrid.transform.position;
-            // this.addStoneMenuGrid.transform.localPosition = new Vector3(500, -2740, 500);
+            // this.addStoneMenuGrid.transform.localPosition = new Vector3(11, -2740, 0);
         }
     }
 

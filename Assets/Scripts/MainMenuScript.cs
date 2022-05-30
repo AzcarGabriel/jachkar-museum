@@ -19,6 +19,8 @@ public class MainMenuScript : MonoBehaviour
     {
         stoneService = gameObject.AddComponent<StoneService>();
         stoneService.loadScreen = this.loadScreen;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
 
         if (StonesValues.stonesThumbs.Count == 0)
         {
