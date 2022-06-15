@@ -4,22 +4,21 @@
       <Id>12</Id>
       <Location>Noradus</Location>
       <LatLong></LatLong>
-      <Scenario>Scenario: No data</Scenario>
-      <Setting>Setting: No data</Setting>
-      <Landscape>Landscape: No data</Landscape>
-      <Accessibility>Accessibility: No data</Accessibility>
-      <MastersName></MastersName>
-      <Category>Category: Standart</Category>
-      <ProductionPeriod>Production Period: 10-13th century</ProductionPeriod>
-      <Motive>No data</Motive>
+      <Scenario></Scenario>
+      <Setting></Setting>
+      <Landscape></Landscape>
+      <Accessibility></Accessibility>
+      <MastersName>Unknown</MastersName>
+      <Category>Standart</Category>
+      <ProductionPeriod>10-13th century</ProductionPeriod>
+      <Motive></Motive>
       <CoonditionOfPreservation>Good</CoonditionOfPreservation>
-      <Inscription>Inscription: No inscription</Inscription>
-      <ImportantFeatures>
-      </ImportantFeatures>
+      <Inscription>No inscription</Inscription>
+      <ImportantFeatures></ImportantFeatures>
       <BackSide></BackSide>
       <HistoryOwnership></HistoryOwnership>
       <CommemorativeActivities></CommemorativeActivities>
-      <Referances>Hamlet Petrosyan, www,khachkar.am</Referances>
+      <Referances>Hamlet Petrosyan, www.khachkar.am</Referances>
     </Khachkar>
   </Khachkars>
 </Scene>

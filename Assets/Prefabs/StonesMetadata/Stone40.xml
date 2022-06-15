@@ -4,21 +4,21 @@
       <Id>40</Id>
       <Location>Noratus historical village, Gegharkunik Province, Armenia</Location>
       <LatLong>40°22′48″N 45°10′48″E</LatLong>
-      <Scenario>Scenario: Freestanding sculptural objects on a pedestal in Noradus cemetery</Scenario>
-      <Setting>Setting: Medieval cemetery</Setting>
-      <Landscape>Landscape: Flat land</Landscape>
-      <Accessibility>Accessibility: Normal </Accessibility>
-      <MastersName></MastersName>
-      <Category>Category: Standart</Category>
-      <ProductionPeriod>Production Period: Approximately 11-13th century </ProductionPeriod>
+      <Scenario>Freestanding sculptural objects on a pedestal in Noradus cemetery</Scenario>
+      <Setting>Medieval cemetery</Setting>
+      <Landscape>Flat land</Landscape>
+      <Accessibility>Normal</Accessibility>
+      <MastersName>Unknown</MastersName>
+      <Category>Standart</Category>
+      <ProductionPeriod>Approximately  11-13th century</ProductionPeriod>
       <Motive>Khachkars are a gravestone</Motive>
       <CoonditionOfPreservation> 1 and 2 Good, 3 and 4 Bad</CoonditionOfPreservation>
       <Inscription></Inscription>
-      <ImportantFeatures>All four khachkars have two wings that have two triple- loops. The middle loops are stretched and have a form of a flower bud that gives a blossoming and vegetative appearance to the crosses. There are two pomegranates beneath the wings of the khachkars and stimulate the Christian allegory of fruits: under the sour rind, there are sweet seeds (Petrosyan, H.2008). All khachkars have cornices that represent interlaced geometric ornaments. The second khachkar from the left has a unique interlaced niche. The palm decors of the 3rd and the 4th khachkars are barely seen because of the mold and moss. Those originate from the cross. Such a perception corresponds to the Christian notions of the cross as an all bearing tree (Petrosyan, H. 2008). The palm decors of the 1st and the 2nd khachkar also originate from the cross and transform into snakes that symbolize the defense of the garden-paradise (paradise-tree). The right and the left parts of the khachkars represent various geometric and vegetative ornaments.</ImportantFeatures>
+      <ImportantFeatures>All four khachkars have two wings that have two triple- loops. The middle loops are stretched and have a form of a flower bud that gives a blossoming and vegetative appearance to the crosses. There are two pomegranates beneath the wings of the khachkars and stimulate the Christian allegory of fruits: under the sour rind, there are sweet seeds (Petrosyan, H.2008). All khachkars have cornices that represent interlaced geometric ornaments. The second khachkar from the left has a unique interlaced niche. The palm decors of the 3rd and the 4th khachkars are barely seen because of the mold and moss. Those originate from the cross. Such a perception corresponds to the Christian notions of the cross as an all bearing tree (Petrosyan, H. 2008). The palm decors of the 1st and the 2nd khachkar also originate from the cross and transform into snakes that symbolize the defense of the garden-paradise (paradise-tree). The right and the left parts of the khachkars represent various geometric and vegetative ornaments</ImportantFeatures>
       <BackSide></BackSide>
       <HistoryOwnership></HistoryOwnership>
       <CommemorativeActivities></CommemorativeActivities>
-      <Referances>Hamlet Petrosyan, khachkar.am</Referances>
+      <Referances>Hamlet Petrosyan, www.khachkar.am</Referances>
     </Khachkar>
   </Khachkars>
 </Scene>

@@ -48,11 +48,11 @@ public class StoneDetailsScript : MonoBehaviour
     {
         Ray r = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit rh;
-        if (Physics.Raycast(r, out rh, 1000))
+        if (Physics.Raycast(r, out rh, 100))
         {
             float scroll = Input.GetAxis("Mouse ScrollWheel");
 
-            if (scroll != 0.0f)
+            if (scroll != 0.0f && Physics.Raycast(r, out rh, 50))
             {
                 float trans = scroll < 0 ? 0.9f : 1.1f;
                 this.stone.transform.localScale *= trans;
@@ -114,13 +114,13 @@ public class StoneDetailsScript : MonoBehaviour
             XmlNodeList xnList = xmldoc.SelectNodes("/Scene/Khachkars/Khachkar");
             foreach (XmlNode xn in xnList)
             {
-                metaText[0].text = Convert.ToString(xn["CoonditionOfPreservation"].InnerText);
-                metaText[1].text = Convert.ToString(xn["ImportantFeatures"].InnerText);
-                metaText[2].text = Convert.ToString(xn["Location"].InnerText);
-                metaText[3].text = Convert.ToString(xn["Scenario"].InnerText);
-                metaText[4].text = Convert.ToString(xn["Accessibility"].InnerText);
-                metaText[5].text = Convert.ToString(xn["Category"].InnerText);
-                metaText[6].text = Convert.ToString(xn["ProductionPeriod"].InnerText);
+                metaText[0].text = this.FormatMetaText(Convert.ToString(xn["CoonditionOfPreservation"].InnerText));
+                metaText[1].text = this.FormatMetaText(Convert.ToString(xn["ImportantFeatures"].InnerText));
+                metaText[2].text = this.FormatMetaText(Convert.ToString(xn["Location"].InnerText));
+                metaText[3].text = "Scenario: " + this.FormatMetaText(Convert.ToString(xn["Scenario"].InnerText));
+                metaText[4].text = "Accessibility: " + this.FormatMetaText(Convert.ToString(xn["Accessibility"].InnerText));
+                metaText[5].text = "Category: " + this.FormatMetaText(Convert.ToString(xn["Category"].InnerText));
+                metaText[6].text = "Production Period: " + this.FormatMetaText(Convert.ToString(xn["ProductionPeriod"].InnerText));
             }
         }
         catch (FormatException)
@@ -129,6 +129,16 @@ public class StoneDetailsScript : MonoBehaviour
         }
 
         return null;
+    }
+
+    private string FormatMetaText(string metaText)
+    {
+        if (metaText != null && metaText != "")
+        {
+            return metaText.Trim() + ".";
+        }
+
+        return "No data.";
     }
 
     private void FindStoneObject(string stoneName)
