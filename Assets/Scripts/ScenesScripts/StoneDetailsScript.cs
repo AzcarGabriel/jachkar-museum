@@ -135,7 +135,11 @@ public class StoneDetailsScript : MonoBehaviour
     {
         if (metaText != null && metaText != "")
         {
-            return metaText.Trim() + ".";
+            if (metaText[metaText.Length - 1] != '.')
+            {
+                return metaText.Trim() + ".";
+            }
+            return metaText.Trim();
         }
 
         return "No data.";
