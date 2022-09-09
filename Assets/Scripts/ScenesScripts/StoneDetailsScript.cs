@@ -14,14 +14,26 @@ using System.Xml;
 
 public class StoneDetailsScript : MonoBehaviour
 {
-    [SerializeField]
-    public List<Text> metaText;
     public GameObject scrollView;
     public GameObject mainCamera;
     public GameObject stone;
     public GameObject loadScreen;
     public Slider slider;
+
+    // Metadata edit components
+    public InputField conditionInput;
+    public InputField infoInput;
+    public InputField locationInput;
+    public InputField scenarioInput;
+    public InputField accessInput;
+    public InputField categoryInput;
+    public InputField productionPeriodInput;
+    public GameObject editButton;
+    public GameObject submitButton;
+    public GameObject cancelButton;
+
     private StoneService stoneService;
+    private List<string> metaText;
 
     // Use this for initialization
     void Start()
@@ -31,11 +43,12 @@ public class StoneDetailsScript : MonoBehaviour
         stoneService.slider = this.slider;
 
         string[] firstSplit = StaticValues.stone_name.Split('(');
-        string number = firstSplit[0].Substring(5);
+        string number = firstSplit[0][5..];
         try
         {
             int sID = Int32.Parse(number);
             SpawnStone(sID);
+            metaText = new List<string>();
         }
         catch (FormatException)
         {
@@ -47,12 +60,10 @@ public class StoneDetailsScript : MonoBehaviour
     void Update()
     {
         Ray r = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit rh;
-        if (Physics.Raycast(r, out rh, 100))
+        if (Physics.Raycast(r, out _, 100))
         {
             float scroll = Input.GetAxis("Mouse ScrollWheel");
-
-            if (scroll != 0.0f && Physics.Raycast(r, out rh, 50))
+            if (scroll != 0.0f && Physics.Raycast(r, out _, 50))
             {
                 float trans = scroll < 0 ? 0.9f : 1.1f;
                 this.stone.transform.localScale *= trans;
@@ -86,10 +97,10 @@ public class StoneDetailsScript : MonoBehaviour
     public void FinishConfig()
     {
         FindStoneObject(StaticValues.stone_name);
-        loadXml(StaticValues.stone_name);
+        StartCoroutine(LoadXml(StaticValues.stone_name));
     }
 
-    IEnumerator loadXml(string stoneName)
+    IEnumerator LoadXml(string stoneName)
     {
         if (stoneName.Contains("Clone")) {
             stoneName = stoneName.Split('(')[0];
@@ -114,13 +125,15 @@ public class StoneDetailsScript : MonoBehaviour
             XmlNodeList xnList = xmldoc.SelectNodes("/Scene/Khachkars/Khachkar");
             foreach (XmlNode xn in xnList)
             {
-                metaText[0].text = this.FormatMetaText(Convert.ToString(xn["CoonditionOfPreservation"].InnerText));
-                metaText[1].text = this.FormatMetaText(Convert.ToString(xn["ImportantFeatures"].InnerText));
-                metaText[2].text = this.FormatMetaText(Convert.ToString(xn["Location"].InnerText));
-                metaText[3].text = "Scenario: " + this.FormatMetaText(Convert.ToString(xn["Scenario"].InnerText));
-                metaText[4].text = "Accessibility: " + this.FormatMetaText(Convert.ToString(xn["Accessibility"].InnerText));
-                metaText[5].text = "Category: " + this.FormatMetaText(Convert.ToString(xn["Category"].InnerText));
-                metaText[6].text = "Production Period: " + this.FormatMetaText(Convert.ToString(xn["ProductionPeriod"].InnerText));
+                metaText.Add(this.FormatMetaText(Convert.ToString(xn["CoonditionOfPreservation"].InnerText)));
+                metaText.Add(this.FormatMetaText(Convert.ToString(xn["ImportantFeatures"].InnerText)));
+                metaText.Add(this.FormatMetaText(Convert.ToString(xn["Location"].InnerText)));
+                metaText.Add("Scenario: " + this.FormatMetaText(Convert.ToString(xn["Scenario"].InnerText)));
+                metaText.Add("Accessibility: " + this.FormatMetaText(Convert.ToString(xn["Accessibility"].InnerText)));
+                metaText.Add("Category: " + this.FormatMetaText(Convert.ToString(xn["Category"].InnerText)));
+                metaText.Add("Production Period: " + this.FormatMetaText(Convert.ToString(xn["ProductionPeriod"].InnerText)));
+
+                this.FillTexts(); 
             }
         }
         catch (FormatException)
@@ -143,6 +156,54 @@ public class StoneDetailsScript : MonoBehaviour
         }
 
         return "No data.";
+    }
+
+    public void FillTexts()
+    {
+        conditionInput.text = metaText[0];
+        infoInput.text = metaText[1];
+        locationInput.text = metaText[2];
+        scenarioInput.text = metaText[3];
+        accessInput.text = metaText[4];
+        categoryInput.text = metaText[5];
+        productionPeriodInput.text = metaText[6];
+    }
+
+    public void StartEditing()
+    {
+        conditionInput.interactable = true;
+        infoInput.interactable = true;
+        locationInput.interactable = true;
+        scenarioInput.interactable = true;
+        accessInput.interactable = true;
+        categoryInput.interactable = true;
+        productionPeriodInput.interactable = true;
+
+        editButton.SetActive(false);
+        submitButton.SetActive(true);
+        cancelButton.SetActive(true);
+    }
+
+    public void CancelEditing()
+    {
+        conditionInput.interactable = false;
+        infoInput.interactable = false;
+        locationInput.interactable = false;
+        scenarioInput.interactable = false;
+        accessInput.interactable = false;
+        categoryInput.interactable = false;
+        productionPeriodInput.interactable = false;
+
+        editButton.SetActive(true);
+        submitButton.SetActive(false);
+        cancelButton.SetActive(false);
+
+        this.FillTexts();
+    }
+
+    public void SubmitInfo()
+    {
+        return;
     }
 
     private void FindStoneObject(string stoneName)

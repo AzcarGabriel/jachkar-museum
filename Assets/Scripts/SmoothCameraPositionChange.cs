@@ -9,7 +9,6 @@ using UnityStandardAssets.Characters.FirstPerson;
 
 public class SmoothCameraPositionChange : MonoBehaviour
 {
-    [SerializeField]
     public List<Text> metaText;
     public GameObject scrollView;
     public GameObject mainCamera;
@@ -28,7 +27,7 @@ public class SmoothCameraPositionChange : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        fps = mainCamera.gameObject.GetComponent<FirstPersonController>();
+        fps = mainCamera.GetComponent<FirstPersonController>();
     }
 
     // Update is called once per frame

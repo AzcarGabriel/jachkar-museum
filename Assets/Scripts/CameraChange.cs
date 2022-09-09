@@ -4,7 +4,6 @@ using UnityEngine.SceneManagement;
 
 public class CameraChange : MonoBehaviour
 {
-    [SerializeField]
     public Camera mainView;
     public Camera topView;
     public Texture2D cursorTexture;

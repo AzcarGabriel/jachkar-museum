@@ -14,8 +14,6 @@ using System.IO;
 
 public class SceneScripts : MonoBehaviour
 {
-
-    [SerializeField]
     public Transform spawnPoint;
     public GameObject showButton;
     public GameObject hideButton;
@@ -30,6 +28,7 @@ public class SceneScripts : MonoBehaviour
     public GameObject loadScreen;
     public Slider slider;
     public LayoutGroup addStoneMenuGrid;
+
     private bool overwrite = false;
     private StoneService stoneService;
 
