@@ -34,6 +34,7 @@ public class StoneDetailsScript : MonoBehaviour
 
     private StoneService stoneService;
     private List<string> metaText;
+    private XmlNode originalNode;
 
     // Use this for initialization
     void Start()
@@ -120,18 +121,20 @@ public class StoneDetailsScript : MonoBehaviour
                 }
             }
 
-            XmlDocument xmldoc = new XmlDocument();
+            XmlDocument xmldoc = new();
             xmldoc.LoadXml(metadata.text);
             XmlNodeList xnList = xmldoc.SelectNodes("/Scene/Khachkars/Khachkar");
             foreach (XmlNode xn in xnList)
             {
+                originalNode = xn;
+
                 metaText.Add(this.FormatMetaText(Convert.ToString(xn["CoonditionOfPreservation"].InnerText)));
                 metaText.Add(this.FormatMetaText(Convert.ToString(xn["ImportantFeatures"].InnerText)));
                 metaText.Add(this.FormatMetaText(Convert.ToString(xn["Location"].InnerText)));
-                metaText.Add("Scenario: " + this.FormatMetaText(Convert.ToString(xn["Scenario"].InnerText)));
-                metaText.Add("Accessibility: " + this.FormatMetaText(Convert.ToString(xn["Accessibility"].InnerText)));
-                metaText.Add("Category: " + this.FormatMetaText(Convert.ToString(xn["Category"].InnerText)));
-                metaText.Add("Production Period: " + this.FormatMetaText(Convert.ToString(xn["ProductionPeriod"].InnerText)));
+                metaText.Add(this.FormatMetaText(Convert.ToString(xn["Scenario"].InnerText)));
+                metaText.Add(this.FormatMetaText(Convert.ToString(xn["Accessibility"].InnerText)));
+                metaText.Add(this.FormatMetaText(Convert.ToString(xn["Category"].InnerText)));
+                metaText.Add(this.FormatMetaText(Convert.ToString(xn["ProductionPeriod"].InnerText)));
 
                 this.FillTexts(); 
             }
@@ -203,7 +206,44 @@ public class StoneDetailsScript : MonoBehaviour
 
     public void SubmitInfo()
     {
-        return;
+        editButton.SetActive(true);
+        submitButton.SetActive(false);
+        cancelButton.SetActive(false);
+
+        this.CreateXml();
+    }
+
+    private void CreateXml()
+    {
+        // Esto se puede optimizar usando el XmlDocument previo
+        using XmlWriter writer = XmlWriter.Create("C:/Users/Startnet/Desktop/books.xml");
+        writer.WriteStartElement("Scene");
+        writer.WriteStartElement("Khachkars");
+        writer.WriteStartElement("Khachkar");
+
+        writer.WriteElementString("Id", originalNode["Id"].InnerText);
+        writer.WriteElementString("Location", locationInput.text);
+        writer.WriteElementString("LatLong", originalNode["LatLong"].InnerText);
+        writer.WriteElementString("Scenario", scenarioInput.text);
+        writer.WriteElementString("Setting", originalNode["Setting"].InnerText);
+        writer.WriteElementString("Landscape", originalNode["Landscape"].InnerText);
+        writer.WriteElementString("Accessibility", accessInput.text);
+        writer.WriteElementString("MastersName", originalNode["MastersName"].InnerText);
+        writer.WriteElementString("Category", categoryInput.text);
+        writer.WriteElementString("ProductionPeriod", productionPeriodInput.text);
+        writer.WriteElementString("Motive", originalNode["Motive"].InnerText);
+        writer.WriteElementString("CoonditionOfPreservation", conditionInput.text);
+        writer.WriteElementString("Inscription", originalNode["Inscription"].InnerText);
+        writer.WriteElementString("ImportantFeatures", infoInput.text);
+        writer.WriteElementString("BackSide", originalNode["BackSide"].InnerText);
+        writer.WriteElementString("HistoryOwnership", originalNode["HistoryOwnership"].InnerText);
+        writer.WriteElementString("CommemorativeActivities", originalNode["CommemorativeActivities"].InnerText);
+        writer.WriteElementString("Referances", originalNode["Referances"].InnerText);
+
+        writer.WriteEndElement();
+        writer.WriteEndElement();
+        writer.WriteEndElement();
+        writer.Flush();
     }
 
     private void FindStoneObject(string stoneName)

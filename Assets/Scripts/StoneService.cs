@@ -159,7 +159,6 @@ public class StoneService : MonoBehaviour
                     Debug.Log("Downloaded thumbs bundle " + bundleName.thumbsBundleName);
                     AssetBundle thumbsBundle = DownloadHandlerAssetBundle.GetContent(uwr);
                     string[] assetNames = thumbsBundle.GetAllAssetNames();
-                    Debug.Log(assetNames.Length);
                     foreach (string name in assetNames)
                     {
                         Texture2D texture = thumbsBundle.LoadAsset<Texture2D>(name);
