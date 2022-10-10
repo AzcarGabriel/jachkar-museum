@@ -19,12 +19,12 @@ public class SceneScripts : MonoBehaviour
     public Transform spawnPoint;
     public GameObject showButton;
     public GameObject hideButton;
-    public Canvas addStoneMenu;
-    public Canvas editStoneMenu;
-    public Canvas saveDialog;
-    public Canvas loadDialog;
-    public Canvas overwriteDialog;
-    public Canvas availableFiles;
+    public GameObject addStoneMenu;
+    public GameObject editStoneMenu;
+    public GameObject saveDialog;
+    public GameObject loadDialog;
+    public GameObject overwriteDialog;
+    public GameObject availableFiles;
     public InputField saveInputField;
     public InputField loadInputField;
     public GameObject loadScreen;
@@ -98,31 +98,31 @@ public class SceneScripts : MonoBehaviour
 
     public void ShowMenus()
     {
-        addStoneMenu.enabled = true;
+        addStoneMenu.SetActive(true);
         showButton.SetActive(false);
         hideButton.SetActive(true);
     }
 
     public void HideMenus()
     {
-        addStoneMenu.enabled = false;
+        addStoneMenu.SetActive(false);
         showButton.SetActive(true);
         hideButton.SetActive(false);
     }
 
     public void ShowSaveDialog()
     {
-        saveDialog.enabled = true;
+        saveDialog.SetActive(true);
     }
 
     public void ShowLoadDialog()
     {
-        loadDialog.enabled = true;
+        loadDialog.SetActive(true);
     }
 
     public void ShowAvailableFiles()
     {
-        availableFiles.enabled = true;
+        availableFiles.SetActive(true);
 
         List<string> jsonFiles = new List<string>();
         foreach (string file in System.IO.Directory.GetFiles(Application.persistentDataPath))
@@ -149,8 +149,8 @@ public class SceneScripts : MonoBehaviour
     {
         if (cancel)
         {
-            loadDialog.enabled = false;
-            availableFiles.enabled = false;
+            loadDialog.SetActive(false);
+            availableFiles.SetActive(false);
             return;
         }
 
@@ -194,8 +194,8 @@ public class SceneScripts : MonoBehaviour
             );
         }
 
-        loadDialog.enabled = false;
-        availableFiles.enabled = false;
+        loadDialog.SetActive(false);
+        availableFiles.SetActive(false);
         loadInputField.text = "";
     }
 
@@ -203,7 +203,7 @@ public class SceneScripts : MonoBehaviour
     {
         if (cancel)
         {
-            saveDialog.enabled = false;
+            saveDialog.SetActive(false);
             return;
         }
 
@@ -223,14 +223,14 @@ public class SceneScripts : MonoBehaviour
 
         if (File.Exists(filePath) && !StaticValues.back_from_details && !overwrite)
         {
-            overwriteDialog.enabled = true;
-            saveDialog.enabled = false;
+            overwriteDialog.SetActive(true);
+            saveDialog.SetActive(false);
             overwrite = true;
             return;
         }
 
         overwrite = false;
-        overwriteDialog.enabled = false;
+        overwriteDialog.SetActive(false);
 
         SaveGame.Instance.Clear();
 
@@ -251,7 +251,7 @@ public class SceneScripts : MonoBehaviour
         // Save values
         SaveGame.Save(f_name);
 
-        saveDialog.enabled = false;
+        saveDialog.SetActive(false);
         saveInputField.text = "";
     }
 

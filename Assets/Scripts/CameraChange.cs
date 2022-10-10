@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.SceneManagement;
 
 public class CameraChange : MonoBehaviour
@@ -12,14 +11,14 @@ public class CameraChange : MonoBehaviour
     public Vector2 hotSpot = Vector2.zero;
 
     public GameObject FPS;
-    public Canvas stonesSpawn;
-    public Canvas editStoneButtons;
-    public Canvas saveButtons;
-    public Canvas showMoreButtons;
-    public Canvas saveDialog;
-    public Canvas loadDialog;
-    public Canvas overwriteDialog;
-    public Canvas availableFiles;
+    public GameObject addStoneMenu;
+    public GameObject editStoneButtons;
+    public GameObject saveButtons;
+    public GameObject showMoreButtons;
+    public GameObject saveDialog;
+    public GameObject loadDialog;
+    public GameObject overwriteDialog;
+    public GameObject availableFiles;
     public GameObject helpPane;
 
     private GameObject hand;
@@ -34,21 +33,21 @@ public class CameraChange : MonoBehaviour
         Cursor.visible = false;
         hand.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
-        stonesSpawn.enabled = false;
-        saveButtons.enabled = false;
-        editStoneButtons.enabled = false;
-        showMoreButtons.enabled = false;
-        saveDialog.enabled = false;
-        loadDialog.enabled = false;
-        overwriteDialog.enabled = false;
-        availableFiles.enabled = false;
+        addStoneMenu.SetActive(false);
+        saveButtons.SetActive(false);
+        editStoneButtons.SetActive(false);
+        showMoreButtons.SetActive(false);
+        saveDialog.SetActive(false);
+        loadDialog.SetActive(false);
+        overwriteDialog.SetActive(false);
+        availableFiles.SetActive(false);
         helpPane.SetActive(false);
     }
 
     // Update is called once per frame
     void Update ()
     {
-        StaticValues.writing = loadDialog.enabled || saveDialog.enabled;
+        StaticValues.writing = loadDialog.activeSelf || saveDialog.activeSelf;
         if (!StaticValues.writing)
         {
             if (Input.GetKey("m"))
@@ -64,9 +63,9 @@ public class CameraChange : MonoBehaviour
                 mainView.enabled = false;
                 topView.enabled = true;
                 hand.SetActive(true);
-                stonesSpawn.enabled = false;
-                saveButtons.enabled = true;
-                showMoreButtons.enabled = true;
+                addStoneMenu.SetActive(false);
+                saveButtons.SetActive(true);
+                showMoreButtons.SetActive(true);
             }
 
             if (Input.GetKey("p"))
@@ -77,10 +76,10 @@ public class CameraChange : MonoBehaviour
                 Cursor.visible = false;
                 hand.SetActive(false);
                 Cursor.lockState = CursorLockMode.Locked;
-                stonesSpawn.enabled = false;
-                saveButtons.enabled = false;
-                editStoneButtons.enabled = false;
-                showMoreButtons.enabled = false;
+                addStoneMenu.SetActive(false);
+                saveButtons.SetActive(false);
+                editStoneButtons.SetActive(false);
+                showMoreButtons.SetActive(false);
             }
 
             if (Input.GetKeyDown("h"))
