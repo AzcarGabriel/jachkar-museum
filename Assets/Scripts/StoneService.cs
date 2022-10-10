@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -108,38 +109,60 @@ public class StoneService : MonoBehaviour
         // Stone download
         if (bundleName.stoneBundleName != null && bundleName.metadataBundleName != null)
         {
-            // Download metadata
-            using (UnityWebRequest uwr = UnityWebRequestAssetBundle.GetAssetBundle(domain + bundleName.metadataBundleName))
-            {
-                yield return uwr.SendWebRequest();
+            AssetBundle metadataBundle = null;
+            AssetBundle stonesBundle = null;
 
-                if (uwr.result != UnityWebRequest.Result.Success)
+            if (StaticValues.online)
+            {
+                // Download metadata
+                using (UnityWebRequest uwr = UnityWebRequestAssetBundle.GetAssetBundle(domain + bundleName.metadataBundleName))
                 {
-                    Debug.Log(uwr.error);
+                    yield return uwr.SendWebRequest();
+
+                    if (uwr.result != UnityWebRequest.Result.Success)
+                    {
+                        Debug.Log(uwr.error);
+                    }
+                    else
+                    {
+                        // Get downloaded asset bundle
+                        Debug.Log("Downloaded metadata bundle" + bundleName.metadataBundleName);
+                        metadataBundle = DownloadHandlerAssetBundle.GetContent(uwr);
+                    }
                 }
-                else
+
+                // Download Stones
+                using (UnityWebRequest uwr = UnityWebRequestAssetBundle.GetAssetBundle(domain + bundleName.stoneBundleName))
                 {
-                    // Get downloaded asset bundle
-                    Debug.Log("Downloaded metadata bundle" + bundleName.metadataBundleName);
-                    StonesValues.metadataAssetBundles.Add(DownloadHandlerAssetBundle.GetContent(uwr));
+                    yield return uwr.SendWebRequest();
+
+                    if (uwr.result != UnityWebRequest.Result.Success)
+                    {
+                        Debug.Log(uwr.error);
+                    }
+                    else
+                    {
+                        // Get downloaded asset bundle
+                        Debug.Log("Downloaded stone bundle " + bundleName.stoneBundleName);
+                        stonesBundle = DownloadHandlerAssetBundle.GetContent(uwr);
+                    }
                 }
             }
-
-            // Download Stones
-            using (UnityWebRequest uwr = UnityWebRequestAssetBundle.GetAssetBundle(domain + bundleName.stoneBundleName))
+            else
             {
-                yield return uwr.SendWebRequest();
+                metadataBundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, bundleName.metadataBundleName));
+                stonesBundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, bundleName.stoneBundleName));
+            }
 
-                if (uwr.result != UnityWebRequest.Result.Success)
-                {
-                    Debug.Log(uwr.error);
-                }
-                else
-                {
-                    // Get downloaded asset bundle
-                    Debug.Log("Downloaded stone bundle " + bundleName.stoneBundleName);
-                    StonesValues.assetBundles.Add(DownloadHandlerAssetBundle.GetContent(uwr));
-                }
+            // Add Bundles to Stones Values
+            if (metadataBundle != null)
+            {
+                StonesValues.metadataAssetBundles.Add(metadataBundle);
+            }
+
+            if (stonesBundle != null)
+            {
+                StonesValues.assetBundles.Add(stonesBundle);
             }
         }
         else if (bundleName.thumbsBundleName != null) // Thumbs download
@@ -159,7 +182,6 @@ public class StoneService : MonoBehaviour
                     Debug.Log("Downloaded thumbs bundle " + bundleName.thumbsBundleName);
                     AssetBundle thumbsBundle = DownloadHandlerAssetBundle.GetContent(uwr);
                     string[] assetNames = thumbsBundle.GetAllAssetNames();
-                    Debug.Log(assetNames.Length);
                     foreach (string name in assetNames)
                     {
                         Texture2D texture = thumbsBundle.LoadAsset<Texture2D>(name);

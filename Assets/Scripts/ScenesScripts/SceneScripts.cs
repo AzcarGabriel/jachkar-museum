@@ -98,6 +98,7 @@ public class SceneScripts : MonoBehaviour
 
     public void ShowMenus()
     {
+        Debug.Log("hola");
         addStoneMenu.enabled = true;
         showButton.SetActive(false);
         hideButton.SetActive(true);
