@@ -3,7 +3,7 @@
 public class SelectionScript : MonoBehaviour
 {
     public Camera tCamera;
-    public Canvas panel;
+    public GameObject editStoneMenu;
 
     private Transform selection = null;
     private Transform rotation = null;
@@ -20,7 +20,7 @@ public class SelectionScript : MonoBehaviour
     // Use this for initialization
     void Start () {
         panPosition = new Vector3(0.0f, 0.0f);
-        panel.enabled = false;
+        editStoneMenu.SetActive(false);
     }
 
     // Update is called once per frame
@@ -53,7 +53,7 @@ public class SelectionScript : MonoBehaviour
 
                 if (panning == false && selection == null && Physics.Raycast(ray, out hit, Mathf.Infinity, stoneMask))
                 {
-                    panel.enabled = true;
+                    editStoneMenu.SetActive(true);
 
                     selection = hit.transform;
                     rotation = hit.transform;
@@ -69,7 +69,7 @@ public class SelectionScript : MonoBehaviour
                     panning = true;
                     prevPos = Input.mousePosition;
                     rotation = null;
-                    panel.enabled = false;
+                    editStoneMenu.SetActive(false);
                 }
             }
 
@@ -95,7 +95,7 @@ public class SelectionScript : MonoBehaviour
                 
                 if (panning == false && selection == null && Physics.Raycast(ray, out hit, Mathf.Infinity, stoneMask))
                 {
-                    panel.enabled = true;
+                    editStoneMenu.SetActive(true);
 
                     selection = hit.transform;
                     rotation = hit.transform;
