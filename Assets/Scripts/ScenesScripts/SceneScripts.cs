@@ -50,11 +50,11 @@ public class SceneScripts : MonoBehaviour
 
         if (StonesValues.stonesThumbs.Count == 0)
         {
-            StartCoroutine(this.stoneService.DownloadThumbs(this.constructAddStoneMenu));
+            StartCoroutine(this.stoneService.DownloadThumbs(this.ConstructAddStoneMenu));
         } 
         else
         {
-            this.constructAddStoneMenu();
+            this.ConstructAddStoneMenu();
         }
     }
 
@@ -68,7 +68,7 @@ public class SceneScripts : MonoBehaviour
         }
     }
 
-    public void constructAddStoneMenu()
+    public void ConstructAddStoneMenu()
     {
         foreach (Sprite sprite in StonesValues.stonesThumbs)
         {
@@ -129,7 +129,7 @@ public class SceneScripts : MonoBehaviour
             if (file.Contains(".json"))
             {
                 string[] f = file.Split('\\');
-                string fa = f[f.Length - 1];
+                string fa = f[^1];
                 jsonFiles.Add(fa);
             }
         }
@@ -153,7 +153,7 @@ public class SceneScripts : MonoBehaviour
             return;
         }
 
-        string f_name = "";
+        string f_name;
         if (StaticValues.back_from_details)
         {
             f_name = "temp_data_file";

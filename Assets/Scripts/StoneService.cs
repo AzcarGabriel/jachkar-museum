@@ -4,6 +4,7 @@
     @author Gabriel Azócar Cárcamo <azocarcarcamo@gmail.com>
  */
 
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.IO;
@@ -39,6 +40,7 @@ public class StoneService : MonoBehaviour
 
     public string thumbsBundleName = "stones_thumbs";
     private const string domain = "https://saduewa.dcc.uchile.cl/museum/AssetBundles/";
+    private const string backend_domain = "http://localhost:8000/app/";
 
     // Use this for initialization
     void Start()
@@ -70,6 +72,18 @@ public class StoneService : MonoBehaviour
         float scale = StoneSpawnHelper.GetStoneScaleById(stoneId);
         GameObject obj = Instantiate(this.SearchStone(stoneId), sp, rt);
         obj.transform.localScale *= scale;
+
+        doLast?.Invoke();
+    }
+
+    public IEnumerator DownloadAndStorageMetadata(int stoneId, Action doLast = null)
+    {
+        // Check if the stone is already downloaded
+        if (!StonesValues.metadataHashtable.ContainsKey(stoneId))
+        {
+            // If not, download it
+            yield return StartCoroutine(this.DownloadMetadata(stoneId));
+        }
 
         doLast?.Invoke();
     }
@@ -109,28 +123,10 @@ public class StoneService : MonoBehaviour
         // Stone download
         if (bundleName.stoneBundleName != null && bundleName.metadataBundleName != null)
         {
-            AssetBundle metadataBundle = null;
             AssetBundle stonesBundle = null;
 
             if (StaticValues.online)
             {
-                // Download metadata
-                using (UnityWebRequest uwr = UnityWebRequestAssetBundle.GetAssetBundle(domain + bundleName.metadataBundleName))
-                {
-                    yield return uwr.SendWebRequest();
-
-                    if (uwr.result != UnityWebRequest.Result.Success)
-                    {
-                        Debug.Log(uwr.error);
-                    }
-                    else
-                    {
-                        // Get downloaded asset bundle
-                        Debug.Log("Downloaded metadata bundle" + bundleName.metadataBundleName);
-                        metadataBundle = DownloadHandlerAssetBundle.GetContent(uwr);
-                    }
-                }
-
                 // Download Stones
                 using (UnityWebRequest uwr = UnityWebRequestAssetBundle.GetAssetBundle(domain + bundleName.stoneBundleName))
                 {
@@ -150,19 +146,11 @@ public class StoneService : MonoBehaviour
             }
             else
             {
-                Debug.Log("Loaded offline " + bundleName.metadataBundleName);
-                metadataBundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, bundleName.metadataBundleName));
-
                 Debug.Log("Loaded offline " + bundleName.stoneBundleName);
                 stonesBundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, bundleName.stoneBundleName));
             }
 
             // Add Bundles to Stones Values
-            if (metadataBundle != null)
-            {
-                StonesValues.metadataAssetBundles.Add(metadataBundle);
-            }
-
             if (stonesBundle != null)
             {
                 StonesValues.assetBundles.Add(stonesBundle);
@@ -210,6 +198,38 @@ public class StoneService : MonoBehaviour
         loadScreen.SetActive(false);
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+    }
+
+    private IEnumerator DownloadMetadata(int id = 1)
+    {
+        String metadata = null;
+        if (StaticValues.online)
+        {
+            using UnityWebRequest uwr = UnityWebRequest.Get(backend_domain + "get_metadata/" + id.ToString());
+            yield return uwr.SendWebRequest();
+
+            if (uwr.result != UnityWebRequest.Result.Success)
+            {
+                Debug.Log(uwr.error);
+            }
+            else
+            {
+                // Get downloaded asset bundle
+                JObject json = JObject.Parse(uwr.downloadHandler.text);
+                Debug.Log("Downloaded metadata Stone" + id.ToString());
+                metadata = json.ToString();
+            }
+        }
+        else {
+            Debug.Log("Loaded offline metadata Stone" + id.ToString());
+            // xml = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, bundleName.metadataBundleName));
+        }
+
+        // Add Bundles to Stones Values
+        if (metadata != null)
+        {
+            StonesValues.metadataHashtable.Add(id, new Khachkar(metadata));
+        }
     }
 
     private bool CheckStoneInBundle(string stoneName, AssetBundle ab)

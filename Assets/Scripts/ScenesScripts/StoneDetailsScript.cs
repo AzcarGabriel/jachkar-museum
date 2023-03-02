@@ -5,12 +5,15 @@
  */
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.IO;
 using System.Xml;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 public class StoneDetailsScript : MonoBehaviour
 {
@@ -34,7 +37,8 @@ public class StoneDetailsScript : MonoBehaviour
 
     private StoneService stoneService;
     private List<string> metaText;
-    private XmlNode originalNode;
+    private readonly XmlNode originalNode;
+    private int stoneId = -1;
 
     // Use this for initialization
     void Start()
@@ -47,8 +51,8 @@ public class StoneDetailsScript : MonoBehaviour
         string number = firstSplit[0][5..];
         try
         {
-            int sID = Int32.Parse(number);
-            SpawnStone(sID);
+            this.stoneId = Int32.Parse(number);
+            SpawnStone();
             metaText = new List<string>();
         }
         catch (FormatException)
@@ -87,21 +91,26 @@ public class StoneDetailsScript : MonoBehaviour
         }
     }
 
-    public void SpawnStone(int stoneId)
+    public void SpawnStone()
     {
-        float scale = StoneSpawnHelper.GetStoneScaleById(stoneId);
+        float scale = StoneSpawnHelper.GetStoneScaleById(this.stoneId);
         Vector3 pos = this.stone.transform.position;
-        Quaternion q = StoneSpawnHelper.GetStoneRotationById(stoneId);
-        StartCoroutine(this.stoneService.SpawnStoneWithPositionAndRotation(stoneId, pos, q, FinishConfig));
+        Quaternion q = StoneSpawnHelper.GetStoneRotationById(this.stoneId);
+        StartCoroutine(this.stoneService.SpawnStoneWithPositionAndRotation(this.stoneId, pos, q, SearchMetadata));
+    }
+
+    public void SearchMetadata()
+    {
+        StartCoroutine(this.stoneService.DownloadAndStorageMetadata(this.stoneId, FinishConfig));
     }
 
     public void FinishConfig()
     {
         FindStoneObject(StaticValues.stone_name);
-        StartCoroutine(LoadXml(StaticValues.stone_name));
+        LoadXml(StaticValues.stone_name);
     }
 
-    IEnumerator LoadXml(string stoneName)
+    public void LoadXml(string stoneName)
     {
         if (stoneName.Contains("Clone")) {
             stoneName = stoneName.Split('(')[0];
@@ -110,48 +119,29 @@ public class StoneDetailsScript : MonoBehaviour
         try
         { 
             int index = Int32.Parse(stoneName.Replace("Stone", ""));
-            StoneService.BundleName bundleName = StoneService.CalculateAssetBundleNameByStoneIndex(index);
+            Khachkar metadata = (Khachkar) StonesValues.metadataHashtable[index];
+            Debug.Log(metadata.ConditionOfPreservation);
+            metaText.Add(this.FormatMetaText(metadata.ConditionOfPreservation));
+            metaText.Add(this.FormatMetaText(metadata.ImportantFeatures));
+            metaText.Add(this.FormatMetaText(metadata.Location));
+            metaText.Add(this.FormatMetaText(metadata.Scenario));
+            metaText.Add(this.FormatMetaText(metadata.Accessibility));
+            metaText.Add(this.FormatMetaText(metadata.Category));
+            metaText.Add(this.FormatMetaText(metadata.ProductionPeriod));
 
-            TextAsset metadata = null;
-            foreach (AssetBundle mab in StonesValues.metadataAssetBundles)
-            {
-                if (mab.name == bundleName.metadataBundleName)
-                {
-                    metadata = mab.LoadAsset<TextAsset>(stoneName);
-                }
-            }
-
-            XmlDocument xmldoc = new();
-            xmldoc.LoadXml(metadata.text);
-            XmlNodeList xnList = xmldoc.SelectNodes("/Scene/Khachkars/Khachkar");
-            foreach (XmlNode xn in xnList)
-            {
-                originalNode = xn;
-
-                metaText.Add(this.FormatMetaText(Convert.ToString(xn["CoonditionOfPreservation"].InnerText)));
-                metaText.Add(this.FormatMetaText(Convert.ToString(xn["ImportantFeatures"].InnerText)));
-                metaText.Add(this.FormatMetaText(Convert.ToString(xn["Location"].InnerText)));
-                metaText.Add(this.FormatMetaText(Convert.ToString(xn["Scenario"].InnerText)));
-                metaText.Add(this.FormatMetaText(Convert.ToString(xn["Accessibility"].InnerText)));
-                metaText.Add(this.FormatMetaText(Convert.ToString(xn["Category"].InnerText)));
-                metaText.Add(this.FormatMetaText(Convert.ToString(xn["ProductionPeriod"].InnerText)));
-
-                this.FillTexts(); 
-            }
+            this.FillTexts(); 
         }
         catch (FormatException)
         {
             Debug.Log("Error loading metadata");
         }
-
-        return null;
     }
 
-    private string FormatMetaText(string metaText)
+    private string FormatMetaText(string metaText = "")
     {
         if (metaText != null && metaText != "")
         {
-            if (metaText[metaText.Length - 1] != '.')
+            if (metaText[^1] != '.')
             {
                 return metaText.Trim() + ".";
             }
@@ -210,13 +200,17 @@ public class StoneDetailsScript : MonoBehaviour
         submitButton.SetActive(false);
         cancelButton.SetActive(false);
 
-        this.CreateXml();
+        _ = this.CreateAndSubmitXmlAsync();
     }
 
-    private void CreateXml()
+    private async Task CreateAndSubmitXmlAsync()
     {
+        Debug.Log("START");
+
         // Esto se puede optimizar usando el XmlDocument previo
-        using XmlWriter writer = XmlWriter.Create("C:/Users/Startnet/Desktop/books.xml");
+        string fileName = StaticValues.stone_name + ".xml";
+        string filePath = Path.Combine(Application.persistentDataPath, fileName);
+        using XmlWriter writer = XmlWriter.Create(filePath);
         writer.WriteStartElement("Scene");
         writer.WriteStartElement("Khachkars");
         writer.WriteStartElement("Khachkar");
@@ -244,6 +238,38 @@ public class StoneDetailsScript : MonoBehaviour
         writer.WriteEndElement();
         writer.WriteEndElement();
         writer.Flush();
+        Debug.Log("ready file");
+
+        // SEND
+        using var multipartFormContent = new MultipartFormDataContent();
+        Debug.Log("1");
+
+        // Load file name
+        var stringContent = new StringContent(fileName);
+        multipartFormContent.Add(stringContent, name: "file_name");
+        Debug.Log("2");
+
+        // Load and add the file and set the file's Content-Type header
+        Debug.Log(filePath);
+        FileStream f = File.OpenRead(filePath);
+        Debug.Log(f.Name);
+        var fileStreamContent = new StreamContent(File.OpenRead(filePath));
+        fileStreamContent.Headers.ContentType = new MediaTypeHeaderValue("application/xml");
+        multipartFormContent.Add(fileStreamContent, name: "file", fileName: fileName);
+        Debug.Log("3");
+
+        // Send it
+        Debug.Log("sending");
+        HttpClient httpClient = new();
+        var response = await httpClient.PostAsync("https://localhost:8000/upload/", multipartFormContent);
+        httpClient.Dispose();
+        string sd = response.Content.ReadAsStringAsync().Result;
+        Debug.Log(sd);
+
+        if (File.Exists(filePath))
+        {
+            File.Delete(filePath);
+        }
     }
 
     private void FindStoneObject(string stoneName)
