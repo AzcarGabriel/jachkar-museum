@@ -1,0 +1,27 @@
+<Scene>
+    <Khachkars>
+        <Khachkar>
+        <Id></Id>
+        <Location></Location>
+        <LatLong></LatLong>
+        <Scenario></Scenario>
+        <Setting></Setting>
+        <Landscape></Landscape>
+        <Accessibility></Accessibility>
+        <MastersName></MastersName>
+        <Category></Category>
+        <ProductionPeriod></ProductionPeriod>
+        <Motive></Motive>
+        <CoonditionOfPreservation></CoonditionOfPreservation>
+        <Inscription></Inscription>
+        <ImportantFeatures>Es una escultura de yeso, de dos sujetos sentados uno al lado del otro.</ImportantFeatures>
+        <BackSide></BackSide>
+        <HistoryOwnership></HistoryOwnership>
+        <CommemorativeActivities></CommemorativeActivities>
+        <Referances></Referances>
+        <Length>20</Length>
+        <Width>5</Width>
+        <Height>20</Height>
+        </Khachkar>
+    </Khachkars>
+</Scene>

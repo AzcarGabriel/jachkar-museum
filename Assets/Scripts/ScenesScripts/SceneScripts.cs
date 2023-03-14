@@ -51,11 +51,11 @@ public class SceneScripts : MonoBehaviour
 
         if (StonesValues.stonesThumbs.Count == 0)
         {
-            StartCoroutine(this.stoneService.DownloadThumbs(this.constructAddStoneMenu));
+            StartCoroutine(this.stoneService.DownloadThumbs(this.ConstructAddStoneMenu));
         } 
         else
         {
-            this.constructAddStoneMenu();
+            this.ConstructAddStoneMenu();
         }
     }
 
@@ -69,7 +69,7 @@ public class SceneScripts : MonoBehaviour
         }
     }
 
-    public void constructAddStoneMenu()
+    public void ConstructAddStoneMenu()
     {
         foreach (Sprite sprite in StonesValues.stonesThumbs)
         {

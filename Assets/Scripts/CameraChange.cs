@@ -19,7 +19,7 @@ public class CameraChange : MonoBehaviour
     public GameObject loadDialog;
     public GameObject overwriteDialog;
     public GameObject availableFiles;
-    public GameObject helpPane;
+    public GameObject helpPanel;
 
     private GameObject hand;
 
@@ -41,7 +41,7 @@ public class CameraChange : MonoBehaviour
         loadDialog.SetActive(false);
         overwriteDialog.SetActive(false);
         availableFiles.SetActive(false);
-        helpPane.SetActive(false);
+        helpPanel.SetActive(false);
     }
 
     // Update is called once per frame
@@ -84,7 +84,7 @@ public class CameraChange : MonoBehaviour
 
             if (Input.GetKeyDown("h"))
             {
-                helpPane.SetActive(!helpPane.activeSelf);
+                helpPanel.SetActive(!helpPanel.activeSelf);
             }
         }
     }
