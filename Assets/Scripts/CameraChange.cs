@@ -1,16 +1,17 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class CameraChange : MonoBehaviour
 {
-    [SerializeField]
-    public Camera mainView;
-    public Camera topView;
-    public Texture2D cursorTexture;
-    public CursorMode cursorMode = CursorMode.Auto;
-    public Vector2 hotSpot = Vector2.zero;
+    [SerializeField] private Camera mainView;
+    [SerializeField] private Camera topView;
+    [SerializeField] private Texture2D cursorTexture;
+    [SerializeField] private CursorMode cursorMode = CursorMode.Auto;
+    [SerializeField] private Vector2 hotSpot = Vector2.zero;
 
-    public GameObject FPS;
+    //public GameObject FPS;
+    public static List<GameObject> playersList;
     public GameObject addStoneMenu;
     public GameObject editStoneButtons;
     public GameObject saveButtons;
@@ -27,7 +28,7 @@ public class CameraChange : MonoBehaviour
     void Start ()
     {
         hand = GameObject.Find("SelectionManager");
-        FPS.SetActive(true);
+        // FPS.SetActive(true);
         mainView.enabled = true;
         topView.enabled = false;
         Cursor.visible = false;
@@ -57,7 +58,7 @@ public class CameraChange : MonoBehaviour
 
             if (Input.GetKey("t"))
             {
-                FPS.SetActive(false);
+                // FPS.SetActive(false);
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
                 mainView.enabled = false;
@@ -70,7 +71,7 @@ public class CameraChange : MonoBehaviour
 
             if (Input.GetKey("p"))
             {
-                FPS.SetActive(true);
+                // FPS.SetActive(true);
                 mainView.enabled = true;
                 topView.enabled = false;
                 Cursor.visible = false;
