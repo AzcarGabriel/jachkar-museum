@@ -49,20 +49,15 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         // Network initialization
         public override void OnNetworkSpawn() {
-            CinemachineVirtualCamera cvm = vCamTransform.gameObject.GetComponent<CinemachineVirtualCamera>();
-
-            if (IsOwner) {
-                cvm.Priority = 1;
-            }
-            else {
-                cvm.Priority = 0;
-            }
-            base.OnNetworkSpawn();
+            ReturnToCamera();
         }
 
         // Use this for initialization
         private void Start()
         {
+            Debug.Log("Hola");
+            DontDestroyOnLoad(gameObject);
+            ReturnToCamera();
             m_CharacterController = GetComponent<CharacterController>();
             //m_Camera = Camera.main;
             m_OriginalCameraPosition = m_Camera.transform.localPosition;
@@ -100,6 +95,21 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
 
             m_PreviouslyGrounded = m_CharacterController.isGrounded;
+        }
+
+        public void ReturnToCamera() 
+        {
+            CinemachineVirtualCamera cvm = vCamTransform.gameObject.GetComponent<CinemachineVirtualCamera>();
+
+            if (IsOwner)
+{
+                cvm.Priority = 1;
+            }
+            else
+            {
+                cvm.Priority = 0;
+            }
+            base.OnNetworkSpawn();
         }
 
 

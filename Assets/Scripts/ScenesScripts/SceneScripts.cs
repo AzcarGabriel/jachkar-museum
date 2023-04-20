@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System;
 using System.Text;
 using System.IO;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class SceneScripts : MonoBehaviour
 {
@@ -32,10 +33,13 @@ public class SceneScripts : MonoBehaviour
     public LayoutGroup addStoneMenuGrid;
     private bool overwrite = false;
     private StoneService stoneService;
+    public List<FirstPersonController> playerList;
 
     // Use this for initialization
     void Start()
     {
+        //playerList = new List<FirstPersonController>();
+
         stoneService = gameObject.AddComponent<StoneService>();
         stoneService.loadScreen = this.loadScreen;
         stoneService.slider = this.slider;
