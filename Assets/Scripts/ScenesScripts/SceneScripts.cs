@@ -43,6 +43,7 @@ public class SceneScripts : MonoBehaviour
         stoneService = gameObject.AddComponent<StoneService>();
         stoneService.loadScreen = this.loadScreen;
         stoneService.slider = this.slider;
+        Debug.Log("Escena cargada");
 
         hideButton.SetActive(false);
         StaticValues.previos_scene = SceneManager.GetActiveScene().name;
@@ -61,6 +62,10 @@ public class SceneScripts : MonoBehaviour
         {
             this.constructAddStoneMenu();
         }
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode) { 
+        
     }
 
     // Update is called once per frame
