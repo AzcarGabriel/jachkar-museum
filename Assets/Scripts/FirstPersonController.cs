@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 using UnityStandardAssets.Utility;
 using Random = UnityEngine.Random;
-using System.Collections.Generic;
 using Unity.Netcode;
 using Cinemachine;
 
@@ -55,7 +54,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Use this for initialization
         private void Start()
         {
-            Debug.Log("Hola");
             DontDestroyOnLoad(gameObject);
             ReturnToCamera();
             m_CharacterController = GetComponent<CharacterController>();

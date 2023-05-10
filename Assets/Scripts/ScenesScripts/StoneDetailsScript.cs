@@ -11,6 +11,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Xml;
+using Unity.Netcode;
 
 public class StoneDetailsScript : MonoBehaviour
 {
@@ -71,7 +72,7 @@ public class StoneDetailsScript : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            SceneManager.LoadScene(StaticValues.previos_scene, LoadSceneMode.Single);
+            NetworkManager.Singleton.SceneManager.LoadScene(StaticValues.previos_scene, LoadSceneMode.Single);
         }
     }
 

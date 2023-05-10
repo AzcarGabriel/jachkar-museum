@@ -12,6 +12,7 @@ using System;
 using System.Text;
 using System.IO;
 using UnityStandardAssets.Characters.FirstPerson;
+using Unity.Netcode;
 
 public class SceneScripts : MonoBehaviour
 {
@@ -36,43 +37,31 @@ public class SceneScripts : MonoBehaviour
     public List<FirstPersonController> playerList;
 
     // Use this for initialization
-    void Start()
-    {
-        //playerList = new List<FirstPersonController>();
+    void Start() {
 
         stoneService = gameObject.AddComponent<StoneService>();
         stoneService.loadScreen = this.loadScreen;
         stoneService.slider = this.slider;
-        Debug.Log("Escena cargada");
 
         hideButton.SetActive(false);
         StaticValues.previos_scene = SceneManager.GetActiveScene().name;
         Cursor.lockState = CursorLockMode.Locked;
-        
-        if (StaticValues.back_from_details)
-        {
+
+        if (StaticValues.back_from_details) {
             StaticValues.back_from_details = false;
         }
 
-        if (StonesValues.stonesThumbs.Count == 0)
-        {
+        if (StonesValues.stonesThumbs.Count == 0) {
             StartCoroutine(this.stoneService.DownloadThumbs(this.constructAddStoneMenu));
-        } 
-        else
-        {
+        }
+        else {
             this.constructAddStoneMenu();
         }
     }
 
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode) { 
-        
-    }
-
     // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown("e") && !StaticValues.writing)
-        {
+    void Update() {
+        if (Input.GetKeyDown("e") && !StaticValues.writing) {
             StaticValues.back_from_details = true;
             Save(false);
         }
