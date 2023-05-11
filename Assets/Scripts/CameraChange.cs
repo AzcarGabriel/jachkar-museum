@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
+using Unity.Netcode;
 
 public class CameraChange : MonoBehaviour
 {
@@ -48,11 +50,13 @@ public class CameraChange : MonoBehaviour
     // Update is called once per frame
     void Update ()
     {
+        if (EventSystem.current.currentSelectedGameObject != null) return;
         StaticValues.writing = loadDialog.activeSelf || saveDialog.activeSelf;
         if (!StaticValues.writing)
         {
             if (Input.GetKey("m"))
             {
+                NetworkManager.Singleton.Shutdown();
                 SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
             }
 

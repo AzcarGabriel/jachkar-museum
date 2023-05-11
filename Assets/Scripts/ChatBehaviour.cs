@@ -61,7 +61,10 @@ namespace FMGames.Scripts.Menu.Chat
             var msg = Instantiate(chatMessagePrefab, messageParent);
             // message = _profanityFilter.CensorString(message);
             //LobbyOrchestrator.PlayersInLobby[senderPlayerId].playerName;
-            msg.SetMessage(senderPlayerId.ToString(), message);
+            NetworkManager networkManager = NetworkManager.Singleton;
+            PlayerObject playerObject = networkManager.ConnectedClients[senderPlayerId].PlayerObject.GetComponent<PlayerObject>();
+            string playerName = playerObject.PlayerName;
+            msg.SetMessage(playerName, message);
 
             _messages.Add(msg);
 

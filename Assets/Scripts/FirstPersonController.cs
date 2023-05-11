@@ -5,6 +5,7 @@ using UnityStandardAssets.Utility;
 using Random = UnityEngine.Random;
 using Unity.Netcode;
 using Cinemachine;
+using UnityEngine.EventSystems;
 
 namespace UnityStandardAssets.Characters.FirstPerson
 {
@@ -72,7 +73,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Update is called once per frame
         private void Update()
         {
-            // if (!IsOwner) return;
+            if (EventSystem.current.currentSelectedGameObject != null) return;
             RotateView();
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump)
@@ -121,7 +122,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void FixedUpdate()
         {
-            if (!IsOwner) return;   
+            if (!IsOwner) return;
+            if (EventSystem.current.currentSelectedGameObject != null) return;
 
             float speed;
             GetInput(out speed);
