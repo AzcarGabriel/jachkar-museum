@@ -63,7 +63,7 @@ public class MainMenuScript : MonoBehaviour
             case GameMode.Single:
                 return;
         }
-        updatePlayerNameServerRPC(NetworkManager.Singleton.LocalClientId, connectionUserName);
+        // updatePlayerNameServerRPC(NetworkManager.Singleton.LocalClientId, connectionUserName);
         NetworkManager.Singleton.SceneManager.LoadScene(n, LoadSceneMode.Single);
     }
 
@@ -80,7 +80,7 @@ public class MainMenuScript : MonoBehaviour
     public void connectClient() 
     {
         NetworkManager.Singleton.StartClient();
-        updatePlayerNameServerRPC(NetworkManager.Singleton.LocalClientId, connectionUserName);
+        // updatePlayerNameServerRPC(NetworkManager.Singleton.LocalClientId, connectionUserName);
     }
 
     public void Exit()

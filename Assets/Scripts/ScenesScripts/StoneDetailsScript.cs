@@ -72,7 +72,8 @@ public class StoneDetailsScript : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            NetworkManager.Singleton.SceneManager.LoadScene(StaticValues.previos_scene, LoadSceneMode.Single);
+            // NetworkManager.Singleton.SceneManager.LoadScene(StaticValues.previos_scene, LoadSceneMode.Single);
+            SceneManager.UnloadSceneAsync("StoneDetails");
         }
     }
 
