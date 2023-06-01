@@ -9,6 +9,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
 using TMPro;
+using FMGames.Scripts.Menu.Chat;
+using Unity.Collections;
 
 public class MainMenuScript : MonoBehaviour
 {
@@ -16,7 +18,6 @@ public class MainMenuScript : MonoBehaviour
 
     public GameObject enterScreen;
     public GameObject loadScreen;
-    static string connectionUserName;
 
     [SerializeField] private GameObject inputUsernameField;
 
@@ -51,20 +52,9 @@ public class MainMenuScript : MonoBehaviour
             n = name;
         }
 
+        NetworkManager network = NetworkManager.Singleton;
         enterScreen.SetActive(true);
-        // SceneManager.LoadScene(n, LoadSceneMode.Single);
-        switch (gameMode) {
-            case GameMode.Server:
-                NetworkManager.Singleton.StartServer();
-                break;
-            case GameMode.Host:
-                NetworkManager.Singleton.StartHost();              
-                break;
-            case GameMode.Single:
-                return;
-        }
-        // updatePlayerNameServerRPC(NetworkManager.Singleton.LocalClientId, connectionUserName);
-        NetworkManager.Singleton.SceneManager.LoadScene(n, LoadSceneMode.Single);
+        network.SceneManager.LoadScene(n, LoadSceneMode.Single);
     }
 
     public void SetMode(String mode) 
@@ -72,31 +62,23 @@ public class MainMenuScript : MonoBehaviour
         gameMode = (GameMode)Enum.Parse(typeof(GameMode), mode);
     }
 
-    public void SetUsername() {
-        string username = inputUsernameField.GetComponent<TMP_InputField>().text;
-        connectionUserName = username;
-    }
-
     public void connectClient() 
     {
+        if (gameMode != GameMode.Client) return;
+        FixedString32Bytes newName = inputUsernameField.GetComponent<TMP_InputField>().text;
+        ChatBehaviour.username = newName;
         NetworkManager.Singleton.StartClient();
-        // updatePlayerNameServerRPC(NetworkManager.Singleton.LocalClientId, connectionUserName);
+    }
+
+    public void connectHost() {
+        if (gameMode != GameMode.Host) return;
+        FixedString32Bytes newName = inputUsernameField.GetComponent<TMP_InputField>().text;
+        ChatBehaviour.username = newName;
+        NetworkManager.Singleton.StartHost();
     }
 
     public void Exit()
     {
         Application.Quit();
-    }
-
-    private void updatePlayerNameServerRPC(ulong localId, String name) {
-        ClientRpcParams clientRpcParams = new ClientRpcParams {
-            Send = new ClientRpcSendParams {
-                TargetClientIds = new[] { localId }
-            }
-        };
-        NetworkManager networkManager = NetworkManager.Singleton;
-        // ulong id = clientRpcParams.Send.TargetClientIds[0];
-        PlayerObject playerObject = networkManager.ConnectedClients[localId].PlayerObject.GetComponent<PlayerObject>();
-        playerObject.UpdatePlayerNameServerRpc(name);
     }
 }

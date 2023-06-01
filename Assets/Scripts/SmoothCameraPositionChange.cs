@@ -43,6 +43,7 @@ public class SmoothCameraPositionChange : MonoBehaviour
         Transform cameraPosition = mainCamera.transform;
         RaycastHit hit;
         Vector3 pond = new Vector3(0.0f, 1.0f, 20.0f);
+
         if (Input.GetKeyDown("e") && !fps.enabled)
         {
             targetGameObject = null;

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using Unity.Collections;
+using UnityEngine.UI;
 
 namespace FMGames.Scripts.Menu.Chat
 {
@@ -11,6 +13,9 @@ namespace FMGames.Scripts.Menu.Chat
         [SerializeField] private ChatMessage chatMessagePrefab;
         [SerializeField] private Transform messageParent;
         [SerializeField] private TMP_InputField chatInputField;
+        [SerializeField] private ScrollRect scroll;
+
+        static public FixedString32Bytes username = "";
 
         private const int MaxNumberOfMessagesInList = 20;
         private List<ChatMessage> _messages;
@@ -54,17 +59,16 @@ namespace FMGames.Scripts.Menu.Chat
 
             _clientSendTimer = 0;
             SendChatMessageServerRpc(message, NetworkManager.Singleton.LocalClientId);
+            scroll.verticalNormalizedPosition = 0;
         }
 
-        private void AddMessage(string message, ulong senderPlayerId)
+        private void AddMessage(string message, FixedString32Bytes senderPlayerUsername)
         {
             var msg = Instantiate(chatMessagePrefab, messageParent);
             // message = _profanityFilter.CensorString(message);
-            //LobbyOrchestrator.PlayersInLobby[senderPlayerId].playerName;
-            NetworkManager networkManager = NetworkManager.Singleton;
-            PlayerObject playerObject = networkManager.ConnectedClients[senderPlayerId].PlayerObject.GetComponent<PlayerObject>();
-            string playerName = playerObject.PlayerName;
-            msg.SetMessage(playerName, message);
+            
+            
+            msg.SetMessage(senderPlayerUsername, message);
 
             _messages.Add(msg);
 
@@ -76,15 +80,18 @@ namespace FMGames.Scripts.Menu.Chat
         }
 
         [ClientRpc]
-        private void ReceiveChatMessageClientRpc(string message, ulong senderPlayerId)
+        private void ReceiveChatMessageClientRpc(string message, FixedString32Bytes senderPlayerUsername)
         {
-            AddMessage(message, senderPlayerId);
+            AddMessage(message, senderPlayerUsername);
         }
 
         [ServerRpc(RequireOwnership = false)]
         private void SendChatMessageServerRpc(string message, ulong senderPlayerId)
         {
-            ReceiveChatMessageClientRpc(message, senderPlayerId);
+            NetworkManager networkManager = NetworkManager.Singleton;
+            PlayerObject playerObject = networkManager.ConnectedClients[senderPlayerId].PlayerObject.GetComponent<PlayerObject>();
+            FixedString32Bytes name = playerObject.PlayerName;
+            ReceiveChatMessageClientRpc(message, name);
         }
     }
 }

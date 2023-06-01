@@ -32,6 +32,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private AudioClip[] m_FootstepSounds;    // an array of footstep sounds that will be randomly selected from.
         [SerializeField] private AudioClip m_JumpSound;           // the sound played when character leaves the ground.
         [SerializeField] private AudioClip m_LandSound;           // the sound played when character touches back on ground.
+        [SerializeField] private Transform pingMarkPrefab;
 
    
         private bool m_Jump;
@@ -49,6 +50,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         // Network initialization
         public override void OnNetworkSpawn() {
+            if (!IsOwner) return;
             ReturnToCamera();
         }
 
@@ -94,18 +96,33 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
 
             m_PreviouslyGrounded = m_CharacterController.isGrounded;
+
+            if (!IsOwner) return;
+
+
+
+            Ray ray = new Ray(vCamTransform.position, vCamTransform.forward);
+            RaycastHit hit;
+
+            if (Input.GetKeyDown("p")) {
+                if (Physics.Raycast(ray, out hit)) {
+                    if (hit.collider != null) {
+                        Vector3 spawnPosition = hit.point;
+                        Transform instantiatedPing = Instantiate(pingMarkPrefab, spawnPosition, Quaternion.identity);
+                        instantiatedPing.GetComponent<NetworkObject>().Spawn(true);
+
+                    }
+                }
+            }
         }
 
-        public void ReturnToCamera() 
-        {
+        public void ReturnToCamera() {
             CinemachineVirtualCamera cvm = vCamTransform.gameObject.GetComponent<CinemachineVirtualCamera>();
 
-            if (IsOwner)
-{
+            if (IsOwner) {
                 cvm.Priority = 1;
             }
-            else
-            {
+            else {
                 cvm.Priority = 0;
             }
             base.OnNetworkSpawn();
