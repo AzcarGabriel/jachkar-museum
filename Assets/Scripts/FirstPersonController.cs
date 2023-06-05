@@ -14,7 +14,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
     public class FirstPersonController : NetworkBehaviour
     {
         [SerializeField] private Camera m_Camera;
-        [SerializeField] Transform vCamTransform;
         [SerializeField] private bool m_IsWalking;
         [SerializeField] private float m_WalkSpeed;
         [SerializeField] private float m_RunSpeed;
@@ -48,17 +47,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_Jumping;
         private AudioSource m_AudioSource;
 
-        // Network initialization
-        public override void OnNetworkSpawn() {
-            if (!IsOwner) return;
-            ReturnToCamera();
-        }
-
         // Use this for initialization
         private void Start()
         {
             DontDestroyOnLoad(gameObject);
-            ReturnToCamera();
             m_CharacterController = GetComponent<CharacterController>();
             //m_Camera = Camera.main;
             m_OriginalCameraPosition = m_Camera.transform.localPosition;
@@ -100,32 +92,19 @@ namespace UnityStandardAssets.Characters.FirstPerson
             if (!IsOwner) return;
 
 
+            Transform camera = Camera.main.transform;
 
-            Ray ray = new Ray(vCamTransform.position, vCamTransform.forward);
+            Ray ray = new Ray(camera.position, camera.forward);
             RaycastHit hit;
 
             if (Input.GetKeyDown("p")) {
                 if (Physics.Raycast(ray, out hit)) {
                     if (hit.collider != null) {
                         Vector3 spawnPosition = hit.point;
-                        Transform instantiatedPing = Instantiate(pingMarkPrefab, spawnPosition, Quaternion.identity);
-                        instantiatedPing.GetComponent<NetworkObject>().Spawn(true);
-
+                        spawnMarkServerRPC(spawnPosition, OwnerClientId);   
                     }
                 }
             }
-        }
-
-        public void ReturnToCamera() {
-            CinemachineVirtualCamera cvm = vCamTransform.gameObject.GetComponent<CinemachineVirtualCamera>();
-
-            if (IsOwner) {
-                cvm.Priority = 1;
-            }
-            else {
-                cvm.Priority = 0;
-            }
-            base.OnNetworkSpawn();
         }
 
 
@@ -302,6 +281,15 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 return;
             }
             body.AddForceAtPosition(m_CharacterController.velocity*0.1f, hit.point, ForceMode.Impulse);
+        }
+
+        [ServerRpc]
+        public void spawnMarkServerRPC(Vector3 position, ulong clientId) {
+            NetworkManager networkManager = NetworkManager.Singleton;
+            Transform instantiatedPing = Instantiate(pingMarkPrefab, position, Quaternion.identity);
+            instantiatedPing.GetComponent<NetworkObject>().Spawn(true);
+            networkManager.ConnectedClients[clientId].PlayerObject.GetComponent<PlayerObject>();
+ 
         }
     }
 }

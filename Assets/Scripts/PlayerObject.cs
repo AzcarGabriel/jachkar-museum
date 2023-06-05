@@ -12,13 +12,16 @@ public class PlayerObject : NetworkBehaviour
     public Camera playerCamera;
 
     public override void OnNetworkSpawn() {
-        if (!IsOwner) return;
-        
-        playerName.Value = ChatBehaviour.username;
-
-        if (IsLocalPlayer) {
-            playerCamera = GetComponentInChildren<Camera>();
+        playerCamera = GetComponentInChildren<Camera>();
+        if (IsOwner) {
             playerCamera.enabled = true;
+            playerName.Value = ChatBehaviour.username;
+            Debug.Log(playerCamera);
+            Debug.Log("Enabled");
+        } else {
+            playerCamera.enabled = false;
+            Debug.Log(playerCamera);
+            Debug.Log("Disabled");
         }
     }
 
@@ -26,19 +29,6 @@ public class PlayerObject : NetworkBehaviour
 
     [ServerRpc(RequireOwnership = false)]
     public void UpdatePlayerNameServerRpc(FixedString32Bytes newName) {
-        Debug.Log("Aqui");
         playerName.Value = newName;
-        OnUpdatePlayerNameClientRpc(playerName.Value);
     }
-
-    [ClientRpc]
-    public void OnUpdatePlayerNameClientRpc(FixedString32Bytes newName) {
-        Debug.Log(newName);
-    }
-
-    private void Awake() {
-        playerName.OnValueChanged += OnPlayerNameChanged;
-    }
-
-    private void OnPlayerNameChanged(FixedString32Bytes oldName, FixedString32Bytes newName) { }
 }
