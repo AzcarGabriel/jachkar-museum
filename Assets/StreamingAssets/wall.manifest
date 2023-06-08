@@ -1,0 +1,40 @@
+ManifestFileVersion: 0
+CRC: 134243726
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: a86ac24118852322abbd9fb9ee86b66a
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: d982dfa5a6b5c144f973791446268713
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 154
+  Script: {instanceID: 0}
+- Class: 156
+  Script: {instanceID: 0}
+- Class: 218
+  Script: {instanceID: 0}
+- Class: 1953259897
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Prefabs/Terrains And Buildings/WallTerrain.prefab
+- Assets/Prefabs/Terrains And Buildings/Walls.prefab
+Dependencies: []

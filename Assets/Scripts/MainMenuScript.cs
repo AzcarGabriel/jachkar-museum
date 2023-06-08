@@ -11,6 +11,7 @@ using Unity.Netcode;
 using TMPro;
 using FMGames.Scripts.Menu.Chat;
 using Unity.Collections;
+using Unity.Netcode.Transports.UTP;
 
 public class MainMenuScript : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class MainMenuScript : MonoBehaviour
     public GameObject loadScreen;
 
     [SerializeField] private GameObject inputUsernameField;
+    [SerializeField] private TMP_Text textField;
 
     private StoneService stoneService;
     private GameMode gameMode;
@@ -37,6 +39,31 @@ public class MainMenuScript : MonoBehaviour
         {
             StartCoroutine(this.stoneService.DownloadThumbs());
         }
+
+        Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 0;
+
+        string[] args = Environment.GetCommandLineArgs();
+        Debug.Log(args.Length);
+        for (int i = 0; i < args.Length; i++)
+        {
+            if (args[i] == "-dedicatedServer")
+            {
+                Console.WriteLine("Starting server...");
+                NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData("186.189.90.143", 8000);
+                NetworkManager.Singleton.StartServer();
+                Console.WriteLine("Server on");
+                break;
+            }
+        }
+
+    }
+
+    private void Awake()
+    {
+       
+
+
     }
 
     public void OpenScene(String name)
@@ -52,9 +79,9 @@ public class MainMenuScript : MonoBehaviour
             n = name;
         }
 
-        NetworkManager network = NetworkManager.Singleton;
-        enterScreen.SetActive(true);
-        network.SceneManager.LoadScene(n, LoadSceneMode.Single);
+        //NetworkManager network = NetworkManager.Singleton;
+        //enterScreen.SetActive(true);
+        SceneManager.LoadScene(n, LoadSceneMode.Single);
     }
 
     public void SetMode(String mode) 
@@ -75,6 +102,10 @@ public class MainMenuScript : MonoBehaviour
         FixedString32Bytes newName = inputUsernameField.GetComponent<TMP_InputField>().text;
         ChatBehaviour.username = newName;
         NetworkManager.Singleton.StartHost();
+    }
+
+    public void connectServer() {
+        NetworkManager.Singleton.StartServer();
     }
 
     public void Exit()

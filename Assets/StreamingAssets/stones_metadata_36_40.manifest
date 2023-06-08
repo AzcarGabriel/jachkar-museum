@@ -1,0 +1,21 @@
+ManifestFileVersion: 0
+CRC: 3010551155
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 719b14be68acd524782ae285a1005c89
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 5ad585dd02dfb5016c0dad519eab8f49
+HashAppended: 0
+ClassTypes:
+- Class: 49
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Prefabs/StonesMetadata/Stone37.xml
+- Assets/Prefabs/StonesMetadata/Stone40.xml
+- Assets/Prefabs/StonesMetadata/Stone39.xml
+- Assets/Prefabs/StonesMetadata/Stone38.xml
+- Assets/Prefabs/StonesMetadata/Stone36.xml
+Dependencies: []

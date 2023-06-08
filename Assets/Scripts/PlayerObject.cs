@@ -13,6 +13,7 @@ public class PlayerObject : NetworkBehaviour
 
     public override void OnNetworkSpawn() {
         playerCamera = GetComponentInChildren<Camera>();
+        Debug.Log(playerCamera);
         if (IsOwner) {
             playerCamera.enabled = true;
             playerName.Value = ChatBehaviour.username;
