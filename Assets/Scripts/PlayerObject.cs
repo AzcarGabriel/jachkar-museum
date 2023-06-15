@@ -25,12 +25,12 @@ public class PlayerObject : NetworkBehaviour
         if (IsOwner) {
             playerCamera.enabled = true;
             playerAudioListener.enabled = true;
-            playerModel.SetActive(false);
+            //playerModel.SetActive(false);
             playerName.Value = ChatBehaviour.username;
         } else {
             playerCamera.enabled = false;
             playerAudioListener.enabled = false;
-            playerModel.SetActive(true);
+            //playerModel.SetActive(true);
         }
     }
 
