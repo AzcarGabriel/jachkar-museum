@@ -32,6 +32,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private AudioClip m_JumpSound;           // the sound played when character leaves the ground.
         [SerializeField] private AudioClip m_LandSound;           // the sound played when character touches back on ground.
         [SerializeField] private Transform pingMarkPrefab;
+        [SerializeField] private Animator animator;
 
    
         private bool m_Jump;
@@ -206,6 +207,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void UpdateCameraPosition(float speed)
         {
+            if (!IsOwner) return;
             Vector3 newCameraPosition;
             if (!m_UseHeadBob)
             {
@@ -258,6 +260,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 StopAllCoroutines();
                 StartCoroutine(!m_IsWalking ? m_FovKick.FOVKickUp() : m_FovKick.FOVKickDown());
             }
+
+            animator.SetFloat("SpeedX", m_Input.x);
+            animator.SetFloat("SpeedZ", m_Input.y);
         }
 
 

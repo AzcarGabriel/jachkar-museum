@@ -44,25 +44,17 @@ public class MainMenuScript : MonoBehaviour
         QualitySettings.vSyncCount = 0;
 
         string[] args = Environment.GetCommandLineArgs();
-        Debug.Log(args.Length);
         for (int i = 0; i < args.Length; i++)
         {
             if (args[i] == "-dedicatedServer")
             {
                 Console.WriteLine("Starting server...");
-                NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData("186.189.90.143", 8000);
+                NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData("0.0.0.0", 25565);
                 NetworkManager.Singleton.StartServer();
                 Console.WriteLine("Server on");
                 break;
             }
         }
-
-    }
-
-    private void Awake()
-    {
-       
-
 
     }
 

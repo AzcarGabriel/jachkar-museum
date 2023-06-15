@@ -9,20 +9,28 @@ public class PlayerObject : NetworkBehaviour
 {
     private NetworkVariable<FixedString32Bytes> playerName = new NetworkVariable<FixedString32Bytes>("", NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public FixedString32Bytes PlayerName => playerName.Value;
-    public Camera playerCamera;
+    private Camera playerCamera;
+    private AudioListener playerAudioListener;
+
+    [SerializeField]
+    private GameObject playerModel;
+    
 
     public override void OnNetworkSpawn() {
         playerCamera = GetComponentInChildren<Camera>();
+        playerAudioListener = GetComponentInChildren<AudioListener>();
+        
+        
         Debug.Log(playerCamera);
         if (IsOwner) {
             playerCamera.enabled = true;
+            playerAudioListener.enabled = true;
+            playerModel.SetActive(false);
             playerName.Value = ChatBehaviour.username;
-            Debug.Log(playerCamera);
-            Debug.Log("Enabled");
         } else {
             playerCamera.enabled = false;
-            Debug.Log(playerCamera);
-            Debug.Log("Disabled");
+            playerAudioListener.enabled = false;
+            playerModel.SetActive(true);
         }
     }
 
