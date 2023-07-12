@@ -25,6 +25,7 @@ public class MainMenuScript : MonoBehaviour
 
     private StoneService stoneService;
     private GameMode gameMode;
+    private int selectedCharacter = -1;
     // private string connectionUserName;
 
     // Use this for initialization
@@ -83,21 +84,33 @@ public class MainMenuScript : MonoBehaviour
 
     public void connectClient() 
     {
-        if (gameMode != GameMode.Client) return;
         FixedString32Bytes newName = inputUsernameField.GetComponent<TMP_InputField>().text;
         ChatBehaviour.username = newName;
-        NetworkManager.Singleton.StartClient();
+        Debug.Log("Trying to connect client");
+        ServerManager.Instance.StartClient();
     }
 
     public void connectHost() {
-        if (gameMode != GameMode.Host) return;
         FixedString32Bytes newName = inputUsernameField.GetComponent<TMP_InputField>().text;
         ChatBehaviour.username = newName;
-        NetworkManager.Singleton.StartHost();
+        //NetworkManager.Singleton.StartHost();
+        Debug.Log("Creating host");
+        ServerManager.Instance.StartHost();
     }
 
     public void connectServer() {
         NetworkManager.Singleton.StartServer();
+    }
+
+
+    public void onConfirmClick() {
+        Debug.Log("Holiwis");
+        if (selectedCharacter < 0) return;
+        ServerManager.Instance.StoreCharacter(2, selectedCharacter);
+    }
+
+    public void preSelectCharacter(int index) {
+        selectedCharacter = index;
     }
 
     public void Exit()

@@ -4,7 +4,6 @@ using UnityStandardAssets.CrossPlatformInput;
 using UnityStandardAssets.Utility;
 using Random = UnityEngine.Random;
 using Unity.Netcode;
-using Cinemachine;
 using UnityEngine.EventSystems;
 
 namespace UnityStandardAssets.Characters.FirstPerson
@@ -31,7 +30,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private AudioClip[] m_FootstepSounds;    // an array of footstep sounds that will be randomly selected from.
         [SerializeField] private AudioClip m_JumpSound;           // the sound played when character leaves the ground.
         [SerializeField] private AudioClip m_LandSound;           // the sound played when character touches back on ground.
-        [SerializeField] private Transform pingMarkPrefab;
+        [SerializeField] private GameObject pingMarkPrefab;
         [SerializeField] private Animator animator;
 
    
@@ -288,13 +287,18 @@ namespace UnityStandardAssets.Characters.FirstPerson
             body.AddForceAtPosition(m_CharacterController.velocity*0.1f, hit.point, ForceMode.Impulse);
         }
 
-        [ServerRpc]
+        [ServerRpc(RequireOwnership = false)]
         public void spawnMarkServerRPC(Vector3 position, ulong clientId) {
             NetworkManager networkManager = NetworkManager.Singleton;
-            Transform instantiatedPing = Instantiate(pingMarkPrefab, position, Quaternion.identity);
+            PlayerObject player = networkManager.ConnectedClients[clientId].PlayerObject.GetComponent<PlayerObject>();
+            GameObject instantiatedPing = Instantiate(pingMarkPrefab, position, Quaternion.identity);
+            instantiatedPing.GetComponent<MarkPing>().setPlayerName(player.PlayerName);
             instantiatedPing.GetComponent<NetworkObject>().Spawn(true);
-            networkManager.ConnectedClients[clientId].PlayerObject.GetComponent<PlayerObject>();
- 
         }
+
+        /*[ClientRpc]
+        public void setMarkNameClientRPC(GameObject instantiatedPing) {
+
+        }*/
     }
 }

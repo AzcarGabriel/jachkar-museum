@@ -21,7 +21,6 @@ public class PlayerObject : NetworkBehaviour
         playerAudioListener = GetComponentInChildren<AudioListener>();
         
         
-        Debug.Log(playerCamera);
         if (IsOwner) {
             playerCamera.enabled = true;
             playerAudioListener.enabled = true;
@@ -30,7 +29,7 @@ public class PlayerObject : NetworkBehaviour
         } else {
             playerCamera.enabled = false;
             playerAudioListener.enabled = false;
-            //playerModel.SetActive(true);
+            playerModel.SetActive(true);
         }
     }
 
