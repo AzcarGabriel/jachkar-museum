@@ -11,6 +11,7 @@ public class CameraChange : MonoBehaviour
     [SerializeField] private Texture2D cursorTexture;
     [SerializeField] private CursorMode cursorMode = CursorMode.Auto;
     [SerializeField] private Vector2 hotSpot = Vector2.zero;
+    [SerializeField] private GameObject chat;
 
     //public GameObject FPS;
     public static List<GameObject> playersList;
@@ -71,6 +72,7 @@ public class CameraChange : MonoBehaviour
                 addStoneMenu.SetActive(false);
                 saveButtons.SetActive(true);
                 showMoreButtons.SetActive(true);
+                chat.SetActive(false);
             }
 
             if (Input.GetKey("p"))

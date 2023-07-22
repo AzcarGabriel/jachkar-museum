@@ -15,7 +15,7 @@ namespace FMGames.Scripts.Menu.Chat
         [SerializeField] private TMP_InputField chatInputField;
         [SerializeField] private ScrollRect scroll;
 
-        static public FixedString32Bytes username = "";
+        //static public FixedString32Bytes username = "";
 
         private const int MaxNumberOfMessagesInList = 20;
         private List<ChatMessage> _messages;
@@ -88,10 +88,14 @@ namespace FMGames.Scripts.Menu.Chat
         [ServerRpc(RequireOwnership = false)]
         private void SendChatMessageServerRpc(string message, ulong senderPlayerId)
         {
-            NetworkManager networkManager = NetworkManager.Singleton;
-            PlayerObject playerObject = networkManager.ConnectedClients[senderPlayerId].PlayerObject.GetComponent<PlayerObject>();
-            FixedString32Bytes name = playerObject.PlayerName;
-            ReceiveChatMessageClientRpc(message, name);
+            FixedString32Bytes username = "Name";
+            if (ServerManager.Instance.ClientData.TryGetValue(senderPlayerId, out ClientData clientData)) {
+                username = clientData.username;
+            }
+            else {
+                Debug.LogError("Couldn't find searched client data");
+            }
+            ReceiveChatMessageClientRpc(message, username);
         }
     }
 }

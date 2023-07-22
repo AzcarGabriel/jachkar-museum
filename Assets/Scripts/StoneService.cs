@@ -40,12 +40,6 @@ public class StoneService : MonoBehaviour
     public string thumbsBundleName = "stones_thumbs";
     private const string domain = "https://saduewa.dcc.uchile.cl/museum/AssetBundles/";
 
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-
     public IEnumerator DownloadThumbs(Action doLast = null)
     {
         yield return StartCoroutine(this.DownloadBundle(new BundleName(this.thumbsBundleName)));
@@ -56,7 +50,7 @@ public class StoneService : MonoBehaviour
     }
 
     public IEnumerator SpawnStoneWithPositionAndRotation(int stoneId, Vector3 sp, Quaternion rt, Action doLast = null)
-    {
+    {   
         // Check if the stone is already downloaded
         GameObject stone = this.SearchStone(stoneId);
 
@@ -69,6 +63,7 @@ public class StoneService : MonoBehaviour
 
         float scale = StoneSpawnHelper.GetStoneScaleById(stoneId);
         GameObject obj = Instantiate(this.SearchStone(stoneId), sp, rt);
+        Debug.Log("Aquí :)");
         obj.transform.localScale *= scale;
 
         doLast?.Invoke();

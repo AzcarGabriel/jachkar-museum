@@ -101,7 +101,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 if (Physics.Raycast(ray, out hit)) {
                     if (hit.collider != null) {
                         Vector3 spawnPosition = hit.point;
-                        spawnMarkServerRPC(spawnPosition, OwnerClientId);   
+                        spawnMarkServerRPC(spawnPosition);   
                     }
                 }
             }
@@ -288,12 +288,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
         }
 
         [ServerRpc(RequireOwnership = false)]
-        public void spawnMarkServerRPC(Vector3 position, ulong clientId) {
+        public void spawnMarkServerRPC(Vector3 position, ServerRpcParams serverRpcParams = default) {
             NetworkManager networkManager = NetworkManager.Singleton;
-            PlayerObject player = networkManager.ConnectedClients[clientId].PlayerObject.GetComponent<PlayerObject>();
+            string username = ServerManager.Instance.ClientData[serverRpcParams.Receive.SenderClientId].username;
             GameObject instantiatedPing = Instantiate(pingMarkPrefab, position, Quaternion.identity);
-            instantiatedPing.GetComponent<MarkPing>().setPlayerName(player.PlayerName);
-            instantiatedPing.GetComponent<NetworkObject>().Spawn(true);
+            instantiatedPing.GetComponent<MarkPing>().setPlayerName(username);
+            instantiatedPing.GetComponent<NetworkObject>().SpawnWithOwnership(serverRpcParams.Receive.SenderClientId, true);
         }
 
         /*[ClientRpc]

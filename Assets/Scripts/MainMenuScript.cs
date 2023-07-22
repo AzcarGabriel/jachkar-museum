@@ -20,12 +20,8 @@ public class MainMenuScript : MonoBehaviour
     public GameObject enterScreen;
     public GameObject loadScreen;
 
-    [SerializeField] private GameObject inputUsernameField;
-    [SerializeField] private TMP_Text textField;
-
     private StoneService stoneService;
     private GameMode gameMode;
-    private int selectedCharacter = -1;
     // private string connectionUserName;
 
     // Use this for initialization
@@ -51,7 +47,7 @@ public class MainMenuScript : MonoBehaviour
             {
                 Console.WriteLine("Starting server...");
                 NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData("0.0.0.0", 25565);
-                NetworkManager.Singleton.StartServer();
+                ServerManager.Instance.StartServer();
                 Console.WriteLine("Server on");
                 break;
             }
@@ -59,58 +55,8 @@ public class MainMenuScript : MonoBehaviour
 
     }
 
-    public void OpenScene(String name)
-    {
-        string[] tokens = name.Split('/');
-        string n;
-        if (1 < tokens.Length)
-        {
-            n = tokens[1];
-        }
-        else
-        {
-            n = name;
-        }
-
-        //NetworkManager network = NetworkManager.Singleton;
-        //enterScreen.SetActive(true);
-        SceneManager.LoadScene(n, LoadSceneMode.Single);
-    }
-
-    public void SetMode(String mode) 
-    {
-        gameMode = (GameMode)Enum.Parse(typeof(GameMode), mode);
-    }
-
-    public void connectClient() 
-    {
-        FixedString32Bytes newName = inputUsernameField.GetComponent<TMP_InputField>().text;
-        ChatBehaviour.username = newName;
-        Debug.Log("Trying to connect client");
-        ServerManager.Instance.StartClient();
-    }
-
-    public void connectHost() {
-        FixedString32Bytes newName = inputUsernameField.GetComponent<TMP_InputField>().text;
-        ChatBehaviour.username = newName;
-        //NetworkManager.Singleton.StartHost();
-        Debug.Log("Creating host");
-        ServerManager.Instance.StartHost();
-    }
-
-    public void connectServer() {
-        NetworkManager.Singleton.StartServer();
-    }
-
-
-    public void onConfirmClick() {
-        Debug.Log("Holiwis");
-        if (selectedCharacter < 0) return;
-        ServerManager.Instance.StoreCharacter(2, selectedCharacter);
-    }
-
-    public void preSelectCharacter(int index) {
-        selectedCharacter = index;
+    public void LoadMultiPlayer() {
+        SceneManager.LoadScene("OnlineMenu", LoadSceneMode.Single);
     }
 
     public void Exit()
