@@ -34,7 +34,8 @@ public class SceneScripts : MonoBehaviour
     public LayoutGroup addStoneMenuGrid;
     private bool overwrite = false;
     private StoneService stoneService;
-    public List<FirstPersonController> playerList;
+
+    [SerializeField] private NetworkStoneSpawner networkStoneSpawner; 
 
     // Use this for initialization
     void Start() {
@@ -91,7 +92,8 @@ public class SceneScripts : MonoBehaviour
     {
         Quaternion rt = StoneSpawnHelper.GetStoneRotationById(stoneId);
         Vector3 sp = spawnPoint.position + StoneSpawnHelper.GetStoneSpawnPointOffsetById(stoneId);
-        StartCoroutine(this.stoneService.SpawnStoneWithPositionAndRotation(stoneId, sp, rt));
+        //StartCoroutine(this.stoneService.SpawnStoneWithPositionAndRotation(stoneId, sp, rt));
+        networkStoneSpawner.SpawnStoneServerRpc(stoneId, sp, rt);
     }
 
     public void ShowMenus()

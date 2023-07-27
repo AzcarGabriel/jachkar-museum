@@ -56,6 +56,7 @@ public class StoneService : MonoBehaviour
 
         if (null == stone)
         {
+            Debug.Log("Fue nulo");
             // If not, download it
             BundleName bundleName = CalculateAssetBundleNameByStoneIndex(stoneId);
             yield return StartCoroutine(this.DownloadBundle(bundleName));
