@@ -56,7 +56,6 @@ public class StoneService : MonoBehaviour
 
         if (null == stone)
         {
-            Debug.Log("Fue nulo");
             // If not, download it
             BundleName bundleName = CalculateAssetBundleNameByStoneIndex(stoneId);
             yield return StartCoroutine(this.DownloadBundle(bundleName));
@@ -64,9 +63,10 @@ public class StoneService : MonoBehaviour
 
         float scale = StoneSpawnHelper.GetStoneScaleById(stoneId);
         GameObject obj = Instantiate(this.SearchStone(stoneId), sp, rt);
-        Debug.Log("Aquí :)");
         obj.transform.localScale *= scale;
 
+        // add the spawned stone to the list
+        ServerManager.Instance.AddSpawnedStone(stoneId, obj);
         doLast?.Invoke();
     }
 

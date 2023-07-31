@@ -17,6 +17,9 @@ public class SelectionScript : MonoBehaviour
 
     private Vector3 deltaHitdef;
 
+    [SerializeField]
+    private NetworkStoneSpawner networkStoneSpawner;
+
     // Use this for initialization
     void Start () {
         panPosition = new Vector3(0.0f, 0.0f);
@@ -125,6 +128,10 @@ public class SelectionScript : MonoBehaviour
                         hitPoint += selection.position - hitPoint + deltaHitdef;
                         deltaHitdef = terrainHit.point;
                         selection.position = hitPoint;
+                        Debug.Log("Moviendo piedra2");
+                        Debug.Log(hitPoint);
+                        int stoneId = ServerManager.Instance.GetIdByStone(selection.gameObject);
+                        networkStoneSpawner.MoveStoneServerRpc(stoneId, hitPoint);
                     }
                 }
             }

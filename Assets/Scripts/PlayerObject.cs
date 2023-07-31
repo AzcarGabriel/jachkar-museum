@@ -16,17 +16,20 @@ public class PlayerObject : NetworkBehaviour
     private GameObject playerModel;
     
 
-    public override void OnNetworkSpawn() {
+    public override void OnNetworkSpawn()
+    { 
         playerCamera = GetComponentInChildren<Camera>();
         playerAudioListener = GetComponentInChildren<AudioListener>();
         
-        
-        if (IsOwner) {
+        if (IsOwner)
+        { 
             playerCamera.enabled = true;
             playerAudioListener.enabled = true;
             //playerModel.SetActive(false);
             playerModel.transform.localScale = new Vector3(0, 0, 0);
-        } else {
+        } 
+        else
+        { 
             playerCamera.enabled = false;
             playerAudioListener.enabled = false;
             playerModel.SetActive(true);
@@ -35,8 +38,10 @@ public class PlayerObject : NetworkBehaviour
 
 
 
+
     [ServerRpc(RequireOwnership = false)]
-    public void UpdatePlayerNameServerRpc(FixedString32Bytes newName) {
+    public void UpdatePlayerNameServerRpc(FixedString32Bytes newName)
+    { 
         playerName.Value = newName;
     }
 }
