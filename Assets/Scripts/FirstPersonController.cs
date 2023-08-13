@@ -81,6 +81,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 PlayLandingSound();
                 m_MoveDir.y = 0f;
                 m_Jumping = false;
+                animator.SetBool("Is Jumping", false);
             }
             if (!m_CharacterController.isGrounded && !m_Jumping && m_PreviouslyGrounded)
             {
@@ -146,6 +147,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                     PlayJumpSound();
                     m_Jump = false;
                     m_Jumping = true;
+                    animator.SetBool("Is Jumping", true);
                 }
             }
             else
@@ -156,6 +158,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             ProgressStepCycle(speed);
             UpdateCameraPosition(speed);
+            animator.SetFloat("SpeedY", m_MoveDir.y);
 
             m_MouseLook.UpdateCursorLock();
         }

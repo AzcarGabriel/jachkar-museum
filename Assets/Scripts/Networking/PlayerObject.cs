@@ -20,13 +20,13 @@ public class PlayerObject : NetworkBehaviour
     { 
         playerCamera = GetComponentInChildren<Camera>();
         playerAudioListener = GetComponentInChildren<AudioListener>();
-        
+        playerModel.SetActive(true);
         if (IsOwner)
         { 
             playerCamera.enabled = true;
             playerAudioListener.enabled = true;
             //playerModel.SetActive(false);
-            playerModel.transform.localScale = new Vector3(0, 0, 0);
+            //playerModel.transform.localScale = new Vector3(0, 0, 0);
         } 
         else
         { 
