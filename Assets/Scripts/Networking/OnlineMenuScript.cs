@@ -9,18 +9,7 @@ public class OnlineMenuScript : NetworkBehaviour
     [SerializeField] private TMP_Text textField;
 
     public void OpenScene(String name) {
-        string[] tokens = name.Split('/');
-        string n;
-        if (1 < tokens.Length) {
-            n = tokens[1];
-        }
-        else {
-            n = name;
-        }
-
-        //NetworkManager network = NetworkManager.Singleton;
-        //enterScreen.SetActive(true);
-        NetworkManager.Singleton.SceneManager.LoadScene(n, LoadSceneMode.Single);
+        ServerManager.Instance.OpenScene(name);
     }
 
     public void preSelectCharacter(int index) {

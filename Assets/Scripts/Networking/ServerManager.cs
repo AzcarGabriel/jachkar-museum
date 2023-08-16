@@ -90,6 +90,22 @@ public class ServerManager : NetworkBehaviour
         spawnedStones.Add(newId, newData);
     }
 
+    public void OpenScene(String name)
+    {
+        string[] tokens = name.Split('/');
+        string n;
+        if (1 < tokens.Length)
+        {
+            n = tokens[1];
+        }
+        else
+        {
+            n = name;
+        }
+
+        NetworkManager.Singleton.SceneManager.LoadScene(n, LoadSceneMode.Single);
+    }
+
     private void ApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
     { 
         response.Approved = true; // accept everything for the moment
