@@ -9,7 +9,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
 using TMPro;
-using FMGames.Scripts.Menu.Chat;
 using Unity.Collections;
 using Unity.Netcode.Transports.UTP;
 
