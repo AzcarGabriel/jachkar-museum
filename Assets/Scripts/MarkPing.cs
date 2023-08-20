@@ -17,7 +17,9 @@ public class MarkPing : NetworkBehaviour
     public override void OnNetworkSpawn() {
         Invoke("DestroyPingServerRPC", pingDuration);
 
-        if (IsServer) { // if this doesn't work in a dedicated server try to update it by itself with a server rpc
+        if (IsServer) 
+        { 
+            // if this doesn't work in a dedicated server try to update it by itself with a server rpc
             username.Value = playerName;
         }
     }

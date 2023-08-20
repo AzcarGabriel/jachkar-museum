@@ -52,7 +52,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
             DontDestroyOnLoad(gameObject);
             m_CharacterController = GetComponent<CharacterController>();
-            //m_Camera = Camera.main;
+            m_Camera = GetComponentInChildren<Camera>();
             m_OriginalCameraPosition = m_Camera.transform.localPosition;
             m_FovKick.Setup(m_Camera);
             m_HeadBob.Setup(m_Camera, m_StepInterval);
@@ -69,6 +69,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
             if (EventSystem.current.currentSelectedGameObject != null) return;
             RotateView();
+
+            if (StaticValues.should_lock) {
+                StaticValues.should_lock = false;
+                m_MouseLook.SetLocked(true);
+                Debug.Log("Locking...");
+            }
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump)
             {
@@ -122,8 +128,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             if (!IsOwner) return;
             if (EventSystem.current.currentSelectedGameObject != null) return;
 
-            float speed;
-            GetInput(out speed);
+            GetInput(out float speed);
             // always move along the camera forward as it is the direction that it being aimed at
             Vector3 desiredMove = transform.forward*m_Input.y + transform.right*m_Input.x;
 
@@ -291,17 +296,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
         }
 
         [ServerRpc(RequireOwnership = false)]
-        public void spawnMarkServerRPC(Vector3 position, ServerRpcParams serverRpcParams = default) {
-            NetworkManager networkManager = NetworkManager.Singleton;
+        public void spawnMarkServerRPC(Vector3 position, ServerRpcParams serverRpcParams = default) 
+        {
             string username = ServerManager.Instance.ClientData[serverRpcParams.Receive.SenderClientId].username;
             GameObject instantiatedPing = Instantiate(pingMarkPrefab, position, Quaternion.identity);
             instantiatedPing.GetComponent<MarkPing>().setPlayerName(username);
             instantiatedPing.GetComponent<NetworkObject>().SpawnWithOwnership(serverRpcParams.Receive.SenderClientId, true);
         }
-
-        /*[ClientRpc]
-        public void setMarkNameClientRPC(GameObject instantiatedPing) {
-
-        }*/
     }
 }

@@ -63,7 +63,7 @@ public class CameraChange : MonoBehaviour
 
             if (Input.GetKey("t"))
             {
-                // FPS.SetActive(false);
+                StaticValues.self_fps.SetActive(false);
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
                 mainView.enabled = false;
@@ -77,7 +77,7 @@ public class CameraChange : MonoBehaviour
 
             if (Input.GetKey("p"))
             {
-                // FPS.SetActive(true);
+                StaticValues.self_fps.SetActive(true);
                 mainView.enabled = true;
                 topView.enabled = false;
                 Cursor.visible = false;

@@ -25,7 +25,9 @@ public class PlayerObject : NetworkBehaviour
             playerCamera.enabled = true;
             playerAudioListener.enabled = true;
             //playerModel.SetActive(false);
-            //playerModel.transform.localScale = new Vector3(0, 0, 0);
+            playerModel.transform.localScale = new Vector3(0, 0, 0);
+            StaticValues.self_fps =transform.gameObject;
+
         } 
         else
         { 

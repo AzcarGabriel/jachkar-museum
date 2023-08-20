@@ -44,6 +44,12 @@ public class SmoothCameraPositionChange : MonoBehaviour
         RaycastHit hit;
         Vector3 pond = new Vector3(0.0f, 1.0f, 20.0f);
 
+        if (StaticValues.should_enable) 
+        {
+            StaticValues.should_enable = false;
+            fps.enabled = true;
+        }
+
         if (Input.GetKeyDown("e") && !fps.enabled)
         {
             targetGameObject = null;
@@ -67,7 +73,6 @@ public class SmoothCameraPositionChange : MonoBehaviour
                     StaticValues.stone_name = name;
                     // mainCamera.SetActive(false);
                     SceneManager.LoadScene("StoneDetails", LoadSceneMode.Additive);
-                    // NetworkManager.Singleton.SceneManager.LoadScene("StoneDetails", LoadSceneMode.Single);
                 }
             }
             else
