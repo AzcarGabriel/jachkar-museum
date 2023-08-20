@@ -71,6 +71,7 @@ public class ChatBehaviour : NetworkBehaviour
             
             
         msg.SetMessage(senderPlayerUsername, message);
+        Debug.Log("Instantiated");
 
         _messages.Add(msg);
 
@@ -84,6 +85,7 @@ public class ChatBehaviour : NetworkBehaviour
     [ClientRpc]
     private void ReceiveChatMessageClientRpc(string message, FixedString32Bytes senderPlayerUsername)
     {
+        Debug.Log("Mensaje recibido: " + message);
         AddMessage(message, senderPlayerUsername);
     }
 

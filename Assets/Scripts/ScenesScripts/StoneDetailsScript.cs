@@ -74,6 +74,7 @@ public class StoneDetailsScript : MonoBehaviour
         {
             StaticValues.should_lock = true;
             StaticValues.should_enable = true;
+            Destroy(stone);
             SceneManager.UnloadSceneAsync("StoneDetails");
             
         }
