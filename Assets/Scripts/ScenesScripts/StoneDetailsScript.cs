@@ -11,7 +11,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Xml;
-using Unity.Netcode;
 
 public class StoneDetailsScript : MonoBehaviour
 {
@@ -85,12 +84,12 @@ public class StoneDetailsScript : MonoBehaviour
         float scale = StoneSpawnHelper.GetStoneScaleById(stoneId);
         Vector3 pos = this.stone.transform.position;
         Quaternion q = StoneSpawnHelper.GetStoneRotationById(stoneId);
-        StartCoroutine(this.stoneService.SpawnStoneWithPositionAndRotation(stoneId, pos, q, FinishConfig));
+        StartCoroutine(this.stoneService.SpawnStoneWithPositionAndRotation(stoneId, pos, q, FinishConfig, true));
     }
 
     public void FinishConfig()
     {
-        FindStoneObject(StaticValues.stone_name);
+        FindStoneObject("detailStone");
         loadXml(StaticValues.stone_name);
     }
 
@@ -152,7 +151,8 @@ public class StoneDetailsScript : MonoBehaviour
 
     private void FindStoneObject(string stoneName)
     {
-        foreach (GameObject obj in GameObject.FindObjectsOfType<GameObject>())
+        Debug.Log("Doing last");
+        foreach (GameObject obj in FindObjectsOfType<GameObject>())
         {
             if (obj.name.Contains(stoneName))
             {

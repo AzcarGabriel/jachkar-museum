@@ -1,14 +1,13 @@
-using System.Collections;
 using UnityEngine;
 using Unity.Netcode;
-using System;
-using System.IO;
-using UnityEngine.Networking;
 
 [RequireComponent(typeof(StoneService))]
 public class NetworkStoneSpawner : NetworkBehaviour
 {
     StoneService stoneService;
+
+    [SerializeField]
+    private Transform stones;
     private void Awake()
     {
         stoneService = GetComponent<StoneService>();
@@ -20,30 +19,64 @@ public class NetworkStoneSpawner : NetworkBehaviour
         SpawnStoneClientRpc(stoneId, sp, rt);
     }
 
+    public override void OnNetworkSpawn()
+    {
+        StoreInitialStones();
+    }
+
+    private void StoreInitialStones()
+    {
+        if (stones == null)
+        {
+            Debug.LogWarning("No initial stones?");
+            return;
+        }
+        foreach(Transform stonesTransform in stones)
+        {
+            if (IsServer)
+            {
+                GameObject stoneObject = stonesTransform.gameObject;
+                Debug.Log(stoneObject.name);
+                ServerManager.Instance.AddSpawnedStone(int.Parse(stoneObject.name.Replace("Stone", "")), stoneObject);
+            }
+            else Destroy(stonesTransform.gameObject);
+        }
+
+    }
+
     [ClientRpc]
     public void SpawnStoneClientRpc(int stoneId, Vector3 sp, Quaternion rt)
     {
-        Debug.Log("Trying to spawn: " + stoneId.ToString());
         StartCoroutine(stoneService.SpawnStoneWithPositionAndRotation(stoneId, sp, rt));
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void MoveStoneServerRpc(int stoneId, Vector3 sp, ServerRpcParams serverRpcParams = default)
+    public void DeleteStoneServerRpc(int stoneId)
     {
-        MoveStoneClientRpc(stoneId, sp, serverRpcParams.Receive.SenderClientId);
+        DeleteStoneClientRpc(stoneId);
     }
 
     [ClientRpc]
-    public void MoveStoneClientRpc(int stoneId, Vector3 sp, ulong originalSender, ClientRpcParams clientRpcParams = default)
+    public void DeleteStoneClientRpc(int stoneId)
     {
-        Debug.Log(originalSender);
+        ServerManager.Instance.RemoveSpawnedStone(stoneId);
+    }
 
-        if (NetworkManager.Singleton.LocalClientId == originalSender)
-        {
-            Debug.Log("Yo estoy moviendo");
-            return;
-        }
-        Debug.Log("El otro está moviendo");
-        ServerManager.Instance.MoveStoneById(stoneId, sp);
+    public void UpdateStone(int stoneId, Transform tf)
+    {
+        UpdateStoneServerRpc(stoneId, tf.position, tf.rotation, tf.localScale);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void UpdateStoneServerRpc(int stoneId, Vector3 sp, Quaternion rot, Vector3 scl, ServerRpcParams serverRpcParams = default)
+    {
+        UpdateStoneClientRpc(stoneId, sp, rot, scl, serverRpcParams.Receive.SenderClientId);
+    }
+
+    [ClientRpc]
+    public void UpdateStoneClientRpc(int stoneId, Vector3 sp, Quaternion rot, Vector3 scl, ulong originalSender, ClientRpcParams clientRpcParams = default)
+    {
+        if (NetworkManager.Singleton.LocalClientId == originalSender) return;
+        ServerManager.Instance.UpdateTransform(stoneId, sp, rot, scl);
     }
 }

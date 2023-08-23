@@ -16,4 +16,5 @@ public class StaticValues : MonoBehaviour
     public static bool should_lock = false;
     public static bool should_enable = false;
     public static GameObject self_fps;
+    public static bool isServer = false;
 }

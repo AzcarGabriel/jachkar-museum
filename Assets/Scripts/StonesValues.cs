@@ -13,14 +13,4 @@ public class StonesValues : MonoBehaviour
     public static List<AssetBundle> assetBundles = new List<AssetBundle>();
     public static List<AssetBundle> metadataAssetBundles = new List<AssetBundle>();
     public static int bundleSize = 5;
-
-    void Start()
-    {
-
-    }
-
-    void Update()
-    {
-
-    }
 }

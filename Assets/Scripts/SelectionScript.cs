@@ -128,10 +128,8 @@ public class SelectionScript : MonoBehaviour
                         hitPoint += selection.position - hitPoint + deltaHitdef;
                         deltaHitdef = terrainHit.point;
                         selection.position = hitPoint;
-                        Debug.Log("Moviendo piedra2");
-                        Debug.Log(hitPoint);
                         int stoneId = ServerManager.Instance.GetIdByStone(selection.gameObject);
-                        networkStoneSpawner.MoveStoneServerRpc(stoneId, hitPoint);
+                        networkStoneSpawner.UpdateStone(stoneId, selection);
                     }
                 }
             }
@@ -147,7 +145,9 @@ public class SelectionScript : MonoBehaviour
     public void rotateUP(){
         if (rotation != null)
         {
-            rotation.transform.Rotate(Vector3.forward, 20.0f);
+            rotation.Rotate(Vector3.forward, 20.0f);
+            int stoneId = ServerManager.Instance.GetIdByStone(rotation.gameObject);
+            networkStoneSpawner.UpdateStone(stoneId, rotation);
         }
     }
 
@@ -155,7 +155,9 @@ public class SelectionScript : MonoBehaviour
     {
         if (rotation != null)
         {
-            rotation.transform.Rotate(Vector3.forward, -20.0f);
+            rotation.Rotate(Vector3.forward, -20.0f);
+            int stoneId = ServerManager.Instance.GetIdByStone(rotation.gameObject);
+            networkStoneSpawner.UpdateStone(stoneId, rotation);
         }
     }
 
@@ -163,7 +165,9 @@ public class SelectionScript : MonoBehaviour
     {
         if (rotation != null)
         {
-            Destroy(rotation.gameObject);
+            int stoneId = ServerManager.Instance.GetIdByStone(rotation.gameObject);
+            if (stoneId == 0) Destroy(rotation.gameObject); // Pre spawned stone from asset bundle
+            else networkStoneSpawner.DeleteStoneServerRpc(stoneId); // Spawned after connection stone
         }
     }
 }

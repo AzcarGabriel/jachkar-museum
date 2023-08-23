@@ -79,7 +79,7 @@ public class SceneScripts : MonoBehaviour
             Image image = thumb.AddComponent<Image>();
             image.sprite = sprite;
             Button button = thumb.AddComponent<Button>();
-            button.onClick.AddListener(() => SpawnStone(Int32.Parse(sprite.name)));
+            button.onClick.AddListener(() => SpawnStone(int.Parse(sprite.name)));
             thumb.AddComponent<LayoutElement>();
 
             // Scroll
@@ -92,7 +92,6 @@ public class SceneScripts : MonoBehaviour
     {
         Quaternion rt = StoneSpawnHelper.GetStoneRotationById(stoneId);
         Vector3 sp = spawnPoint.position + StoneSpawnHelper.GetStoneSpawnPointOffsetById(stoneId);
-        //StartCoroutine(this.stoneService.SpawnStoneWithPositionAndRotation(stoneId, sp, rt));
         networkStoneSpawner.SpawnStoneServerRpc(stoneId, sp, rt);
     }
 

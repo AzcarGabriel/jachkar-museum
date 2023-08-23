@@ -25,18 +25,18 @@ public class ClientConnectBehaviour : NetworkBehaviour
         // Spawning selected character
         int characterId = ServerManager.Instance.preSelectedCharacter;
         string username = ServerManager.Instance.username;
-        spawnPlayerCharacterServerRpc(characterId);
-        addPlayerServerRpc(username, characterId);
+        SpawnPlayerCharacterServerRpc(characterId);
+        AddPlayerServerRpc(username, characterId);
 
         // Getting all already spawned stones
         Debug.Log("Rquesting stones to server...");
-        requestStonesServerRpc();
+        RequestStonesServerRpc();
 
         base.OnNetworkSpawn();
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void spawnPlayerCharacterServerRpc(int characterId, ServerRpcParams serverRpcParams = default)
+    private void SpawnPlayerCharacterServerRpc(int characterId, ServerRpcParams serverRpcParams = default)
     {
         var character = characterDatabase.GetCharacterById(characterId);
         if (character != null)
@@ -51,13 +51,13 @@ public class ClientConnectBehaviour : NetworkBehaviour
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void addPlayerServerRpc(string username, int characterId, ServerRpcParams serverRpcParams = default)
+    private void AddPlayerServerRpc(string username, int characterId, ServerRpcParams serverRpcParams = default)
     {
-        ServerManager.Instance.addClientData(username, characterId, serverRpcParams.Receive.SenderClientId);
+        ServerManager.Instance.AddClientData(username, characterId, serverRpcParams.Receive.SenderClientId);
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void requestStonesServerRpc(ServerRpcParams serverRpcParams = default)
+    private void RequestStonesServerRpc(ServerRpcParams serverRpcParams = default)
     {
         ClientRpcParams clientRpcParams = new ClientRpcParams
         {

@@ -26,8 +26,7 @@ public class PlayerObject : NetworkBehaviour
             playerAudioListener.enabled = true;
             //playerModel.SetActive(false);
             playerModel.transform.localScale = new Vector3(0, 0, 0);
-            StaticValues.self_fps =transform.gameObject;
-
+            StaticValues.self_fps = transform.gameObject;
         } 
         else
         { 

@@ -58,11 +58,13 @@ public class ServerManager : NetworkBehaviour
         NetworkManager.Singleton.SceneManager.SetClientSynchronizationMode(LoadSceneMode.Single);
     }
 
-    public void addClientData(string username, int characterId, ulong clientId)
-    { 
-        ClientData new_client_data = new ClientData(clientId);
-        new_client_data.characterId = characterId;
-        new_client_data.username = username;
+    public void AddClientData(string username, int characterId, ulong clientId)
+    {
+        ClientData new_client_data = new(clientId)
+        {
+            characterId = characterId,
+            username = username
+        };
 
         ClientData.Add(clientId, new_client_data);
     }
@@ -77,17 +79,27 @@ public class ServerManager : NetworkBehaviour
         return spawnedStones.FirstOrDefault(entry => EqualityComparer<GameObject>.Default.Equals(entry.Value.prefab, stone)).Key;
     }
 
-    public void MoveStoneById(int id, Vector3 newPosition)
+    public void UpdateTransform(int stoneId, Vector3 newPosition, Quaternion newRotation, Vector3 newScale)
     {
-        GameObject stone = GetStoneInstanceById(id);
+        GameObject stone = GetStoneInstanceById(stoneId);
         stone.transform.position = newPosition;
+        stone.transform.rotation = newRotation;
+        stone.transform.localScale = newScale;
     }
 
     public void AddSpawnedStone(int assetId, GameObject stone)
     {
         int newId = spawnedStones.Count + 1;
-        StoneAssetData newData = new StoneAssetData { assetId = assetId, prefab = stone };
+        StoneAssetData newData = new() { assetId = assetId, prefab = stone };
         spawnedStones.Add(newId, newData);
+    }
+
+    public void RemoveSpawnedStone(int stoneId)
+    {
+        GameObject stone = GetStoneInstanceById(stoneId);
+        Destroy(stone);
+        spawnedStones.Remove(stoneId);
+
     }
 
     public void OpenScene(String name)

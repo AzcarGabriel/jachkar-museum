@@ -43,13 +43,10 @@ public class StoneService : MonoBehaviour
     public IEnumerator DownloadThumbs(Action doLast = null)
     {
         yield return StartCoroutine(this.DownloadBundle(new BundleName(this.thumbsBundleName)));
-        if (null != doLast)
-        {
-            doLast();
-        }
+        doLast?.Invoke();
     }
 
-    public IEnumerator SpawnStoneWithPositionAndRotation(int stoneId, Vector3 sp, Quaternion rt, Action doLast = null)
+    public IEnumerator SpawnStoneWithPositionAndRotation(int stoneId, Vector3 sp, Quaternion rt, Action doLast = null, bool isDetailStone = false)
     {   
         // Check if the stone is already downloaded
         GameObject stone = this.SearchStone(stoneId);
@@ -66,7 +63,8 @@ public class StoneService : MonoBehaviour
         obj.transform.localScale *= scale;
 
         // add the spawned stone to the list
-        ServerManager.Instance.AddSpawnedStone(stoneId, obj);
+        if (!isDetailStone) ServerManager.Instance.AddSpawnedStone(stoneId, obj);
+        else obj.name = "detailStone";
         doLast?.Invoke();
     }
 
