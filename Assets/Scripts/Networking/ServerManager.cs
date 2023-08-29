@@ -1,10 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.SceneManagement;
 using System;
 using System.Linq;
+using Unity.Netcode.Transports.UTP;
 
 public class ServerManager : NetworkBehaviour
 {
@@ -37,7 +37,10 @@ public class ServerManager : NetworkBehaviour
     }
 
     public void StartServer()
-    { 
+    {
+
+        SecureParameters.CheckCertificates();
+        NetworkManager.Singleton.GetComponent<UnityTransport>().SetServerSecrets(SecureParameters.MyGameServerCertificate, SecureParameters.MyGameServerPrivateKey);
         NetworkManager.Singleton.ConnectionApprovalCallback += ApprovalCheck; // Not necessary yet, but here you could add a player limit
 
         NetworkManager.Singleton.StartServer();
@@ -53,9 +56,9 @@ public class ServerManager : NetworkBehaviour
     }
 
     public void StartClient()
-    { 
+    {
+        NetworkManager.Singleton.GetComponent<UnityTransport>().SetClientSecrets(SecureParameters.ServerCommonName);
         NetworkManager.Singleton.StartClient();
-        NetworkManager.Singleton.SceneManager.SetClientSynchronizationMode(LoadSceneMode.Single);
     }
 
     public void AddClientData(string username, int characterId, ulong clientId)

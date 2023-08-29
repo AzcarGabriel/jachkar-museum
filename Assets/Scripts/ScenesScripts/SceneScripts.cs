@@ -11,8 +11,6 @@ using System.Collections.Generic;
 using System;
 using System.Text;
 using System.IO;
-using UnityStandardAssets.Characters.FirstPerson;
-using Unity.Netcode;
 
 public class SceneScripts : MonoBehaviour
 {
