@@ -84,7 +84,7 @@ public class StoneDetailsScript : MonoBehaviour
         float scale = StoneSpawnHelper.GetStoneScaleById(stoneId);
         Vector3 pos = this.stone.transform.position;
         Quaternion q = StoneSpawnHelper.GetStoneRotationById(stoneId);
-        StartCoroutine(this.stoneService.SpawnStoneWithPositionAndRotation(stoneId, pos, q, FinishConfig, true));
+        StartCoroutine(this.stoneService.SpawnStoneWithPositionAndRotation(-1, stoneId, pos, q, FinishConfig, true));
     }
 
     public void FinishConfig()

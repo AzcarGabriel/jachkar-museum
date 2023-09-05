@@ -20,6 +20,11 @@ public class OnlineMenuScript : NetworkBehaviour
         ServerManager.Instance.username = textField.text;
     }
 
+    public void StartServer()
+    {
+        ServerManager.Instance.StartServer();
+    }
+
     public void StartHost() {
         ServerManager.Instance.StartHost();
     }

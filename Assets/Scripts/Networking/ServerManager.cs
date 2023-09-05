@@ -39,8 +39,8 @@ public class ServerManager : NetworkBehaviour
     public void StartServer()
     {
 
-        SecureParameters.CheckCertificates();
-        NetworkManager.Singleton.GetComponent<UnityTransport>().SetServerSecrets(SecureParameters.MyGameServerCertificate, SecureParameters.MyGameServerPrivateKey);
+        //SecureParameters.CheckCertificates();
+       // NetworkManager.Singleton.GetComponent<UnityTransport>().SetServerSecrets(SecureParameters.MyGameServerCertificate, SecureParameters.MyGameServerPrivateKey);
         NetworkManager.Singleton.ConnectionApprovalCallback += ApprovalCheck; // Not necessary yet, but here you could add a player limit
 
         NetworkManager.Singleton.StartServer();
@@ -90,11 +90,10 @@ public class ServerManager : NetworkBehaviour
         stone.transform.localScale = newScale;
     }
 
-    public void AddSpawnedStone(int assetId, GameObject stone)
+    public void AddSpawnedStone(int dictId, int assetId, GameObject stone)
     {
-        int newId = spawnedStones.Count + 1;
         StoneAssetData newData = new() { assetId = assetId, prefab = stone };
-        spawnedStones.Add(newId, newData);
+        spawnedStones.Add(dictId , newData);
     }
 
     public void RemoveSpawnedStone(int stoneId)

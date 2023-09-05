@@ -9,8 +9,6 @@ public class SpawnPointScript : MonoBehaviour
     {
         float offsetX = Random.Range(-5, 5);
         float offsetZ = Random.Range(-5, 5);
-        Debug.Log("Test");
-        Debug.Log(StaticValues.self_fps);
         if (StaticValues.self_fps != null)
         {
             StaticValues.self_fps.transform.position = transform.position + new Vector3(offsetX, 0, offsetZ);

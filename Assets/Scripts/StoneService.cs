@@ -42,12 +42,14 @@ public class StoneService : MonoBehaviour
 
     public IEnumerator DownloadThumbs(Action doLast = null)
     {
+        Debug.Log("Download Thumbs");
         yield return StartCoroutine(this.DownloadBundle(new BundleName(this.thumbsBundleName)));
         doLast?.Invoke();
     }
 
-    public IEnumerator SpawnStoneWithPositionAndRotation(int stoneId, Vector3 sp, Quaternion rt, Action doLast = null, bool isDetailStone = false)
-    {   
+    public IEnumerator SpawnStoneWithPositionAndRotation(int dictId, int stoneId, Vector3 sp, Quaternion rt, Action doLast = null, bool isDetailStone = false)
+    {
+        Debug.Log("Rotation");
         // Check if the stone is already downloaded
         GameObject stone = this.SearchStone(stoneId);
 
@@ -63,8 +65,27 @@ public class StoneService : MonoBehaviour
         obj.transform.localScale *= scale;
 
         // add the spawned stone to the list
-        if (!isDetailStone) ServerManager.Instance.AddSpawnedStone(stoneId, obj);
+        if (!isDetailStone) ServerManager.Instance.AddSpawnedStone(dictId, stoneId, obj);
         else obj.name = "detailStone";
+        doLast?.Invoke();
+    }
+
+    public IEnumerator SpawnStoneWithPositionRotationScale(int dictId, int stoneId, Vector3 sp, Quaternion rt, Vector3 sc, Action doLast = null)
+    {
+        // Check if the stone is already downloaded
+        GameObject stone = this.SearchStone(stoneId);
+
+        if (null == stone)
+        {
+            BundleName bundleName = CalculateAssetBundleNameByStoneIndex(stoneId);
+            yield return StartCoroutine(this.DownloadBundle(bundleName));
+        }
+
+        GameObject obj = Instantiate(this.SearchStone(stoneId), sp, rt);
+        obj.transform.localScale = sc;
+
+        // add the spawned stone to the list
+        ServerManager.Instance.AddSpawnedStone(dictId, stoneId, obj);
         doLast?.Invoke();
     }
 

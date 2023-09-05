@@ -58,7 +58,7 @@ public class ClientConnectBehaviour : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void RequestStonesServerRpc(ServerRpcParams serverRpcParams = default)
     {
-        ClientRpcParams clientRpcParams = new ClientRpcParams
+        ClientRpcParams clientRpcParams = new()
         {
             Send = new ClientRpcSendParams
             {
@@ -70,13 +70,15 @@ public class ClientConnectBehaviour : NetworkBehaviour
         {
             int stoneAssetId = entry.Value.assetId;
             GameObject prefab = entry.Value.prefab;
-            SpawnStoneClientRpc(stoneAssetId, prefab.transform.position, prefab.transform.rotation, clientRpcParams);
+            SpawnStoneClientRpc(entry.Key, stoneAssetId, prefab.transform.position, prefab.transform.rotation, prefab.transform.localScale, clientRpcParams);
+
         }
     }
 
     [ClientRpc]
-    public void SpawnStoneClientRpc(int stoneId, Vector3 sp, Quaternion rt, ClientRpcParams clientRpcParams = default)
+    public void SpawnStoneClientRpc(int dictId, int stoneId, Vector3 sp, Quaternion rt, Vector3 sc, ClientRpcParams clientRpcParams = default)
     {
-        StartCoroutine(stoneDownload.SpawnStoneWithPositionAndRotation(stoneId, sp, rt));
+        StartCoroutine(stoneDownload.SpawnStoneWithPositionRotationScale(dictId, stoneId, sp, rt, sc));
     }
+
 }
