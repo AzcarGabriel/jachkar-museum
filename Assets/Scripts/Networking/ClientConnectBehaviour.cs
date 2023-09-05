@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using System.Collections;
 
 [RequireComponent(typeof(StoneService))]
 public class ClientConnectBehaviour : NetworkBehaviour
@@ -10,6 +11,16 @@ public class ClientConnectBehaviour : NetworkBehaviour
     [SerializeField] private GameObject loadScreen;
     private StoneService stoneDownload;
 
+    private struct StoneData
+    {
+        public int dictId;
+        public int stoneId;
+        public Vector3 position;
+        public Quaternion rotation;
+        public Vector3 scale;
+    }
+
+    private List<StoneData> stonesToDownload = new();
 
     private void Awake()
     {
@@ -28,8 +39,7 @@ public class ClientConnectBehaviour : NetworkBehaviour
         AddPlayerServerRpc(username, characterId);
 
         // Getting all already spawned stones
-        Debug.Log("Rquesting stones to server...");
-        RequestStonesServerRpc();
+        if (!IsServer) RequestStonesServerRpc();
 
         base.OnNetworkSpawn();
     }
@@ -70,15 +80,31 @@ public class ClientConnectBehaviour : NetworkBehaviour
         {
             int stoneAssetId = entry.Value.assetId;
             GameObject prefab = entry.Value.prefab;
-            SpawnStoneClientRpc(entry.Key, stoneAssetId, prefab.transform.position, prefab.transform.rotation, prefab.transform.localScale, clientRpcParams);
-
+            StoreStonesToDownloadClientRpc(entry.Key, stoneAssetId, prefab.transform.position, prefab.transform.rotation, prefab.transform.localScale, clientRpcParams);
         }
+        SpawnStoneClientRpc(clientRpcParams);
     }
 
     [ClientRpc]
-    public void SpawnStoneClientRpc(int dictId, int stoneId, Vector3 sp, Quaternion rt, Vector3 sc, ClientRpcParams clientRpcParams = default)
+    public void StoreStonesToDownloadClientRpc(int dictId, int stoneId, Vector3 sp, Quaternion rt, Vector3 sc, ClientRpcParams clientRpcParams = default)
     {
-        StartCoroutine(stoneDownload.SpawnStoneWithPositionRotationScale(dictId, stoneId, sp, rt, sc));
+        stonesToDownload.Add(new() { dictId = dictId, stoneId = stoneId, position = sp, rotation = rt, scale = sc });
+    }
+
+
+    [ClientRpc]
+    public void SpawnStoneClientRpc(ClientRpcParams clientRpcParams = default)
+    {
+        StartCoroutine(DownloadThumbs());
+    }
+
+   public IEnumerator DownloadThumbs()
+    {
+        foreach(StoneData data in stonesToDownload)
+        {
+            yield return StartCoroutine(stoneDownload.SpawnStoneWithPositionRotationScale(data.dictId, data.stoneId, data.position, data.rotation, data.scale));
+        }
+
     }
 
 }

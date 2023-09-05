@@ -104,7 +104,7 @@ public class ServerManager : NetworkBehaviour
 
     }
 
-    public void OpenScene(String name)
+    public void OpenScene(string name)
     {
         string[] tokens = name.Split('/');
         string n;
