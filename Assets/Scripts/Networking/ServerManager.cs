@@ -39,10 +39,14 @@ public class ServerManager : NetworkBehaviour
     public void StartServer()
     {
 
-        //SecureParameters.CheckCertificates();
-       // NetworkManager.Singleton.GetComponent<UnityTransport>().SetServerSecrets(SecureParameters.MyGameServerCertificate, SecureParameters.MyGameServerPrivateKey);
-        NetworkManager.Singleton.ConnectionApprovalCallback += ApprovalCheck; // Not necessary yet, but here you could add a player limit
+        if (NetworkManager.Singleton.GetComponent<UnityTransport>().UseEncryption)
+        {
+            SecureParameters.CheckCertificates();
+            NetworkManager.Singleton.GetComponent<UnityTransport>().SetServerSecrets(SecureParameters.MyGameServerCertificate, SecureParameters.MyGameServerPrivateKey);
+            
+        }
 
+        NetworkManager.Singleton.ConnectionApprovalCallback += ApprovalCheck; // Not necessary yet, but here you could add a player limit
         NetworkManager.Singleton.StartServer();
         NetworkManager.Singleton.SceneManager.SetClientSynchronizationMode(LoadSceneMode.Single);
         NetworkManager.Singleton.SceneManager.LoadScene("Noradus", LoadSceneMode.Single);
