@@ -25,16 +25,18 @@ public class MarkPing : NetworkBehaviour
     }
 
     private void Update() {
-        Camera camera = Camera.main;
-        Vector3 target = new Vector3(camera.transform.position.x, transform.position.y, camera.transform.position.z);
-        transform.LookAt(target, Vector3.up);
-        transform.rotation = Quaternion.LookRotation(transform.position - camera.transform.position);
+        if (IsClient)
+        {
+            Camera camera = Camera.main;
+            Vector3 target = new Vector3(camera.transform.position.x, transform.position.y, camera.transform.position.z);
+            transform.LookAt(target, Vector3.up);
+            transform.rotation = Quaternion.LookRotation(transform.position - camera.transform.position);
 
-        textField.text = $"<color=grey>{username.Value}</color>";
+            textField.text = $"<color=grey>{username.Value}</color>";
+        }
     }
 
-    public void setPlayerName(FixedString32Bytes playerName) {
-        Debug.Log("Player name is" + playerName);
+    public void SetPlayerName(FixedString32Bytes playerName) {
         this.playerName = playerName;
     }
 

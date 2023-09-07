@@ -300,7 +300,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
             string username = ServerManager.Instance.ClientData[serverRpcParams.Receive.SenderClientId].username;
             GameObject instantiatedPing = Instantiate(pingMarkPrefab, position, Quaternion.identity);
-            instantiatedPing.GetComponent<MarkPing>().setPlayerName(username);
+            instantiatedPing.GetComponent<MarkPing>().SetPlayerName(username);
             instantiatedPing.GetComponent<NetworkObject>().SpawnWithOwnership(serverRpcParams.Receive.SenderClientId, true);
         }
     }
