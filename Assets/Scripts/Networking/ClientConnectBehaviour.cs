@@ -13,11 +13,11 @@ public class ClientConnectBehaviour : NetworkBehaviour
 
     private struct StoneData
     {
-        public int dictId;
-        public int stoneId;
-        public Vector3 position;
-        public Quaternion rotation;
-        public Vector3 scale;
+        public int DictId;
+        public int StoneId;
+        public Vector3 Position;
+        public Quaternion Rotation;
+        public Vector3 Scale;
     }
 
     private List<StoneData> stonesToDownload = new();
@@ -78,8 +78,8 @@ public class ClientConnectBehaviour : NetworkBehaviour
 
         foreach (KeyValuePair<int, ServerManager.StoneAssetData> entry in ServerManager.Instance.spawnedStones)
         {
-            int stoneAssetId = entry.Value.assetId;
-            GameObject prefab = entry.Value.prefab;
+            int stoneAssetId = entry.Value.AssetId;
+            GameObject prefab = entry.Value.Prefab;
             StoreStonesToDownloadClientRpc(entry.Key, stoneAssetId, prefab.transform.position, prefab.transform.rotation, prefab.transform.localScale, clientRpcParams);
         }
         SpawnStoneClientRpc(clientRpcParams);
@@ -88,7 +88,7 @@ public class ClientConnectBehaviour : NetworkBehaviour
     [ClientRpc]
     public void StoreStonesToDownloadClientRpc(int dictId, int stoneId, Vector3 sp, Quaternion rt, Vector3 sc, ClientRpcParams clientRpcParams = default)
     {
-        stonesToDownload.Add(new() { dictId = dictId, stoneId = stoneId, position = sp, rotation = rt, scale = sc });
+        stonesToDownload.Add(new() { DictId = dictId, StoneId = stoneId, Position = sp, Rotation = rt, Scale = sc });
     }
 
 
@@ -98,11 +98,11 @@ public class ClientConnectBehaviour : NetworkBehaviour
         StartCoroutine(DownloadThumbs());
     }
 
-   public IEnumerator DownloadThumbs()
+    private IEnumerator DownloadThumbs()
     {
         foreach(StoneData data in stonesToDownload)
         {
-            yield return StartCoroutine(stoneDownload.SpawnStoneWithPositionRotationScale(data.dictId, data.stoneId, data.position, data.rotation, data.scale));
+            yield return StartCoroutine(stoneDownload.SpawnStoneWithPositionRotationScale(data.DictId, data.StoneId, data.Position, data.Rotation, data.Scale));
         }
 
     }

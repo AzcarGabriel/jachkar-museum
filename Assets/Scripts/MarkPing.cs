@@ -15,7 +15,7 @@ public class MarkPing : NetworkBehaviour
     private NetworkVariable<FixedString32Bytes> username = new NetworkVariable<FixedString32Bytes>();
 
     public override void OnNetworkSpawn() {
-        Invoke("DestroyPingServerRPC", pingDuration);
+        Invoke(nameof(DestroyPingServerRPC), pingDuration);
 
         if (IsServer) 
         { 
@@ -27,10 +27,14 @@ public class MarkPing : NetworkBehaviour
     private void Update() {
         if (IsClient)
         {
-            Camera camera = Camera.main;
-            Vector3 target = new Vector3(camera.transform.position.x, transform.position.y, camera.transform.position.z);
-            transform.LookAt(target, Vector3.up);
-            transform.rotation = Quaternion.LookRotation(transform.position - camera.transform.position);
+            Camera mainCamera = Camera.main;
+            if (mainCamera != null)
+            {
+                Vector3 target = new Vector3(mainCamera.transform.position.x, transform.position.y,
+                    mainCamera.transform.position.z);
+                transform.LookAt(target, Vector3.up);
+                transform.rotation = Quaternion.LookRotation(transform.position - mainCamera.transform.position);
+            }
 
             textField.text = $"<color=grey>{username.Value}</color>";
         }
@@ -46,7 +50,7 @@ public class MarkPing : NetworkBehaviour
     }
 
     [ServerRpc]
-    public void updateUsernameServerRpc(ServerRpcParams serverRpcParams = default) {
+    public void UpdateUsernameServerRpc(ServerRpcParams serverRpcParams = default) {
         username.Value = ServerManager.Instance.ClientData[serverRpcParams.Receive.SenderClientId].username;
     }
 }
