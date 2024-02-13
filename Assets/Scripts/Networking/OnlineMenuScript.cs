@@ -26,7 +26,6 @@ public class OnlineMenuScript : NetworkBehaviour
     }
 
     public void StartHost() {
-        Debug.Log("Host");
         ServerManager.Instance.StartHost();
     }
 

@@ -38,7 +38,7 @@ public class StoneService : MonoBehaviour
     public Slider slider;
 
     public string thumbsBundleName = "stones_thumbs";
-    private const string domain = "https://saduewa.dcc.uchile.cl/museum/AssetBundles/";
+    private const string domain = "https://corsproxy.io/?https://saduewa.dcc.uchile.cl/museum/AssetBundles/";
 
     public IEnumerator DownloadThumbs(Action doLast = null)
     {
@@ -53,7 +53,7 @@ public class StoneService : MonoBehaviour
         // Check if the stone is already downloaded
         GameObject stone = this.SearchStone(stoneId);
 
-        if (null == stone)
+        if (stone == null)
         {
             // If not, download it
             BundleName bundleName = CalculateAssetBundleNameByStoneIndex(stoneId);

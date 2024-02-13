@@ -87,6 +87,7 @@ public class CameraChange : MonoBehaviour
                 saveButtons.SetActive(false);
                 editStoneButtons.SetActive(false);
                 showMoreButtons.SetActive(false);
+                chat.SetActive(true);
             }
 
             if (Input.GetKeyDown("h"))

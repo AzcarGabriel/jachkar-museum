@@ -12,7 +12,7 @@ public class StaticValues : MonoBehaviour
     public static string previos_scene = "MainMenu";
     public static bool back_from_details = false;
     public static bool writing = false;
-    public static bool online = true;
+    public static bool online = false;
     public static bool should_lock = false;
     public static bool should_enable = false;
     public static GameObject self_fps;

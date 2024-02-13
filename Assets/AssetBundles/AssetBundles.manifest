@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 2154758553
+CRC: 1047946653
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
       Name: stones_16_20
       Dependencies: {}
     Info_1:
-      Name: stones_thumbs
+      Name: stones_metadata_31_35
       Dependencies: {}
     Info_2:
-      Name: stones_metadata_31_35
+      Name: stones_thumbs
       Dependencies: {}
     Info_3:
       Name: stones_47
