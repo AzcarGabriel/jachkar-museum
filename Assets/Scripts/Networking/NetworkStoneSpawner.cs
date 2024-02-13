@@ -13,12 +13,6 @@ public class NetworkStoneSpawner : NetworkBehaviour
         stoneService = GetComponent<StoneService>();
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    public void SpawnStoneServerRpc(int stoneId, Vector3 sp, Quaternion rt)
-    {
-        SpawnStoneClientRpc(stoneId, sp, rt);
-    }
-
     public override void OnNetworkSpawn()
     {
         StoreInitialStones();
@@ -36,18 +30,28 @@ public class NetworkStoneSpawner : NetworkBehaviour
             if (IsServer)
             {
                 GameObject stoneObject = stonesTransform.gameObject;
-                Debug.Log(stoneObject.name);
-                ServerManager.Instance.AddSpawnedStone(int.Parse(stoneObject.name.Replace("Stone", "")), stoneObject);
+                int newId = ServerManager.Instance.spawnedStones.Count + 1;
+                ServerManager.Instance.AddSpawnedStone(newId, int.Parse(stoneObject.name.Replace("Stone", "")), stoneObject);
             }
-            else Destroy(stonesTransform.gameObject);
+            else
+            {
+                Destroy(stonesTransform.gameObject);
+            }
         }
 
     }
 
-    [ClientRpc]
-    public void SpawnStoneClientRpc(int stoneId, Vector3 sp, Quaternion rt)
+    [ServerRpc(RequireOwnership = false)]
+    public void SpawnStoneServerRpc(int stoneId, Vector3 sp, Quaternion rt)
     {
-        StartCoroutine(stoneService.SpawnStoneWithPositionAndRotation(stoneId, sp, rt));
+        int newId = ServerManager.Instance.spawnedStones.Count + 1;
+        SpawnStoneClientRpc(newId, stoneId, sp, rt);
+    }
+
+    [ClientRpc]
+    public void SpawnStoneClientRpc(int dictId, int stoneId, Vector3 sp, Quaternion rt)
+    {
+        StartCoroutine(stoneService.SpawnStoneWithPositionAndRotation(dictId, stoneId, sp, rt));
     }
 
     [ServerRpc(RequireOwnership = false)]

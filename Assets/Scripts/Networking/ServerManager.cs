@@ -1,10 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.SceneManagement;
 using System;
 using System.Linq;
+using Unity.Netcode.Transports.UTP;
 
 public class ServerManager : NetworkBehaviour
 {
@@ -15,17 +15,17 @@ public class ServerManager : NetworkBehaviour
 
     public struct StoneAssetData
     {
-        public int assetId;
-        public GameObject prefab; 
+        public int AssetId;
+        public GameObject Prefab; 
     }
 
-    public Dictionary<ulong, ClientData> ClientData { get; private set; } = new Dictionary<ulong, ClientData>();
-    public Dictionary<int, StoneAssetData> spawnedStones { get; private set; } = new Dictionary<int, StoneAssetData>();
+    public Dictionary<ulong, ClientData> ClientData { get; } = new();
+    public Dictionary<int, StoneAssetData> spawnedStones { get; } = new Dictionary<int, StoneAssetData>();
     
     public int preSelectedCharacter = -1;
     public string username = "name";
 
-    void Awake()
+    private void Awake()
     { 
         if (Instance != null && Instance != this) {
             Destroy(gameObject);
@@ -37,9 +37,16 @@ public class ServerManager : NetworkBehaviour
     }
 
     public void StartServer()
-    { 
-        NetworkManager.Singleton.ConnectionApprovalCallback += ApprovalCheck; // Not necessary yet, but here you could add a player limit
+    {
 
+        if (NetworkManager.Singleton.GetComponent<UnityTransport>().UseEncryption)
+        {
+            SecureParameters.CheckCertificates();
+            NetworkManager.Singleton.GetComponent<UnityTransport>().SetServerSecrets(SecureParameters.MyGameServerCertificate, SecureParameters.MyGameServerPrivateKey);
+            
+        }
+
+        NetworkManager.Singleton.ConnectionApprovalCallback += ApprovalCheck; // Not necessary yet, but here you could add a player limit
         NetworkManager.Singleton.StartServer();
         NetworkManager.Singleton.SceneManager.SetClientSynchronizationMode(LoadSceneMode.Single);
         NetworkManager.Singleton.SceneManager.LoadScene("Noradus", LoadSceneMode.Single);
@@ -53,30 +60,31 @@ public class ServerManager : NetworkBehaviour
     }
 
     public void StartClient()
-    { 
+    {
+        NetworkManager.Singleton.GetComponent<UnityTransport>().SetClientSecrets(SecureParameters.ServerCommonName);
         NetworkManager.Singleton.StartClient();
-        NetworkManager.Singleton.SceneManager.SetClientSynchronizationMode(LoadSceneMode.Single);
     }
 
-    public void AddClientData(string username, int characterId, ulong clientId)
+    public void AddClientData(string clientUsername, int characterId, ulong clientId)
     {
-        ClientData new_client_data = new(clientId)
+        ClientData newClientData = new(clientId)
         {
+            clientId =  clientId,
             characterId = characterId,
-            username = username
+            username = clientUsername
         };
 
-        ClientData.Add(clientId, new_client_data);
+        ClientData.Add(clientId, newClientData);
     }
 
-    public GameObject GetStoneInstanceById(int id)
+    private GameObject GetStoneInstanceById(int id)
     {
-        return spawnedStones[id].prefab;
+        return spawnedStones[id].Prefab;
     }
 
     public int GetIdByStone(GameObject stone)
     {
-        return spawnedStones.FirstOrDefault(entry => EqualityComparer<GameObject>.Default.Equals(entry.Value.prefab, stone)).Key;
+        return spawnedStones.FirstOrDefault(entry => EqualityComparer<GameObject>.Default.Equals(entry.Value.Prefab, stone)).Key;
     }
 
     public void UpdateTransform(int stoneId, Vector3 newPosition, Quaternion newRotation, Vector3 newScale)
@@ -87,11 +95,10 @@ public class ServerManager : NetworkBehaviour
         stone.transform.localScale = newScale;
     }
 
-    public void AddSpawnedStone(int assetId, GameObject stone)
+    public void AddSpawnedStone(int dictId, int assetId, GameObject stone)
     {
-        int newId = spawnedStones.Count + 1;
-        StoneAssetData newData = new() { assetId = assetId, prefab = stone };
-        spawnedStones.Add(newId, newData);
+        StoneAssetData newData = new() { AssetId = assetId, Prefab = stone };
+        spawnedStones.Add(dictId , newData);
     }
 
     public void RemoveSpawnedStone(int stoneId)
@@ -102,7 +109,7 @@ public class ServerManager : NetworkBehaviour
 
     }
 
-    public void OpenScene(String name)
+    public void OpenScene(string name)
     {
         string[] tokens = name.Split('/');
         string n;

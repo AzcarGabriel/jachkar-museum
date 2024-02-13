@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Unity.Netcode;
 using TMPro;
 public class OnlineMenuScript : NetworkBehaviour
@@ -19,6 +18,11 @@ public class OnlineMenuScript : NetworkBehaviour
     public void OnConfirmClick() {
         //  Debug.Log("Test " + selectedCharacter);
         ServerManager.Instance.username = textField.text;
+    }
+
+    public void StartServer()
+    {
+        ServerManager.Instance.StartServer();
     }
 
     public void StartHost() {

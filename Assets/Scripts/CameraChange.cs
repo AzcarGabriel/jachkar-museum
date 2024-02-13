@@ -80,13 +80,14 @@ public class CameraChange : MonoBehaviour
                 StaticValues.self_fps.SetActive(true);
                 mainView.enabled = true;
                 topView.enabled = false;
-                Cursor.visible = false;
+               // Cursor.visible = false;
                 hand.SetActive(false);
-                Cursor.lockState = CursorLockMode.Locked;
+                //Cursor.lockState = CursorLockMode.Locked;
                 addStoneMenu.SetActive(false);
                 saveButtons.SetActive(false);
                 editStoneButtons.SetActive(false);
                 showMoreButtons.SetActive(false);
+                chat.SetActive(true);
             }
 
             if (Input.GetKeyDown("h"))

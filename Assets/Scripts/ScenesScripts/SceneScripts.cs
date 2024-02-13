@@ -11,8 +11,6 @@ using System.Collections.Generic;
 using System;
 using System.Text;
 using System.IO;
-using UnityStandardAssets.Characters.FirstPerson;
-using Unity.Netcode;
 
 public class SceneScripts : MonoBehaviour
 {
@@ -186,6 +184,7 @@ public class SceneScripts : MonoBehaviour
         {
             StartCoroutine(
                 this.stoneService.SpawnStoneWithPositionAndRotation(
+                    0, // ESTO DEBERIA GUARDARSE en lugar de estar hardcodeado
                     SaveGame.Instance.StonesNames[i],
                     SaveGame.Instance.StonesPositions[i],
                     SaveGame.Instance.StonesRotations[i]
