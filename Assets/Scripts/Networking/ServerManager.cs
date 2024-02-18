@@ -20,7 +20,7 @@ public class ServerManager : NetworkBehaviour
     }
 
     public Dictionary<ulong, ClientData> ClientData { get; } = new();
-    public Dictionary<int, StoneAssetData> spawnedStones { get; } = new Dictionary<int, StoneAssetData>();
+    public Dictionary<int, StoneAssetData> spawnedStones { get; } = new();
     
     public int preSelectedCharacter = -1;
     public string username = "name";

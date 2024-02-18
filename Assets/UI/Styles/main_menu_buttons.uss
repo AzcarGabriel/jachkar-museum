@@ -1,0 +1,58 @@
+.main-menu-button {
+    padding-right: 4px;
+    padding-left: 4px;
+    margin-right: 10%;
+    margin-left: 10%;
+    -unity-font-style: bold;
+    font-size: 62px;
+    -unity-font: url('project://database/Assets/TextMesh%20Pro/Fonts/LiberationSans.ttf?fileID=12800000&guid=e3265ab4bf004d28a9537516768c1c75&type=3#LiberationSans');
+    -unity-font-definition: initial;
+    -unity-text-align: upper-center;
+    background-color: rgba(128, 114, 96, 0.13);
+    color: rgb(192, 190, 190);
+    border-left-color: rgb(84, 75, 75);
+    border-right-color: rgb(84, 75, 75);
+    border-top-color: rgb(84, 75, 75);
+    border-bottom-color: rgb(84, 75, 75);
+    border-left-width: 4px;
+    border-right-width: 4px;
+    border-top-width: 4px;
+    border-bottom-width: 4px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    margin-bottom: 5%;
+}
+
+.main-menu-button:hover {
+    padding-right: 4px;
+    padding-left: 4px;
+    margin-right: 10%;
+    margin-left: 10%;
+    -unity-font-style: bold;
+    font-size: 62px;
+    -unity-font: url('project://database/Assets/TextMesh%20Pro/Fonts/LiberationSans.ttf?fileID=12800000&guid=e3265ab4bf004d28a9537516768c1c75&type=3#LiberationSans');
+    -unity-font-definition: initial;
+    -unity-text-align: upper-center;
+    background-color: rgb(115, 106, 103);
+    color: rgb(192, 190, 190);
+    border-left-color: rgb(84, 75, 75);
+    border-right-color: rgb(84, 75, 75);
+    border-top-color: rgb(84, 75, 75);
+    border-bottom-color: rgb(84, 75, 75);
+    border-left-width: 4px;
+    border-right-width: 4px;
+    border-top-width: 4px;
+    border-bottom-width: 4px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    margin-bottom: 5%;
+}
+
+.main-menu-button:active {
+    color: rgb(22, 19, 19);
+    background-color: rgb(22, 19, 19);
+}

@@ -1,0 +1,16 @@
+.title-label {
+    -unity-font: url('project://database/Assets/TextMesh%20Pro/Fonts/LiberationSans.ttf?fileID=12800000&guid=e3265ab4bf004d28a9537516768c1c75&type=3#LiberationSans');
+    font-size: 95px;
+    -unity-text-align: upper-center;
+    -unity-font-style: bold;
+    -unity-text-outline-width: 4px;
+    -unity-text-outline-color: rgb(115, 104, 100);
+    text-shadow: 0 0 0.8px rgb(0, 0, 0);
+    -unity-paragraph-spacing: 0;
+    -unity-font-definition: initial;
+    color: rgb(192, 190, 190);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+}

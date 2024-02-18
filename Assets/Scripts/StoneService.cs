@@ -7,9 +7,12 @@
 using System;
 using System.Collections;
 using System.IO;
+using System.Linq;
+using UI.XML;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.UI;
+using UnityEngine.UIElements;
+using Cursor = UnityEngine.Cursor;
 
 public class StoneService : MonoBehaviour
 {
@@ -19,13 +22,13 @@ public class StoneService : MonoBehaviour
         {
             this.stoneBundleName = stoneBundleName;
             this.metadataBundleName = metadataBundleName;
-            this.thumbsBundleName = null;
+            thumbsBundleName = null;
         }
 
         public BundleName(string thumbsBundleName)
         {
-            this.stoneBundleName = null;
-            this.metadataBundleName = null;
+            stoneBundleName = null;
+            metadataBundleName = null;
             this.thumbsBundleName = thumbsBundleName;
         }
 
@@ -34,11 +37,10 @@ public class StoneService : MonoBehaviour
         public string thumbsBundleName { get; }
     }
 
-    public GameObject loadScreen;
-    public Slider slider;
+    public VisualElement LoadScreen;
 
     public string thumbsBundleName = "stones_thumbs";
-    private const string domain = "https://corsproxy.io/?https://saduewa.dcc.uchile.cl/museum/AssetBundles/";
+    private const string Domain = "https://corsproxy.io/?https://saduewa.dcc.uchile.cl/museum/AssetBundles/";
 
     public IEnumerator DownloadThumbs(Action doLast = null)
     {
@@ -89,12 +91,12 @@ public class StoneService : MonoBehaviour
         doLast?.Invoke();
     }
 
-    public GameObject SearchStone(int index)
+    private GameObject SearchStone(int index)
     {
         string stoneName = this.GetStoneName(index);
         foreach (AssetBundle ab in StonesValues.assetBundles)
         {
-            if (this.CheckStoneInBundle(stoneName, ab))
+            if (CheckStoneInBundle(stoneName, ab))
             {
                 return ab.LoadAsset<GameObject>(stoneName);
             }
@@ -117,15 +119,15 @@ public class StoneService : MonoBehaviour
     {
 
         #if !UNITY_WEBGL
-           UnityEngine.Caching.ClearOtherCachedVersions("anything", new Hash128());
+           Caching.ClearOtherCachedVersions("anything", new Hash128());
         #endif
 
-        loadScreen.SetActive(true);
+        LoadScreen.Display(true);
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
         // Stone download
-        if (bundleName.stoneBundleName != null && bundleName.metadataBundleName != null)
+        if (bundleName is { stoneBundleName: not null, metadataBundleName: not null })
         {
             AssetBundle metadataBundle = null;
             AssetBundle stonesBundle = null;
@@ -133,7 +135,7 @@ public class StoneService : MonoBehaviour
             if (StaticValues.online)
             {
                 // Download metadata
-                using (UnityWebRequest uwr = UnityWebRequestAssetBundle.GetAssetBundle(domain + bundleName.metadataBundleName))
+                using (UnityWebRequest uwr = UnityWebRequestAssetBundle.GetAssetBundle(Domain + bundleName.metadataBundleName))
                 {
                     yield return uwr.SendWebRequest();
 
@@ -150,7 +152,7 @@ public class StoneService : MonoBehaviour
                 }
 
                 // Download Stones
-                using (UnityWebRequest uwr = UnityWebRequestAssetBundle.GetAssetBundle(domain + bundleName.stoneBundleName))
+                using (UnityWebRequest uwr = UnityWebRequestAssetBundle.GetAssetBundle(Domain + bundleName.stoneBundleName))
                 {
                     yield return uwr.SendWebRequest();
 
@@ -192,20 +194,18 @@ public class StoneService : MonoBehaviour
             AssetBundle thumbsBundle = null;
             if (StaticValues.online)
             {
-                using (UnityWebRequest uwr = UnityWebRequestAssetBundle.GetAssetBundle(domain + bundleName.thumbsBundleName))
-                {
-                    yield return uwr.SendWebRequest();
+                using UnityWebRequest uwr = UnityWebRequestAssetBundle.GetAssetBundle(Domain + bundleName.thumbsBundleName);
+                yield return uwr.SendWebRequest();
 
-                    if (uwr.result != UnityWebRequest.Result.Success)
-                    {
-                        Debug.Log(uwr.error);
-                    }
-                    else
-                    {
-                        // Get downloaded asset bundle
-                        Debug.Log("Downloaded thumbs bundle " + bundleName.thumbsBundleName);
-                        thumbsBundle = DownloadHandlerAssetBundle.GetContent(uwr);
-                    }
+                if (uwr.result != UnityWebRequest.Result.Success)
+                {
+                    Debug.Log(uwr.error);
+                }
+                else
+                {
+                    // Get downloaded asset bundle
+                    Debug.Log("Downloaded thumbs bundle " + bundleName.thumbsBundleName);
+                    thumbsBundle = DownloadHandlerAssetBundle.GetContent(uwr);
                 }
             }
             else
@@ -214,32 +214,29 @@ public class StoneService : MonoBehaviour
                 thumbsBundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, bundleName.thumbsBundleName));
             }
 
-            string[] assetNames = thumbsBundle.GetAllAssetNames();
-            foreach (string name in assetNames)
+            if (thumbsBundle != null)
             {
-                Texture2D texture = thumbsBundle.LoadAsset<Texture2D>(name);
-                Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0), 100.0f);
-                sprite.name = texture.name;
-                StonesValues.stonesThumbs.Add(sprite);
+                string[] assetNames = thumbsBundle.GetAllAssetNames();
+                foreach (string assetName in assetNames)
+                {
+                    Texture2D texture = thumbsBundle.LoadAsset<Texture2D>(assetName);
+                    Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0), 100.0f);
+                    sprite.name = texture.name;
+                    StonesValues.stonesThumbs.Add(sprite);
+                }
             }
-            StonesValues.stonesThumbs.Sort((Sprite p, Sprite q) => Int32.Parse(p.name) - Int32.Parse(q.name));
+
+            StonesValues.stonesThumbs.Sort((p, q) => Int32.Parse(p.name) - Int32.Parse(q.name));
         }
 
-        loadScreen.SetActive(false);
+        LoadScreen.Display(false);
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
     }
 
     private bool CheckStoneInBundle(string stoneName, AssetBundle ab)
     {
-        foreach (string assetName in ab.GetAllAssetNames())
-        {
-            if (assetName.EndsWith(stoneName))
-            {
-                return true;
-            }
-        }
-        return false;
+        return ab.GetAllAssetNames().Any(assetName => assetName.EndsWith(stoneName));
     }
 
     public static BundleName CalculateAssetBundleNameByStoneIndex(int index)

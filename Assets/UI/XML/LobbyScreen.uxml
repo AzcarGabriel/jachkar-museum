@@ -1,0 +1,5 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgb(224, 33, 33); -unity-background-image-tint-color: rgba(214, 27, 27, 0.98);">
+        <ui:Button text="Back&#10;" display-tooltip-when-elided="true" name="BackButton" />
+    </ui:VisualElement>
+</ui:UXML>

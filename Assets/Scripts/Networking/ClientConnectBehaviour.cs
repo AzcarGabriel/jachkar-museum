@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Networking
 {
@@ -10,7 +11,7 @@ namespace Networking
     {
 
         [SerializeField] private CharacterDatabase characterDatabase;
-        [SerializeField] private GameObject loadScreen;
+        [SerializeField] private VisualElement _loadScreen;
         private StoneService _stoneDownload;
 
         private struct StoneData
@@ -27,11 +28,20 @@ namespace Networking
         private void Awake()
         {
             _stoneDownload = GetComponent<StoneService>();
-            _stoneDownload.loadScreen = loadScreen;
+            _stoneDownload.LoadScreen = _loadScreen;
         }
 
         public override void OnNetworkSpawn()
         {
+            if (StaticValues.OfflineMode)
+            {
+                AddPlayerServerRpc("", 0);
+                SpawnPlayerCharacterServerRpc(0);
+            }
+            
+            base.OnNetworkSpawn();
+            return;
+            
             if (!IsOwner) return;
 
             // Spawning selected character
@@ -40,11 +50,10 @@ namespace Networking
             AddPlayerServerRpc(username, characterId);
             SpawnPlayerCharacterServerRpc(characterId);
             
-
             // Getting all already spawned stones
             if (!IsServer) RequestStonesServerRpc();
 
-            base.OnNetworkSpawn();
+            
         }
 
         [ServerRpc(RequireOwnership = false)]

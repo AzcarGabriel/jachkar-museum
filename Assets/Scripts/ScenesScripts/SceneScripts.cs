@@ -11,6 +11,11 @@ using System.Collections.Generic;
 using System;
 using System.Text;
 using System.IO;
+using UnityEngine.UIElements;
+using Button = UnityEngine.UI.Button;
+using Cursor = UnityEngine.Cursor;
+using Image = UnityEngine.UI.Image;
+using Slider = UnityEngine.UI.Slider;
 
 public class SceneScripts : MonoBehaviour
 {
@@ -27,8 +32,7 @@ public class SceneScripts : MonoBehaviour
     public GameObject availableFiles;
     public InputField saveInputField;
     public InputField loadInputField;
-    public GameObject loadScreen;
-    public Slider slider;
+    public VisualElement LoadScreen;
     public LayoutGroup addStoneMenuGrid;
     private bool overwrite = false;
     private StoneService stoneService;
@@ -39,8 +43,7 @@ public class SceneScripts : MonoBehaviour
     void Start() {
 
         stoneService = gameObject.AddComponent<StoneService>();
-        stoneService.loadScreen = this.loadScreen;
-        stoneService.slider = this.slider;
+        stoneService.LoadScreen = LoadScreen;
 
         hideButton.SetActive(false);
         StaticValues.previos_scene = SceneManager.GetActiveScene().name;
