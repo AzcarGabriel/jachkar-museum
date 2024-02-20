@@ -1,16 +1,22 @@
 using System;
 using System.Linq;
+using Networking.Character;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Character", menuName = "Characters/CharacterDatabase")]
 public class CharacterDatabase : ScriptableObject
 {
-    [SerializeField] private Character[] characters = Array.Empty<Character>();
+    [SerializeField] private CharacterData[] characters = Array.Empty<CharacterData>();
 
-    public Character[] GetAllCharacters() => characters;
+    public CharacterData[] GetAllCharacters() => characters;
 
-    public Character GetCharacterById(int id)
+    public CharacterData GetCharacterById(int id)
     {
         return characters.FirstOrDefault(character => character.Id == id);
+    }
+
+    public bool IsValidCharacterId(int id)
+    {
+        return characters.Any(x => x.Id == id);
     }
 }

@@ -1,8 +1,11 @@
 using System;
+using Networking.Character;
 using TMPro;
+using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 namespace Networking.Lobby
 {
@@ -14,6 +17,8 @@ namespace Networking.Lobby
         [SerializeField] private PlayerCard[] playerCards;
         [SerializeField] private GameObject characterInfoPanel;
         [SerializeField] private TMP_Text characterNameText;
+        [SerializeField] private Button readyButton;
+        [SerializeField] private TMP_InputField inputField;
         
         private NetworkList<CharacterSelectState> _players;
 
@@ -26,11 +31,9 @@ namespace Networking.Lobby
         {
             if (IsClient)
             {
-                Character[] allCharacters = characterDatabase.GetAllCharacters();
-                Debug.Log(allCharacters);
-                foreach (Character character in allCharacters)
+                CharacterData[] allCharacters = characterDatabase.GetAllCharacters();
+                foreach (CharacterData character in allCharacters)
                 {
-                    Debug.Log(character.CharacterName);
                     var selectButtonInstance = Instantiate(selectButtonPrefab, charactersHolder);
                     selectButtonInstance.SetCharacter(this, character);
                 }
@@ -76,8 +79,31 @@ namespace Networking.Lobby
             }
         }
 
-        public void Select(Character character)
+        [ServerRpc(RequireOwnership = false)]
+        private void SetUserNameServerRPC(FixedString32Bytes userName, ServerRpcParams serverRpcParams = default)
         {
+            for (int i = 0; i < _players.Count; i++)
+            {
+                if (_players[i].ClientId != serverRpcParams.Receive.SenderClientId) continue;
+                _players[i] = new CharacterSelectState(
+                    _players[i].ClientId,
+                    _players[i].CharacterId,
+                    _players[i].IsReady, 
+                    userName
+                    );
+            }
+        }
+        
+        public void Select(CharacterData character)
+        {
+
+            for (int i = 0; i < _players.Count; i++)
+            {
+                if (_players[i].ClientId != NetworkManager.Singleton.LocalClientId) continue;
+                if (_players[i].IsReady) return;
+                if (_players[i].CharacterId == character.Id) return;
+            }
+            
             characterNameText.text = character.CharacterName;
             characterInfoPanel.SetActive(true);
             
@@ -91,9 +117,40 @@ namespace Networking.Lobby
             {
                 if (_players[i].ClientId == serverRpcParams.Receive.SenderClientId)
                 {
-                    _players[i] = new CharacterSelectState(_players[i].ClientId, characterId);
+                    _players[i] = new CharacterSelectState(_players[i].ClientId, characterId, _players[i].IsReady, _players[i].UserName);
                 }
             }
+        }
+        
+        public void LockIn()
+        {
+            SetUserNameServerRPC(inputField.text);
+            LockInServerRPC();
+        }
+        
+        [ServerRpc(RequireOwnership = false)]
+        private void LockInServerRPC(ServerRpcParams serverRpcParams = default)
+        {
+            for (int i = 0; i < _players.Count; i++)
+            {
+                if (_players[i].ClientId == serverRpcParams.Receive.SenderClientId)
+                {
+                    _players[i] = new CharacterSelectState(_players[i].ClientId, _players[i].CharacterId,true, _players[i].UserName);
+                }
+            }
+
+            foreach (CharacterSelectState player in _players)
+            {
+                if (!player.IsReady) return;
+            }
+
+            foreach (CharacterSelectState player in _players)
+            {
+                ServerManager.Instance.SetCharacter(player.ClientId, player.CharacterId);
+                ServerManager.Instance.SetUsername(player.ClientId, player.UserName);
+            }
+
+            ServerManager.Instance.StartGame();
         }
 
         private void HandlePlayersStateChanged(NetworkListEvent<CharacterSelectState> changeEvent)
@@ -101,13 +158,9 @@ namespace Networking.Lobby
             for (int i = 0; i < playerCards.Length; i++)
             {
                 if (_players.Count > i)
-                {
                     playerCards[i].UpdateDisplay(_players[i]);
-                }
                 else
-                {
                     playerCards[i].DisableDisplay();
-                }
             }
         }
     }

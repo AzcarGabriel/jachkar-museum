@@ -2,10 +2,10 @@
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using Player;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using UnityStandardAssets.Characters.FirstPerson;
 using Unity.Netcode;
 
 public class SmoothCameraPositionChange : MonoBehaviour
@@ -35,7 +35,7 @@ public class SmoothCameraPositionChange : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        if (StaticValues.writing)
+        if (StaticValues.Writing)
         {
             return;
         }
@@ -44,9 +44,9 @@ public class SmoothCameraPositionChange : MonoBehaviour
         RaycastHit hit;
         Vector3 pond = new Vector3(0.0f, 1.0f, 20.0f);
 
-        if (StaticValues.should_enable) 
+        if (StaticValues.ShouldEnable) 
         {
-            StaticValues.should_enable = false;
+            StaticValues.ShouldEnable = false;
             fps.enabled = true;
         }
 
@@ -70,7 +70,7 @@ public class SmoothCameraPositionChange : MonoBehaviour
                     Cursor.visible = true;
                     Cursor.lockState = CursorLockMode.None;
                     string name = hit.transform.gameObject.name;
-                    StaticValues.stone_name = name;
+                    StaticValues.StoneName = name;
                     // mainCamera.SetActive(false);
                     SceneManager.LoadScene("StoneDetails", LoadSceneMode.Additive);
                 }

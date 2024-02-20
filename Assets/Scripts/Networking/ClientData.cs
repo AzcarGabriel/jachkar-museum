@@ -1,16 +1,17 @@
 using System;
-using System.Collections.Generic;
-using UnityEngine;
-using Unity.Netcode;
+using Unity.Collections;
 
-[Serializable]
-public class ClientData
+namespace Networking
 {
-    public ulong clientId;
-    public int characterId = -1;
-    public string username;
+    [Serializable]
+    public class ClientData
+    {
+        public ulong clientId;
+        public int characterId = -1;
+        public FixedString32Bytes username;
 
-    public ClientData(ulong clientId) {
-        this.clientId = clientId;
+        public ClientData(ulong clientId) {
+            this.clientId = clientId;
+        }
     }
 }

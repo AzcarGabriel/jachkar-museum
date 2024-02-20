@@ -200,26 +200,70 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
             ""id"": ""7020fe8b-0141-4ed0-9967-2aa8c87839ee"",
             ""actions"": [
                 {
-                    ""name"": ""New action"",
-                    ""type"": ""Button"",
+                    ""name"": ""Move"",
+                    ""type"": ""Value"",
                     ""id"": ""60288ff1-8670-45ac-addf-9c26ee3910fc"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
                 {
-                    ""name"": """",
-                    ""id"": ""74206edf-e430-47b0-ac99-fa18f043a305"",
-                    ""path"": """",
+                    ""name"": ""2D Vector"",
+                    ""id"": ""08053933-ca29-45e7-99af-ab334184f739"",
+                    ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""New action"",
-                    ""isComposite"": false,
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""2ca12e6d-2824-4a34-9768-fddaf369b57e"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""9c036587-d727-4b73-89be-377316264afa"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""c2e42084-91e4-4290-a87b-5dbceb2d3c31"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""1ccd03c8-dbe9-475b-acec-52358b889872"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -236,7 +280,7 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
         m_FirstPerson_Sprint = m_FirstPerson.FindAction("Sprint", throwIfNotFound: true);
         // TopCamera
         m_TopCamera = asset.FindActionMap("TopCamera", throwIfNotFound: true);
-        m_TopCamera_Newaction = m_TopCamera.FindAction("New action", throwIfNotFound: true);
+        m_TopCamera_Move = m_TopCamera.FindAction("Move", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -384,12 +428,12 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
     // TopCamera
     private readonly InputActionMap m_TopCamera;
     private List<ITopCameraActions> m_TopCameraActionsCallbackInterfaces = new List<ITopCameraActions>();
-    private readonly InputAction m_TopCamera_Newaction;
+    private readonly InputAction m_TopCamera_Move;
     public struct TopCameraActions
     {
         private @CharacterActions m_Wrapper;
         public TopCameraActions(@CharacterActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Newaction => m_Wrapper.m_TopCamera_Newaction;
+        public InputAction @Move => m_Wrapper.m_TopCamera_Move;
         public InputActionMap Get() { return m_Wrapper.m_TopCamera; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -399,16 +443,16 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_TopCameraActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_TopCameraActionsCallbackInterfaces.Add(instance);
-            @Newaction.started += instance.OnNewaction;
-            @Newaction.performed += instance.OnNewaction;
-            @Newaction.canceled += instance.OnNewaction;
+            @Move.started += instance.OnMove;
+            @Move.performed += instance.OnMove;
+            @Move.canceled += instance.OnMove;
         }
 
         private void UnregisterCallbacks(ITopCameraActions instance)
         {
-            @Newaction.started -= instance.OnNewaction;
-            @Newaction.performed -= instance.OnNewaction;
-            @Newaction.canceled -= instance.OnNewaction;
+            @Move.started -= instance.OnMove;
+            @Move.performed -= instance.OnMove;
+            @Move.canceled -= instance.OnMove;
         }
 
         public void RemoveCallbacks(ITopCameraActions instance)
@@ -437,6 +481,6 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
     }
     public interface ITopCameraActions
     {
-        void OnNewaction(InputAction.CallbackContext context);
+        void OnMove(InputAction.CallbackContext context);
     }
 }

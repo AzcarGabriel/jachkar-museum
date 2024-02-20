@@ -40,15 +40,14 @@ namespace Networking
             }
             
             base.OnNetworkSpawn();
-            return;
             
             if (!IsOwner) return;
 
             // Spawning selected character
-            int characterId = ServerManager.Instance.preSelectedCharacter;
-            string username = ServerManager.Instance.username;
-            AddPlayerServerRpc(username, characterId);
-            SpawnPlayerCharacterServerRpc(characterId);
+            //int characterId = ServerManager.Instance.preSelectedCharacter;
+            //string username = ServerManager.Instance.username;
+            //AddPlayerServerRpc(username, characterId);
+            //SpawnPlayerCharacterServerRpc(characterId);
             
             // Getting all already spawned stones
             if (!IsServer) RequestStonesServerRpc();

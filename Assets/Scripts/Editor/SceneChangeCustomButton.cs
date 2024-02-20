@@ -1,19 +1,27 @@
 #if UNITY_EDITOR
-using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using UnityEngine;
 
-public class SceneChangeCustomButton : MonoBehaviour
+namespace Editor
 {
-    [MenuItem("Scene/Main Menu")]
-    static void LoadScene()
+    public class SceneChangeCustomButton : MonoBehaviour
     {
-        EditorSceneManager.OpenScene("Assets/Scenes/MainMenu.unity");
-    }
-    [MenuItem("Scene/Noradus")]
-    static void LoadNoradus()
-    {
-        EditorSceneManager.OpenScene("Assets/Scenes/Noradus.unity");
+        [MenuItem("Scene/Main Menu")]
+        static void LoadScene()
+        {
+            EditorSceneManager.OpenScene("Assets/Scenes/MainMenu.unity");
+        }
+        [MenuItem("Scene/Noradus")]
+        static void LoadNoradus()
+        {
+            EditorSceneManager.OpenScene("Assets/Scenes/Noradus.unity");
+        }
+        [MenuItem("Scene/OnlineNoradus")]
+        static void LoadOnlineNoradus()
+        {
+            EditorSceneManager.OpenScene("Assets/Scenes/Experiment/OnlineNoradus.unity");
+        }
     }
 }
 #endif

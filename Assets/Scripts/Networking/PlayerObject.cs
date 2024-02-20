@@ -1,45 +1,52 @@
-using UnityEngine;
-using Unity.Netcode;
+using TMPro;
 using Unity.Collections;
+using Unity.Netcode;
+using UnityEngine;
 
-public class PlayerObject : NetworkBehaviour
+namespace Networking
 {
-    private NetworkVariable<FixedString32Bytes> playerName = new NetworkVariable<FixedString32Bytes>("", NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-    public FixedString32Bytes PlayerName => playerName.Value;
-    private Camera playerCamera;
-    private AudioListener playerAudioListener;
+    public class PlayerObject : NetworkBehaviour
+    {
+        private readonly NetworkVariable<FixedString32Bytes> _playerName = new("");
 
-    [SerializeField]
-    private GameObject playerModel;
+        public FixedString32Bytes PlayerName
+        {
+            get => _playerName.Value.ToString();
+            set => _playerName.Value = value;
+        }
+    
+        private Camera _playerCamera;
+        private AudioListener _playerAudioListener;
+
+        [SerializeField] private GameObject playerModel;
+        [SerializeField] private TMP_Text nameTag; 
     
 
-    public override void OnNetworkSpawn()
-    { 
-        playerCamera = GetComponentInChildren<Camera>();
-        playerAudioListener = GetComponentInChildren<AudioListener>();
-        playerModel.SetActive(true);
-        if (IsOwner)
-        { 
-            playerCamera.enabled = true;
-            playerAudioListener.enabled = true;
-            //playerModel.SetActive(false);
-            playerModel.transform.localScale = new Vector3(0, 0, 0);
-            StaticValues.self_fps = transform.gameObject;
-        } 
-        else
-        { 
-            playerCamera.enabled = false;
-            playerAudioListener.enabled = false;
+        public override void OnNetworkSpawn()
+        {
+            if (IsServer)
+            { 
+                PlayerName = ServerManager.Instance.GetUsername(OwnerClientId);
+            }
+            nameTag.text = PlayerName.ToString();
+        
+            _playerCamera = GetComponentInChildren<Camera>();
+            _playerAudioListener = GetComponentInChildren<AudioListener>();
             playerModel.SetActive(true);
+            if (IsOwner)
+            {
+                _playerCamera.enabled = true;
+                _playerAudioListener.enabled = true;
+                //playerModel.SetActive(false);
+                playerModel.transform.localScale = Vector3.zero;
+                StaticValues.SelfFPS = transform.gameObject;
+            } 
+            else
+            { 
+                _playerCamera.enabled = false;
+                _playerAudioListener.enabled = false;
+                playerModel.SetActive(true);
+            }
         }
-    }
-
-
-
-
-    [ServerRpc(RequireOwnership = false)]
-    public void UpdatePlayerNameServerRpc(FixedString32Bytes newName)
-    { 
-        playerName.Value = newName;
     }
 }

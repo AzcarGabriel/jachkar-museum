@@ -8,14 +8,14 @@ using UnityEngine;
 
 public class StaticValues : MonoBehaviour
 {
-    public static string stone_name = "";
-    public static string previos_scene = "MainMenu";
-    public static bool back_from_details = false;
-    public static bool writing = false;
-    public static bool online = false;
-    public static bool should_lock = false;
-    public static bool should_enable = false;
-    public static GameObject self_fps;
-    public static bool isServer = false;
+    public static string StoneName = "";
+    public static string PreviosScene = "MainMenu";
+    public static bool BackFromDetails = false;
+    public static bool Writing = false;
+    public static readonly bool Online = false;
+    public static bool ShouldLock = false;
+    public static bool ShouldEnable = false;
+    public static GameObject SelfFPS;
+    public static bool IsServer = false;
     public static bool OfflineMode = false;
 }

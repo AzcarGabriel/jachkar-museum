@@ -52,8 +52,8 @@ public class CameraChange : MonoBehaviour
     void Update ()
     {
         if (EventSystem.current.currentSelectedGameObject != null) return;
-        StaticValues.writing = loadDialog.activeSelf || saveDialog.activeSelf;
-        if (!StaticValues.writing)
+        StaticValues.Writing = loadDialog.activeSelf || saveDialog.activeSelf;
+        if (!StaticValues.Writing)
         {
             if (Input.GetKey("m"))
             {
@@ -63,7 +63,7 @@ public class CameraChange : MonoBehaviour
 
             if (Input.GetKey("t"))
             {
-                StaticValues.self_fps.SetActive(false);
+                StaticValues.SelfFPS.SetActive(false);
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
                 mainView.enabled = false;
@@ -77,7 +77,7 @@ public class CameraChange : MonoBehaviour
 
             if (Input.GetKey("p"))
             {
-                StaticValues.self_fps.SetActive(true);
+                StaticValues.SelfFPS.SetActive(true);
                 mainView.enabled = true;
                 topView.enabled = false;
                // Cursor.visible = false;

@@ -33,7 +33,7 @@ namespace ScenesScripts
             stoneService = gameObject.AddComponent<StoneService>();
             stoneService.LoadScreen = LoadScreen;
 
-            string[] firstSplit = StaticValues.stone_name.Split('(');
+            string[] firstSplit = StaticValues.StoneName.Split('(');
             string number = firstSplit[0].Substring(5);
             try
             {
@@ -74,8 +74,8 @@ namespace ScenesScripts
 
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                StaticValues.should_lock = true;
-                StaticValues.should_enable = true;
+                StaticValues.ShouldLock = true;
+                StaticValues.ShouldEnable = true;
                 Destroy(stone);
                 SceneManager.UnloadSceneAsync("StoneDetails");
             
@@ -93,7 +93,7 @@ namespace ScenesScripts
         public void FinishConfig()
         {
             FindStoneObject("detailStone");
-            loadXml(StaticValues.stone_name);
+            loadXml(StaticValues.StoneName);
         }
 
         IEnumerator loadXml(string stoneName)

@@ -1,3 +1,4 @@
+using Networking.Character;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,11 +17,11 @@ namespace Networking.Lobby
         {
             if (state.CharacterId != -1)
             {
-                Character character = characterDatabase.GetCharacterById(state.CharacterId);
+                CharacterData character = characterDatabase.GetCharacterById(state.CharacterId);
                 characterIconImage.sprite = character.Icon;
                 characterIconImage.enabled = true;
                 characterNameText.text = character.CharacterName;
-                playerNameText.text = $"Player {state.ClientId}";
+                playerNameText.text = state.IsReady ?  $"Player {state.ClientId} ready": $"Player {state.ClientId}";
             }
             else
             {

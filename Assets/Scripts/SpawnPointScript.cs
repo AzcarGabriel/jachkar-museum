@@ -9,9 +9,9 @@ public class SpawnPointScript : MonoBehaviour
     {
         float offsetX = Random.Range(-5, 5);
         float offsetZ = Random.Range(-5, 5);
-        if (StaticValues.self_fps != null)
+        if (StaticValues.SelfFPS != null)
         {
-            StaticValues.self_fps.transform.position = transform.position + new Vector3(offsetX, 0, offsetZ);
+            StaticValues.SelfFPS.transform.position = transform.position + new Vector3(offsetX, 0, offsetZ);
         }
     }
 }

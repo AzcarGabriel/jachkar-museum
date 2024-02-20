@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
-namespace UnityStandardAssets.Characters.FirstPerson
+namespace Player
 {
     [RequireComponent(typeof (Rigidbody))]
     [RequireComponent(typeof (CapsuleCollider))]
@@ -14,54 +14,26 @@ namespace UnityStandardAssets.Characters.FirstPerson
             public float ForwardSpeed = 8.0f;   // Speed when walking forward
             public float BackwardSpeed = 4.0f;  // Speed when walking backwards
             public float StrafeSpeed = 4.0f;    // Speed when walking sideways
-            public float RunMultiplier = 2.0f;   // Speed when sprinting
-	        public KeyCode RunKey = KeyCode.LeftShift;
             public float JumpForce = 30f;
-            public AnimationCurve SlopeCurveModifier = new AnimationCurve(new Keyframe(-90.0f, 1.0f), new Keyframe(0.0f, 1.0f), new Keyframe(90.0f, 0.0f));
+            public AnimationCurve SlopeCurveModifier = new(new Keyframe(-90.0f, 1.0f), new Keyframe(0.0f, 1.0f), new Keyframe(90.0f, 0.0f));
             [HideInInspector] public float CurrentTargetSpeed = 8f;
-
-#if !MOBILE_INPUT
-            private bool m_Running;
-#endif
-
+            
             public void UpdateDesiredTargetSpeed(Vector2 input)
             {
 	            if (input == Vector2.zero) return;
-				if (input.x > 0 || input.x < 0)
+				if (input.x is > 0 or < 0)
 				{
 					//strafe
 					CurrentTargetSpeed = StrafeSpeed;
 				}
-				if (input.y < 0)
-				{
-					//backwards
-					CurrentTargetSpeed = BackwardSpeed;
-				}
-				if (input.y > 0)
-				{
-					//forwards
-					//handled last as if strafing and moving forward at the same time forwards speed should take precedence
-					CurrentTargetSpeed = ForwardSpeed;
-				}
-#if !MOBILE_INPUT
-	            if (Input.GetKey(RunKey))
-	            {
-		            CurrentTargetSpeed *= RunMultiplier;
-		            m_Running = true;
-	            }
-	            else
-	            {
-		            m_Running = false;
-	            }
-#endif
-            }
 
-#if !MOBILE_INPUT
-            public bool Running
-            {
-                get { return m_Running; }
+                CurrentTargetSpeed = input.y switch
+                {
+                    < 0 => BackwardSpeed,
+                    > 0 => ForwardSpeed,
+                    _ => CurrentTargetSpeed
+                };
             }
-#endif
         }
 
 
@@ -90,32 +62,16 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_Jump, m_PreviouslyGrounded, m_Jumping, m_IsGrounded;
 
 
-        public Vector3 Velocity
-        {
-            get { return m_RigidBody.velocity; }
-        }
+        public Vector3 Velocity => m_RigidBody.velocity;
 
-        public bool Grounded
-        {
-            get { return m_IsGrounded; }
-        }
+        public bool Grounded => m_IsGrounded;
 
         public bool Jumping
         {
             get { return m_Jumping; }
         }
 
-        public bool Running
-        {
-            get
-            {
- #if !MOBILE_INPUT
-				return movementSettings.Running;
-#else
-	            return false;
-#endif
-            }
-        }
+        public bool Running => false;
 
 
         private void Start()
@@ -244,9 +200,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private void GroundCheck()
         {
             m_PreviouslyGrounded = m_IsGrounded;
-            RaycastHit hitInfo;
-            if (Physics.SphereCast(transform.position, m_Capsule.radius * (1.0f - advancedSettings.shellOffset), Vector3.down, out hitInfo,
-                                   ((m_Capsule.height/2f) - m_Capsule.radius) + advancedSettings.groundCheckDistance, Physics.AllLayers, QueryTriggerInteraction.Ignore))
+            if (Physics.SphereCast(transform.position, m_Capsule.radius * (1.0f - advancedSettings.shellOffset), Vector3.down, out var hitInfo,
+                    ((m_Capsule.height/2f) - m_Capsule.radius) + advancedSettings.groundCheckDistance, Physics.AllLayers, QueryTriggerInteraction.Ignore))
             {
                 m_IsGrounded = true;
                 m_GroundContactNormal = hitInfo.normal;

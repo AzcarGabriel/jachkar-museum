@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System;
 using System.Text;
 using System.IO;
+using Networking;
 using UnityEngine.UIElements;
 using Button = UnityEngine.UI.Button;
 using Cursor = UnityEngine.Cursor;
@@ -46,11 +47,11 @@ public class SceneScripts : MonoBehaviour
         stoneService.LoadScreen = LoadScreen;
 
         hideButton.SetActive(false);
-        StaticValues.previos_scene = SceneManager.GetActiveScene().name;
+        StaticValues.PreviosScene = SceneManager.GetActiveScene().name;
         Cursor.lockState = CursorLockMode.Locked;
 
-        if (StaticValues.back_from_details) {
-            StaticValues.back_from_details = false;
+        if (StaticValues.BackFromDetails) {
+            StaticValues.BackFromDetails = false;
         }
 
         if (StonesValues.stonesThumbs.Count == 0) {
@@ -63,8 +64,8 @@ public class SceneScripts : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        if (Input.GetKeyDown("e") && !StaticValues.writing) {
-            StaticValues.back_from_details = true;
+        if (Input.GetKeyDown("e") && !StaticValues.Writing) {
+            StaticValues.BackFromDetails = true;
             Save(false);
         }
     }
@@ -155,7 +156,7 @@ public class SceneScripts : MonoBehaviour
         }
 
         string f_name = "";
-        if (StaticValues.back_from_details)
+        if (StaticValues.BackFromDetails)
         {
             f_name = "temp_data_file";
         }
@@ -209,7 +210,7 @@ public class SceneScripts : MonoBehaviour
         }
 
         string f_name = "";
-        if (StaticValues.back_from_details)
+        if (StaticValues.BackFromDetails)
         {
             f_name = "temp_data_file";
         }
@@ -222,7 +223,7 @@ public class SceneScripts : MonoBehaviour
         // Modify SaveGame.Instance.Stones
         string filePath = Path.Combine(Application.persistentDataPath, f_name + ".json");
 
-        if (File.Exists(filePath) && !StaticValues.back_from_details && !overwrite)
+        if (File.Exists(filePath) && !StaticValues.BackFromDetails && !overwrite)
         {
             overwriteDialog.SetActive(true);
             saveDialog.SetActive(false);

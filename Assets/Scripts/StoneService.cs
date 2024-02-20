@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Linq;
+using Networking;
 using UI.XML;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -132,7 +133,7 @@ public class StoneService : MonoBehaviour
             AssetBundle metadataBundle = null;
             AssetBundle stonesBundle = null;
 
-            if (StaticValues.online)
+            if (StaticValues.Online)
             {
                 // Download metadata
                 using (UnityWebRequest uwr = UnityWebRequestAssetBundle.GetAssetBundle(Domain + bundleName.metadataBundleName))
@@ -192,7 +193,7 @@ public class StoneService : MonoBehaviour
         {
             // Download thumbs
             AssetBundle thumbsBundle = null;
-            if (StaticValues.online)
+            if (StaticValues.Online)
             {
                 using UnityWebRequest uwr = UnityWebRequestAssetBundle.GetAssetBundle(Domain + bundleName.thumbsBundleName);
                 yield return uwr.SendWebRequest();
