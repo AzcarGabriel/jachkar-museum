@@ -80,6 +80,15 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchCamera"",
+                    ""type"": ""Button"",
+                    ""id"": ""f0aa1210-8162-4640-a0f0-80fba157eb88"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -192,6 +201,17 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
                     ""action"": ""Sprint"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0ad9a829-cce8-48a3-af56-eb181511af78"",
+                    ""path"": ""<Keyboard>/0"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -207,6 +227,33 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""SwitchCamera"",
+                    ""type"": ""Button"",
+                    ""id"": ""d696964f-ca56-4aa9-95f9-5182645798b3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Float"",
+                    ""type"": ""Value"",
+                    ""id"": ""680e928c-49d0-40a0-a10a-e5581837f89c"",
+                    ""expectedControlType"": ""Double"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""SwitchMode"",
+                    ""type"": ""Button"",
+                    ""id"": ""a608013f-e526-45eb-a4d0-aef907079bc0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -264,6 +311,61 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eafe5c5a-134d-4172-b26b-b9db94e299af"",
+                    ""path"": ""<Keyboard>/0"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""fd311bf5-61d8-4994-8d73-471fa51aedb9"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Float"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""e0da77e5-ec9d-4c3c-9452-abe710ddcfef"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Float"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""1fbda8d4-6729-4b15-b0c9-89daf1c0a5cb"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Float"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""189405e3-5384-4970-9372-c40816c06bd1"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -278,9 +380,13 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
         m_FirstPerson_Ping = m_FirstPerson.FindAction("Ping", throwIfNotFound: true);
         m_FirstPerson_Point = m_FirstPerson.FindAction("Point", throwIfNotFound: true);
         m_FirstPerson_Sprint = m_FirstPerson.FindAction("Sprint", throwIfNotFound: true);
+        m_FirstPerson_SwitchCamera = m_FirstPerson.FindAction("SwitchCamera", throwIfNotFound: true);
         // TopCamera
         m_TopCamera = asset.FindActionMap("TopCamera", throwIfNotFound: true);
         m_TopCamera_Move = m_TopCamera.FindAction("Move", throwIfNotFound: true);
+        m_TopCamera_SwitchCamera = m_TopCamera.FindAction("SwitchCamera", throwIfNotFound: true);
+        m_TopCamera_Float = m_TopCamera.FindAction("Float", throwIfNotFound: true);
+        m_TopCamera_SwitchMode = m_TopCamera.FindAction("SwitchMode", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -348,6 +454,7 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_FirstPerson_Ping;
     private readonly InputAction m_FirstPerson_Point;
     private readonly InputAction m_FirstPerson_Sprint;
+    private readonly InputAction m_FirstPerson_SwitchCamera;
     public struct FirstPersonActions
     {
         private @CharacterActions m_Wrapper;
@@ -358,6 +465,7 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
         public InputAction @Ping => m_Wrapper.m_FirstPerson_Ping;
         public InputAction @Point => m_Wrapper.m_FirstPerson_Point;
         public InputAction @Sprint => m_Wrapper.m_FirstPerson_Sprint;
+        public InputAction @SwitchCamera => m_Wrapper.m_FirstPerson_SwitchCamera;
         public InputActionMap Get() { return m_Wrapper.m_FirstPerson; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -385,6 +493,9 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
             @Sprint.started += instance.OnSprint;
             @Sprint.performed += instance.OnSprint;
             @Sprint.canceled += instance.OnSprint;
+            @SwitchCamera.started += instance.OnSwitchCamera;
+            @SwitchCamera.performed += instance.OnSwitchCamera;
+            @SwitchCamera.canceled += instance.OnSwitchCamera;
         }
 
         private void UnregisterCallbacks(IFirstPersonActions instance)
@@ -407,6 +518,9 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
             @Sprint.started -= instance.OnSprint;
             @Sprint.performed -= instance.OnSprint;
             @Sprint.canceled -= instance.OnSprint;
+            @SwitchCamera.started -= instance.OnSwitchCamera;
+            @SwitchCamera.performed -= instance.OnSwitchCamera;
+            @SwitchCamera.canceled -= instance.OnSwitchCamera;
         }
 
         public void RemoveCallbacks(IFirstPersonActions instance)
@@ -429,11 +543,17 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_TopCamera;
     private List<ITopCameraActions> m_TopCameraActionsCallbackInterfaces = new List<ITopCameraActions>();
     private readonly InputAction m_TopCamera_Move;
+    private readonly InputAction m_TopCamera_SwitchCamera;
+    private readonly InputAction m_TopCamera_Float;
+    private readonly InputAction m_TopCamera_SwitchMode;
     public struct TopCameraActions
     {
         private @CharacterActions m_Wrapper;
         public TopCameraActions(@CharacterActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_TopCamera_Move;
+        public InputAction @SwitchCamera => m_Wrapper.m_TopCamera_SwitchCamera;
+        public InputAction @Float => m_Wrapper.m_TopCamera_Float;
+        public InputAction @SwitchMode => m_Wrapper.m_TopCamera_SwitchMode;
         public InputActionMap Get() { return m_Wrapper.m_TopCamera; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -446,6 +566,15 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
+            @SwitchCamera.started += instance.OnSwitchCamera;
+            @SwitchCamera.performed += instance.OnSwitchCamera;
+            @SwitchCamera.canceled += instance.OnSwitchCamera;
+            @Float.started += instance.OnFloat;
+            @Float.performed += instance.OnFloat;
+            @Float.canceled += instance.OnFloat;
+            @SwitchMode.started += instance.OnSwitchMode;
+            @SwitchMode.performed += instance.OnSwitchMode;
+            @SwitchMode.canceled += instance.OnSwitchMode;
         }
 
         private void UnregisterCallbacks(ITopCameraActions instance)
@@ -453,6 +582,15 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
+            @SwitchCamera.started -= instance.OnSwitchCamera;
+            @SwitchCamera.performed -= instance.OnSwitchCamera;
+            @SwitchCamera.canceled -= instance.OnSwitchCamera;
+            @Float.started -= instance.OnFloat;
+            @Float.performed -= instance.OnFloat;
+            @Float.canceled -= instance.OnFloat;
+            @SwitchMode.started -= instance.OnSwitchMode;
+            @SwitchMode.performed -= instance.OnSwitchMode;
+            @SwitchMode.canceled -= instance.OnSwitchMode;
         }
 
         public void RemoveCallbacks(ITopCameraActions instance)
@@ -478,9 +616,13 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
         void OnPing(InputAction.CallbackContext context);
         void OnPoint(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
+        void OnSwitchCamera(InputAction.CallbackContext context);
     }
     public interface ITopCameraActions
     {
         void OnMove(InputAction.CallbackContext context);
+        void OnSwitchCamera(InputAction.CallbackContext context);
+        void OnFloat(InputAction.CallbackContext context);
+        void OnSwitchMode(InputAction.CallbackContext context);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections.Generic;
+using Player;
 using UnityEngine.EventSystems;
 using Unity.Netcode;
 
@@ -12,9 +12,7 @@ public class CameraChange : MonoBehaviour
     [SerializeField] private CursorMode cursorMode = CursorMode.Auto;
     [SerializeField] private Vector2 hotSpot = Vector2.zero;
     [SerializeField] private GameObject chat;
-
-    //public GameObject FPS;
-    public static List<GameObject> playersList;
+    
     public GameObject addStoneMenu;
     public GameObject editStoneButtons;
     public GameObject saveButtons;
@@ -25,17 +23,18 @@ public class CameraChange : MonoBehaviour
     public GameObject availableFiles;
     public GameObject helpPane;
 
-    private GameObject hand;
+    private GameObject _hand;
+    private SelectionScript _handScript;
 
     // Use this for initialization
     void Start ()
     {
-        hand = GameObject.Find("SelectionManager");
+        _hand = GameObject.Find("SelectionManager");
         // FPS.SetActive(true);
         mainView.enabled = true;
         topView.enabled = false;
         Cursor.visible = false;
-        hand.SetActive(false);
+        _hand.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         addStoneMenu.SetActive(false);
         saveButtons.SetActive(false);
@@ -46,6 +45,21 @@ public class CameraChange : MonoBehaviour
         overwriteDialog.SetActive(false);
         availableFiles.SetActive(false);
         helpPane.SetActive(false);
+        _handScript = _hand.GetComponent<SelectionScript>();
+
+
+    }
+
+    private void OnEnable()
+    {
+        TopViewController.EditorOpenEvent += OpenUI;
+        TopViewController.EditorCloseEvent += CloseUI;
+    }
+
+    private void OnDisable()
+    {
+        TopViewController.EditorOpenEvent -= OpenUI;
+        TopViewController.EditorCloseEvent -= CloseUI;
     }
 
     // Update is called once per frame
@@ -53,62 +67,77 @@ public class CameraChange : MonoBehaviour
     {
         if (EventSystem.current.currentSelectedGameObject != null) return;
         StaticValues.Writing = loadDialog.activeSelf || saveDialog.activeSelf;
-        if (!StaticValues.Writing)
+        if (StaticValues.Writing) return;
+        if (Input.GetKey("m"))
         {
-            if (Input.GetKey("m"))
-            {
-                NetworkManager.Singleton.Shutdown();
-                SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
-            }
+            NetworkManager.Singleton.Shutdown();
+            SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+        }
 
-            if (Input.GetKey("t"))
-            {
-                StaticValues.SelfFPS.SetActive(false);
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-                mainView.enabled = false;
-                topView.enabled = true;
-                hand.SetActive(true);
-                addStoneMenu.SetActive(false);
-                saveButtons.SetActive(true);
-                showMoreButtons.SetActive(true);
-                chat.SetActive(false);
-            }
+        if (Input.GetKey("t"))
+        {
+            StaticValues.SelfFPS.SetActive(false);
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            mainView.enabled = false;
+            topView.enabled = true;
+            _hand.SetActive(true);
+            addStoneMenu.SetActive(false);
+            saveButtons.SetActive(true);
+            showMoreButtons.SetActive(true);
+            chat.SetActive(false);
+        }
 
-            if (Input.GetKey("p"))
-            {
-                StaticValues.SelfFPS.SetActive(true);
-                mainView.enabled = true;
-                topView.enabled = false;
-               // Cursor.visible = false;
-                hand.SetActive(false);
-                //Cursor.lockState = CursorLockMode.Locked;
-                addStoneMenu.SetActive(false);
-                saveButtons.SetActive(false);
-                editStoneButtons.SetActive(false);
-                showMoreButtons.SetActive(false);
-                chat.SetActive(true);
-            }
+        if (Input.GetKey("p"))
+        {
+            StaticValues.SelfFPS.SetActive(true);
+            //mainView.enabled = true;
+            //topView.enabled = false;
+            // Cursor.visible = false;
+            //Cursor.lockState = CursorLockMode.Locked;
+            _hand.SetActive(false);
+            addStoneMenu.SetActive(false);
+            saveButtons.SetActive(false);
+            editStoneButtons.SetActive(false);
+            showMoreButtons.SetActive(false);
+            chat.SetActive(true);
+        }
 
-            if (Input.GetKeyDown("h"))
-            {
-                helpPane.SetActive(!helpPane.activeSelf);
-            }
+        if (Input.GetKeyDown("h"))
+        {
+            helpPane.SetActive(!helpPane.activeSelf);
         }
     }
 
-    void OnMouseEnter()
+    private void OnMouseEnter()
     {
         Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
     }
 
-    void OnMouseExit()
+    private void OnMouseExit()
     {
         Cursor.SetCursor(null, Vector2.zero, cursorMode);
     }
 
-    void OnGUI()
+    private void OpenUI()
     {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        _handScript.tCamera = StaticValues.TopCamera;
+        _hand.SetActive(true);
+        addStoneMenu.SetActive(false);
+        saveButtons.SetActive(true);
+        showMoreButtons.SetActive(true);
+        chat.SetActive(false);
+    }
 
+    private void CloseUI()
+    {
+        _hand.SetActive(false);
+        addStoneMenu.SetActive(false);
+        saveButtons.SetActive(false);
+        editStoneButtons.SetActive(false);
+        showMoreButtons.SetActive(false);
+        chat.SetActive(true);
     }
 }

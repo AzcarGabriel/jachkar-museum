@@ -47,7 +47,6 @@ public class SceneScripts : MonoBehaviour
         stoneService.LoadScreen = LoadScreen;
 
         hideButton.SetActive(false);
-        StaticValues.PreviosScene = SceneManager.GetActiveScene().name;
         Cursor.lockState = CursorLockMode.Locked;
 
         if (StaticValues.BackFromDetails) {

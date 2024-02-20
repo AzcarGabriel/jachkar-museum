@@ -164,17 +164,17 @@ public class StoneService : MonoBehaviour
                     else
                     {
                         // Get downloaded asset bundle
-                        Debug.Log("Downloaded stone bundle " + bundleName.stoneBundleName);
+                        //Debug.Log("Downloaded stone bundle " + bundleName.stoneBundleName);
                         stonesBundle = DownloadHandlerAssetBundle.GetContent(uwr);
                     }
                 }
             }
             else
             {
-                Debug.Log("Loaded offline " + bundleName.metadataBundleName);
+                //Debug.Log("Loaded offline " + bundleName.metadataBundleName);
                 metadataBundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, bundleName.metadataBundleName));
 
-                Debug.Log("Loaded offline " + bundleName.stoneBundleName);
+                //Debug.Log("Loaded offline " + bundleName.stoneBundleName);
                 stonesBundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, bundleName.stoneBundleName));
             }
 
@@ -211,7 +211,7 @@ public class StoneService : MonoBehaviour
             }
             else
             {
-                Debug.Log("Loaded offline " + bundleName.thumbsBundleName);
+                //Debug.Log("Loaded offline " + bundleName.thumbsBundleName);
                 thumbsBundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, bundleName.thumbsBundleName));
             }
 

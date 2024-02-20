@@ -1,6 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using UnityStandardAssets.Utility;
 using Random = UnityEngine.Random;
 
@@ -36,6 +37,9 @@ namespace Player
     
         [Header("Network Components")]
         [SerializeField] private GameObject pingMarkPrefab;
+        
+        [Header("Top View")] 
+        [SerializeField] private GameObject topViewPrefab;
 
 
    
@@ -54,6 +58,7 @@ namespace Player
         private Vector2 _moveInput;
         private float _speed;
         private bool _isWalking;
+        private TopViewController _topViewController;
 
         #region NetworkFields
         private static readonly int SpeedX = Animator.StringToHash("SpeedX");
@@ -77,21 +82,28 @@ namespace Player
     
         private void OnEnable()
         {
+            if (!NetworkObject.IsOwner) return;
+            playerCamera.enabled = true;
             _playerActions.Enable();
             _playerActions.FirstPerson.Move.performed += OnMovePerformed;
             _playerActions.FirstPerson.Move.canceled += OnMoveCancelled;
             _playerActions.FirstPerson.Sprint.performed += OnSprintPerformed;
             _playerActions.FirstPerson.Sprint.canceled += OnSprintCancelled;
             _playerActions.FirstPerson.Jump.performed += OnJump;
+            _playerActions.FirstPerson.SwitchCamera.performed += SwitchCamera;
         }
 
         private void OnDisable()
         {
+            if (!NetworkObject.IsOwner) return;
+            playerCamera.enabled = false;
+            _playerActions.Disable();
             _playerActions.FirstPerson.Move.performed -= OnMovePerformed;
             _playerActions.FirstPerson.Move.canceled -= OnMoveCancelled;
             _playerActions.FirstPerson.Sprint.performed -= OnSprintPerformed;
             _playerActions.FirstPerson.Sprint.canceled -= OnSprintCancelled;
             _playerActions.FirstPerson.Jump.performed -= OnJump;
+            _playerActions.FirstPerson.SwitchCamera.performed -= SwitchCamera;
         }
     
         private void Start()
@@ -101,6 +113,9 @@ namespace Player
             fovKick.Setup(playerCamera);
             headBob.Setup(playerCamera, stepInterval);
             mouseLook.Init(transform , playerCamera.transform);
+
+            _topViewController = Instantiate(topViewPrefab).GetComponent<TopViewController>();
+            _topViewController.FirstPersonController = this;
         }
     
         // Update is called once per frame
@@ -267,7 +282,6 @@ namespace Player
 
         private void OnMovePerformed(InputAction.CallbackContext ctx)
         {
-            if (!IsOwner) return;
             _moveInput = ctx.ReadValue<Vector2>();
             if (_moveInput.sqrMagnitude > 1) _moveInput.Normalize();
             animator.SetFloat(SpeedX, _moveInput.x);
@@ -296,6 +310,12 @@ namespace Player
         private void OnJump(InputAction.CallbackContext ctx)
         {
             _jump = true;
+        }
+
+        private void SwitchCamera(InputAction.CallbackContext ctx)
+        {
+            this.enabled = false;
+            _topViewController.enabled = true;
         }
 
         #endregion
