@@ -7,7 +7,8 @@ namespace Networking
 {
     public class PlayerObject : NetworkBehaviour
     {
-        private readonly NetworkVariable<FixedString32Bytes> _playerName = new("");
+        private readonly NetworkVariable<FixedString32Bytes> _playerName = new();
+        private readonly NetworkVariable<bool> _isLeader = new();
 
         public FixedString32Bytes PlayerName
         {
@@ -27,6 +28,7 @@ namespace Networking
             if (IsServer)
             { 
                 PlayerName = ServerManager.Instance.GetUsername(OwnerClientId);
+                _isLeader.Value = ServerManager.Instance.GetLeadership(OwnerClientId);
             }
             nameTag.text = PlayerName.ToString();
         

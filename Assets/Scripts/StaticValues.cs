@@ -16,6 +16,7 @@ public class StaticValues : MonoBehaviour
     public static bool ShouldEnable = false;
     public static GameObject SelfFPS;
     public static bool OfflineMode = false;
+    public static bool IsLeader = false;
 
-    public static Camera TopCamera; // THIS SHOULD CHANGE WHEN CHANGING TO NEW UI TOOLKIY
+    public static Camera TopCamera; // THIS SHOULD CHANGE WHEN CHANGING TO NEW UI TOOLKIT
 }

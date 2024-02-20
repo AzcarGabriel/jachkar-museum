@@ -44,12 +44,12 @@ namespace UI.XML
             //OpenLobby();
             StaticValues.OfflineMode = true;
             ServerManager.Instance.StartClient();
-            //ServerManager.Instance.OpenScene("LobbyTempScene");
         }
 
         private void OnServerClick()
         {
-            ServerManager.Instance.StartHost();
+            //ServerManager.Instance.StartHost();
+            ServerManager.Instance.StartServer();
         }
 
         private void OnExitClick()

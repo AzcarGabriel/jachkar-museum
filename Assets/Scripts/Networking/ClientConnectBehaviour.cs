@@ -35,7 +35,7 @@ namespace Networking
         {
             if (StaticValues.OfflineMode)
             {
-                AddPlayerServerRpc("", 0);
+                AddPlayerServerRpc("", 0, false);
                 SpawnPlayerCharacterServerRpc(0);
             }
             
@@ -71,9 +71,9 @@ namespace Networking
         }
 
         [ServerRpc(RequireOwnership = false)]
-        private void AddPlayerServerRpc(string username, int characterId, ServerRpcParams serverRpcParams = default)
+        private void AddPlayerServerRpc(string username, int characterId, bool isLeader, ServerRpcParams serverRpcParams = default)
         {
-            ServerManager.Instance.AddClientData(username, characterId, serverRpcParams.Receive.SenderClientId);
+            ServerManager.Instance.AddClientData(username, characterId, serverRpcParams.Receive.SenderClientId, isLeader);
         }
 
         [ServerRpc(RequireOwnership = false)]

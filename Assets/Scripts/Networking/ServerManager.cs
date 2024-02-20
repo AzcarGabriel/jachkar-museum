@@ -13,6 +13,8 @@ namespace Networking
         public static ServerManager Instance { get; private set; }
 
         private bool _gameStarted;
+
+        private ulong _leader = 100;
     
         public struct StoneAssetData
         {
@@ -43,7 +45,7 @@ namespace Networking
                 NetworkManager.Singleton.GetComponent<UnityTransport>().SetServerSecrets(SecureParameters.MyGameServerCertificate, SecureParameters.MyGameServerPrivateKey);
             }
 
-            NetworkManager.Singleton.ConnectionApprovalCallback += ApprovalCheck; // Not necessary yet, but here you could add a player limit
+            NetworkManager.Singleton.ConnectionApprovalCallback += ApprovalCheck;
             NetworkManager.Singleton.OnServerStarted += OnNetworkReady;
             NetworkManager.Singleton.StartServer();
         }
@@ -61,13 +63,14 @@ namespace Networking
             NetworkManager.Singleton.StartClient();
         }
 
-        public void AddClientData(string clientUsername, int characterId, ulong clientId)
+        public void AddClientData(string clientUsername, int characterId, ulong clientId, bool isLeader)
         {
             ClientData newClientData = new(clientId)
             {
                 clientId =  clientId,
                 characterId = characterId,
-                username = clientUsername
+                username = clientUsername,
+                isLeader = isLeader,
             };
 
             ClientData.Add(clientId, newClientData);
@@ -126,6 +129,10 @@ namespace Networking
             response.Pending = false;
 
             ClientData[request.ClientNetworkId] = new ClientData(request.ClientNetworkId);
+            
+            // Give leader to the first player joining
+            if (ClientData.Count == 1)
+                _leader = request.ClientNetworkId;
         }
 
         private void OnNetworkReady()
@@ -144,27 +151,37 @@ namespace Networking
         {
             if (!ClientData.ContainsKey(clientId)) return;
             ClientData.Remove(clientId);
+            
+            if (ClientData.Count == 0)
+                ResetServer();
         }
         
         public void SetCharacter(ulong clientId, int characterId)
         {
             if (ClientData.TryGetValue(clientId, out ClientData data))
-            {
                 data.characterId = characterId;
-            }
         }
 
         public void SetUsername(ulong clientId, FixedString32Bytes username)
         {
             if (ClientData.TryGetValue(clientId, out ClientData data))
-            {
                 data.username = username;
-            }
         }
 
         public FixedString32Bytes GetUsername(ulong clientId)
         {
             return ClientData.TryGetValue(clientId, out ClientData data) ? data.username : "";
+        }
+
+        public bool GetLeadership(ulong clientId)
+        {
+            return ClientData.TryGetValue(clientId, out ClientData data) && data.isLeader;
+        }
+
+        private void ResetServer()
+        {
+            _gameStarted = false;
+            OpenScene("LobbyTempScene");
         }
     }
 }

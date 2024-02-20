@@ -4,275 +4,278 @@
     @author Gabriel Azócar Cárcamo <azocarcarcamo@gmail.com>
  */
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using Networking;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using System.Collections.Generic;
-using System;
-using System.Text;
-using System.IO;
-using Networking;
 using UnityEngine.UIElements;
 using Button = UnityEngine.UI.Button;
 using Cursor = UnityEngine.Cursor;
 using Image = UnityEngine.UI.Image;
-using Slider = UnityEngine.UI.Slider;
 
-public class SceneScripts : MonoBehaviour
+namespace ScenesScripts
 {
-
-    [SerializeField]
-    public Transform spawnPoint;
-    public GameObject showButton;
-    public GameObject hideButton;
-    public GameObject addStoneMenu;
-    public GameObject editStoneMenu;
-    public GameObject saveDialog;
-    public GameObject loadDialog;
-    public GameObject overwriteDialog;
-    public GameObject availableFiles;
-    public InputField saveInputField;
-    public InputField loadInputField;
-    public VisualElement LoadScreen;
-    public LayoutGroup addStoneMenuGrid;
-    private bool overwrite = false;
-    private StoneService stoneService;
-
-    [SerializeField] private NetworkStoneSpawner networkStoneSpawner; 
-
-    // Use this for initialization
-    void Start() {
-
-        stoneService = gameObject.AddComponent<StoneService>();
-        stoneService.LoadScreen = LoadScreen;
-
-        hideButton.SetActive(false);
-        Cursor.lockState = CursorLockMode.Locked;
-
-        if (StaticValues.BackFromDetails) {
-            StaticValues.BackFromDetails = false;
-        }
-
-        if (StonesValues.stonesThumbs.Count == 0) {
-            StartCoroutine(this.stoneService.DownloadThumbs(this.constructAddStoneMenu));
-        }
-        else {
-            this.constructAddStoneMenu();
-        }
-    }
-
-    // Update is called once per frame
-    void Update() {
-        if (Input.GetKeyDown("e") && !StaticValues.Writing) {
-            StaticValues.BackFromDetails = true;
-            Save(false);
-        }
-    }
-
-    public void constructAddStoneMenu()
+    public class SceneScripts : MonoBehaviour
     {
-        foreach (Sprite sprite in StonesValues.stonesThumbs)
-        {
-            GameObject thumb = new GameObject();
-            thumb.transform.SetParent(this.addStoneMenuGrid.transform);
-            thumb.AddComponent<RectTransform>();
-            thumb.AddComponent<CanvasRenderer>();
-            Image image = thumb.AddComponent<Image>();
-            image.sprite = sprite;
-            Button button = thumb.AddComponent<Button>();
-            button.onClick.AddListener(() => SpawnStone(int.Parse(sprite.name)));
-            thumb.AddComponent<LayoutElement>();
 
-            // Scroll
-            // Vector3 position = this.addStoneMenuGrid.transform.position;
-            // this.addStoneMenuGrid.transform.localPosition = new Vector3(11, -2740, 0);
-        }
-    }
+        [SerializeField]
+        public Transform spawnPoint;
+        public GameObject showButton;
+        public GameObject hideButton;
+        public GameObject addStoneMenu;
+        public GameObject editStoneMenu;
+        public GameObject saveDialog;
+        public GameObject loadDialog;
+        public GameObject overwriteDialog;
+        public GameObject availableFiles;
+        public InputField saveInputField;
+        public InputField loadInputField;
+        public VisualElement LoadScreen;
+        public LayoutGroup addStoneMenuGrid;
+        private bool overwrite = false;
+        private StoneService stoneService;
 
-    public void SpawnStone(int stoneId)
-    {
-        Quaternion rt = StoneSpawnHelper.GetStoneRotationById(stoneId);
-        Vector3 sp = spawnPoint.position + StoneSpawnHelper.GetStoneSpawnPointOffsetById(stoneId);
-        networkStoneSpawner.SpawnStoneServerRpc(stoneId, sp, rt);
-    }
+        [SerializeField] private NetworkStoneSpawner networkStoneSpawner; 
 
-    public void ShowMenus()
-    {
-        addStoneMenu.SetActive(true);
-        showButton.SetActive(false);
-        hideButton.SetActive(true);
-    }
+        // Use this for initialization
+        void Start() {
 
-    public void HideMenus()
-    {
-        addStoneMenu.SetActive(false);
-        showButton.SetActive(true);
-        hideButton.SetActive(false);
-    }
+            stoneService = gameObject.AddComponent<StoneService>();
+            stoneService.LoadScreen = LoadScreen;
 
-    public void ShowSaveDialog()
-    {
-        saveDialog.SetActive(true);
-    }
+            hideButton.SetActive(false);
+            Cursor.lockState = CursorLockMode.Locked;
 
-    public void ShowLoadDialog()
-    {
-        loadDialog.SetActive(true);
-    }
+            if (StaticValues.BackFromDetails) {
+                StaticValues.BackFromDetails = false;
+            }
 
-    public void ShowAvailableFiles()
-    {
-        availableFiles.SetActive(true);
-
-        List<string> jsonFiles = new List<string>();
-        foreach (string file in System.IO.Directory.GetFiles(Application.persistentDataPath))
-        {
-            if (file.Contains(".json"))
-            {
-                string[] f = file.Split('\\');
-                string fa = f[f.Length - 1];
-                jsonFiles.Add(fa);
+            if (StonesValues.stonesThumbs.Count == 0) {
+                StartCoroutine(this.stoneService.DownloadThumbs(this.constructAddStoneMenu));
+            }
+            else {
+                this.constructAddStoneMenu();
             }
         }
 
-        string ans = "";
-        foreach (string x in jsonFiles)
-        {
-            ans = ans + x.Split('.')[0] + "\n";
+        // Update is called once per frame
+        void Update() {
+            if (Input.GetKeyDown("e") && !StaticValues.Writing) {
+                StaticValues.BackFromDetails = true;
+                Save(false);
+            }
         }
 
-        Text t = availableFiles.GetComponent<Canvas>().GetComponentInChildren<Text>();
-        t.text = ans;
-    }
-
-    public void Load(Boolean cancel)
-    {
-        if (cancel)
+        public void constructAddStoneMenu()
         {
-            loadDialog.SetActive(false);
-            availableFiles.SetActive(false);
-            return;
-        }
-
-        string f_name = "";
-        if (StaticValues.BackFromDetails)
-        {
-            f_name = "temp_data_file";
-        }
-        else
-        {
-            f_name = loadInputField.text;
-        }
-
-        // Recover the values
-        SaveGame.Load(f_name);
-
-        // Clear stones in scene
-        object[] obj = FindObjectsOfType(typeof(GameObject));
-        foreach (object o in obj)
-        {
-            GameObject g = (GameObject)o;
-
-            if (6 < g.name.Length)
+            foreach (Sprite sprite in StonesValues.stonesThumbs)
             {
-                if (g.name.Substring(0, 5).Equals("Stone"))
+                GameObject thumb = new GameObject();
+                thumb.transform.SetParent(this.addStoneMenuGrid.transform);
+                thumb.AddComponent<RectTransform>();
+                thumb.AddComponent<CanvasRenderer>();
+                Image image = thumb.AddComponent<Image>();
+                image.sprite = sprite;
+                Button button = thumb.AddComponent<Button>();
+                button.onClick.AddListener(() => SpawnStone(int.Parse(sprite.name)));
+                thumb.AddComponent<LayoutElement>();
+
+                // Scroll
+                // Vector3 position = this.addStoneMenuGrid.transform.position;
+                // this.addStoneMenuGrid.transform.localPosition = new Vector3(11, -2740, 0);
+            }
+        }
+
+        public void SpawnStone(int stoneId)
+        {
+            if (!StaticValues.IsLeader) return;
+        
+            Quaternion rt = StoneSpawnHelper.GetStoneRotationById(stoneId);
+            Vector3 sp = spawnPoint.position + StoneSpawnHelper.GetStoneSpawnPointOffsetById(stoneId);
+            networkStoneSpawner.SpawnStoneServerRpc(stoneId, sp, rt);
+        }
+
+        public void ShowMenus()
+        {
+            addStoneMenu.SetActive(true);
+            showButton.SetActive(false);
+            hideButton.SetActive(true);
+        }
+
+        public void HideMenus()
+        {
+            addStoneMenu.SetActive(false);
+            showButton.SetActive(true);
+            hideButton.SetActive(false);
+        }
+
+        public void ShowSaveDialog()
+        {
+            saveDialog.SetActive(true);
+        }
+
+        public void ShowLoadDialog()
+        {
+            loadDialog.SetActive(true);
+        }
+
+        public void ShowAvailableFiles()
+        {
+            availableFiles.SetActive(true);
+
+            List<string> jsonFiles = new List<string>();
+            foreach (string file in System.IO.Directory.GetFiles(Application.persistentDataPath))
+            {
+                if (file.Contains(".json"))
                 {
-                    Destroy(g);
+                    string[] f = file.Split('\\');
+                    string fa = f[f.Length - 1];
+                    jsonFiles.Add(fa);
                 }
             }
-        }
 
-        // Load stones in scene
-        for (int i = 0; i < SaveGame.Instance.StonesNames.Count; i++)
-        {
-            StartCoroutine(
-                this.stoneService.SpawnStoneWithPositionAndRotation(
-                    0, // ESTO DEBERIA GUARDARSE en lugar de estar hardcodeado
-                    SaveGame.Instance.StonesNames[i],
-                    SaveGame.Instance.StonesPositions[i],
-                    SaveGame.Instance.StonesRotations[i]
-                )
-            );
-        }
-
-        loadDialog.SetActive(false);
-        availableFiles.SetActive(false);
-        loadInputField.text = "";
-    }
-
-    public void Save(Boolean cancel)
-    {
-        if (cancel)
-        {
-            saveDialog.SetActive(false);
-            return;
-        }
-
-        string f_name = "";
-        if (StaticValues.BackFromDetails)
-        {
-            f_name = "temp_data_file";
-        }
-        else
-        {
-            f_name = saveInputField.text;
-        }
-
-        // Get the actual stone's values
-        // Modify SaveGame.Instance.Stones
-        string filePath = Path.Combine(Application.persistentDataPath, f_name + ".json");
-
-        if (File.Exists(filePath) && !StaticValues.BackFromDetails && !overwrite)
-        {
-            overwriteDialog.SetActive(true);
-            saveDialog.SetActive(false);
-            overwrite = true;
-            return;
-        }
-
-        overwrite = false;
-        overwriteDialog.SetActive(false);
-
-        SaveGame.Instance.Clear();
-
-        object[] obj = FindObjectsOfType(typeof(GameObject));
-        foreach (object o in obj) {
-            GameObject g = (GameObject)o;
-            if (6 < g.name.Length)
+            string ans = "";
+            foreach (string x in jsonFiles)
             {
-                if (g.name.Substring(0, 5).Equals("Stone"))
-                {
-                    SaveGame.Instance.StonesNames.Add(this.GetStoneIndex(g.name));
-                    SaveGame.Instance.StonesPositions.Add(g.transform.position);
-                    SaveGame.Instance.StonesRotations.Add(g.transform.rotation);
-                }
+                ans = ans + x.Split('.')[0] + "\n";
             }
+
+            Text t = availableFiles.GetComponent<Canvas>().GetComponentInChildren<Text>();
+            t.text = ans;
         }
 
-        // Save values
-        SaveGame.Save(f_name);
-
-        saveDialog.SetActive(false);
-        saveInputField.text = "";
-    }
-
-    public int GetStoneIndex(string stoneName)
-    {
-        string clean = stoneName.Replace("Stone", "");
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < clean.Length; i++)
+        public void Load(Boolean cancel)
         {
-            char c = clean[i];
-            if (int.TryParse(c.ToString(), out _))
+            if (cancel)
             {
-                sb.Append(c);
+                loadDialog.SetActive(false);
+                availableFiles.SetActive(false);
+                return;
+            }
+
+            string f_name = "";
+            if (StaticValues.BackFromDetails)
+            {
+                f_name = "temp_data_file";
             }
             else
             {
-                break;
+                f_name = loadInputField.text;
             }
+
+            // Recover the values
+            SaveGame.Load(f_name);
+
+            // Clear stones in scene
+            object[] obj = FindObjectsOfType(typeof(GameObject));
+            foreach (object o in obj)
+            {
+                GameObject g = (GameObject)o;
+
+                if (6 < g.name.Length)
+                {
+                    if (g.name.Substring(0, 5).Equals("Stone"))
+                    {
+                        Destroy(g);
+                    }
+                }
+            }
+
+            // Load stones in scene
+            for (int i = 0; i < SaveGame.Instance.StonesNames.Count; i++)
+            {
+                StartCoroutine(
+                    this.stoneService.SpawnStoneWithPositionAndRotation(
+                        0, // ESTO DEBERIA GUARDARSE en lugar de estar hardcodeado
+                        SaveGame.Instance.StonesNames[i],
+                        SaveGame.Instance.StonesPositions[i],
+                        SaveGame.Instance.StonesRotations[i]
+                    )
+                );
+            }
+
+            loadDialog.SetActive(false);
+            availableFiles.SetActive(false);
+            loadInputField.text = "";
         }
 
-        return int.Parse(sb.ToString());
+        public void Save(Boolean cancel)
+        {
+            if (cancel)
+            {
+                saveDialog.SetActive(false);
+                return;
+            }
+
+            string f_name = "";
+            if (StaticValues.BackFromDetails)
+            {
+                f_name = "temp_data_file";
+            }
+            else
+            {
+                f_name = saveInputField.text;
+            }
+
+            // Get the actual stone's values
+            // Modify SaveGame.Instance.Stones
+            string filePath = Path.Combine(Application.persistentDataPath, f_name + ".json");
+
+            if (File.Exists(filePath) && !StaticValues.BackFromDetails && !overwrite)
+            {
+                overwriteDialog.SetActive(true);
+                saveDialog.SetActive(false);
+                overwrite = true;
+                return;
+            }
+
+            overwrite = false;
+            overwriteDialog.SetActive(false);
+
+            SaveGame.Instance.Clear();
+
+            object[] obj = FindObjectsOfType(typeof(GameObject));
+            foreach (object o in obj) {
+                GameObject g = (GameObject)o;
+                if (6 < g.name.Length)
+                {
+                    if (g.name.Substring(0, 5).Equals("Stone"))
+                    {
+                        SaveGame.Instance.StonesNames.Add(this.GetStoneIndex(g.name));
+                        SaveGame.Instance.StonesPositions.Add(g.transform.position);
+                        SaveGame.Instance.StonesRotations.Add(g.transform.rotation);
+                    }
+                }
+            }
+
+            // Save values
+            SaveGame.Save(f_name);
+
+            saveDialog.SetActive(false);
+            saveInputField.text = "";
+        }
+
+        public int GetStoneIndex(string stoneName)
+        {
+            string clean = stoneName.Replace("Stone", "");
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < clean.Length; i++)
+            {
+                char c = clean[i];
+                if (int.TryParse(c.ToString(), out _))
+                {
+                    sb.Append(c);
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return int.Parse(sb.ToString());
+        }
     }
 }

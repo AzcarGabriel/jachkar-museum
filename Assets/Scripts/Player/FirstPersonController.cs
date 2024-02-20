@@ -1,7 +1,6 @@
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 using UnityStandardAssets.Utility;
 using Random = UnityEngine.Random;
 
@@ -59,6 +58,7 @@ namespace Player
         private float _speed;
         private bool _isWalking;
         private TopViewController _topViewController;
+        private bool _networkReady;
 
         #region NetworkFields
         private static readonly int SpeedX = Animator.StringToHash("SpeedX");
@@ -79,10 +79,24 @@ namespace Player
             _nextStep = _stepCycle/2f;
             _jumping = false;
         }
-    
+
+        public override void OnNetworkSpawn()
+        {
+            _networkReady = true;
+            OnEnable(); // Call on enable again when network is ready
+            
+            if (IsOwner) {
+                Debug.Log("Instantiating");
+                _topViewController = Instantiate(topViewPrefab).GetComponent<TopViewController>();
+                _topViewController.FirstPersonController = this;
+                Debug.Log(_topViewController);
+            }
+            base.OnNetworkDespawn();
+        }
+
         private void OnEnable()
         {
-            if (!NetworkObject.IsOwner) return;
+            if (!IsOwner || !_networkReady) return;
             playerCamera.enabled = true;
             _playerActions.Enable();
             _playerActions.FirstPerson.Move.performed += OnMovePerformed;
@@ -91,11 +105,12 @@ namespace Player
             _playerActions.FirstPerson.Sprint.canceled += OnSprintCancelled;
             _playerActions.FirstPerson.Jump.performed += OnJump;
             _playerActions.FirstPerson.SwitchCamera.performed += SwitchCamera;
+            _playerActions.FirstPerson.Ping.performed += MarkPing;
         }
 
         private void OnDisable()
         {
-            if (!NetworkObject.IsOwner) return;
+            if (!IsOwner) return;
             playerCamera.enabled = false;
             _playerActions.Disable();
             _playerActions.FirstPerson.Move.performed -= OnMovePerformed;
@@ -113,12 +128,8 @@ namespace Player
             fovKick.Setup(playerCamera);
             headBob.Setup(playerCamera, stepInterval);
             mouseLook.Init(transform , playerCamera.transform);
-
-            _topViewController = Instantiate(topViewPrefab).GetComponent<TopViewController>();
-            _topViewController.FirstPersonController = this;
         }
-    
-        // Update is called once per frame
+        
         private void Update()
         {
             RotateView();
@@ -128,23 +139,8 @@ namespace Player
                 mouseLook.SetLocked(true);
             }
             if (!_previouslyGrounded && _characterController.isGrounded) OnLanding();
-        
             if (!_characterController.isGrounded && !_jumping && _previouslyGrounded) _moveDirection.y = 0f;
-
             _previouslyGrounded = _characterController.isGrounded;
-
-            if (!IsOwner) return;
-
-            var cameraTransform = playerCamera.transform;
-            Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
-            if (Input.GetKeyDown("p")) {
-                if (Physics.Raycast(ray, out RaycastHit hit)) {
-                    if (hit.collider != null) {
-                        Vector3 spawnPosition = hit.point;
-                        SpawnMarkServerRPC(spawnPosition);   
-                    }
-                }
-            }
         }
         #endregion
     
@@ -284,6 +280,7 @@ namespace Player
         {
             _moveInput = ctx.ReadValue<Vector2>();
             if (_moveInput.sqrMagnitude > 1) _moveInput.Normalize();
+            
             animator.SetFloat(SpeedX, _moveInput.x);
             animator.SetFloat(SpeedZ, _moveInput.y);
         }
@@ -291,6 +288,9 @@ namespace Player
         private void OnMoveCancelled(InputAction.CallbackContext ctx)
         {
             _moveInput = Vector2.zero;
+            
+            animator.SetFloat(SpeedX, _moveInput.x);
+            animator.SetFloat(SpeedZ, _moveInput.y);
         }
 
         private void OnSprintPerformed(InputAction.CallbackContext ctx)
@@ -318,15 +318,22 @@ namespace Player
             _topViewController.enabled = true;
         }
 
+        private void MarkPing(InputAction.CallbackContext ctx)
+        {
+            var cameraTransform = playerCamera.transform;
+            Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
+            if (!Physics.Raycast(ray, out RaycastHit hit) || hit.collider == null) return;
+            Vector3 spawnPosition = hit.point;
+            SpawnMarkServerRPC(spawnPosition);
+        }
+
         #endregion
 
         [ServerRpc(RequireOwnership = false)]
         public void SpawnMarkServerRPC(Vector3 position, ServerRpcParams serverRpcParams = default) 
         {
-            //string username = ServerManager.Instance.ClientData[serverRpcParams.Receive.SenderClientId].username;
-            //GameObject instantiatedPing = Instantiate(pingMarkPrefab, position, Quaternion.identity);
-            //instantiatedPing.GetComponent<MarkPing>().SetPlayerName(username);
-            //instantiatedPing.GetComponent<NetworkObject>().SpawnWithOwnership(serverRpcParams.Receive.SenderClientId, true);
+            GameObject instantiatedPing = Instantiate(pingMarkPrefab, position, Quaternion.identity);
+            instantiatedPing.GetComponent<NetworkObject>().SpawnWithOwnership(serverRpcParams.Receive.SenderClientId, true);
         }
     }
 }

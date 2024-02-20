@@ -35,12 +35,12 @@ namespace Player
             _playerCamera = GetComponent<Camera>();
             _playerActions = new CharacterActions();
             StaticValues.TopCamera = _playerCamera;
+            DontDestroyOnLoad(this);
         }
     
         private void OnEnable()
         {
             EditorOpenEvent?.Invoke();
-            Debug.Log("Invoking");
             _playerCamera.enabled = true;
             _playerActions.Enable();
             _playerActions.TopCamera.Move.performed += OnMovePerformed;
