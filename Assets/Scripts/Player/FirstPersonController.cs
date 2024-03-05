@@ -29,6 +29,7 @@ namespace Player
         [Header("Components")]
         [SerializeField] private Camera playerCamera;
         [SerializeField] private MouseLook mouseLook;
+        [SerializeField] private PlayerLook playerLook;
         [SerializeField] private FOVKick fovKick = new();
         [SerializeField] private CurveControlledBob headBob = new();
         [SerializeField] private LerpControlledBob jumpBob = new();
@@ -86,10 +87,8 @@ namespace Player
             OnEnable(); // Call on enable again when network is ready
             
             if (IsOwner) {
-                Debug.Log("Instantiating");
                 _topViewController = Instantiate(topViewPrefab).GetComponent<TopViewController>();
                 _topViewController.FirstPersonController = this;
-                Debug.Log(_topViewController);
             }
             base.OnNetworkDespawn();
         }
@@ -128,6 +127,7 @@ namespace Player
             fovKick.Setup(playerCamera);
             headBob.Setup(playerCamera, stepInterval);
             mouseLook.Init(transform , playerCamera.transform);
+            _topViewController.Init(playerLook);
         }
         
         private void Update()

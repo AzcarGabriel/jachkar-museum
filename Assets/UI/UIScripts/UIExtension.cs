@@ -1,6 +1,6 @@
 using UnityEngine.UIElements;
 
-namespace UI.XML
+namespace UI.UIScripts
 {
     public static class UIExtension
     {

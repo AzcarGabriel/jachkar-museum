@@ -1,8 +1,7 @@
 using System;
-using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace UI.XML
+namespace UI.UIScripts
 {
     public class LobbyScreenBehaviour
     {

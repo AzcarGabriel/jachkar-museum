@@ -1,10 +1,8 @@
-using System;
 using Networking.Character;
 using TMPro;
 using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Networking.Lobby

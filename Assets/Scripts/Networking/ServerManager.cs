@@ -62,20 +62,7 @@ namespace Networking
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetClientSecrets(SecureParameters.ServerCommonName);
             NetworkManager.Singleton.StartClient();
         }
-
-        public void AddClientData(string clientUsername, int characterId, ulong clientId, bool isLeader)
-        {
-            ClientData newClientData = new(clientId)
-            {
-                clientId =  clientId,
-                characterId = characterId,
-                username = clientUsername,
-                isLeader = isLeader,
-            };
-
-            ClientData.Add(clientId, newClientData);
-        }
-
+        
         #region Stones
         
         private GameObject GetStoneInstanceById(int id)
@@ -132,7 +119,8 @@ namespace Networking
             
             // Give leader to the first player joining
             if (ClientData.Count == 1)
-                _leader = request.ClientNetworkId;
+                ClientData[request.ClientNetworkId].isLeader = true;
+            _leader = request.ClientNetworkId;
         }
 
         private void OnNetworkReady()

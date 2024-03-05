@@ -73,36 +73,7 @@ public class CameraChange : MonoBehaviour
             NetworkManager.Singleton.Shutdown();
             SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
         }
-
-        if (Input.GetKey("t"))
-        {
-            StaticValues.SelfFPS.SetActive(false);
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-            mainView.enabled = false;
-            topView.enabled = true;
-            _hand.SetActive(true);
-            addStoneMenu.SetActive(false);
-            saveButtons.SetActive(true);
-            showMoreButtons.SetActive(true);
-            chat.SetActive(false);
-        }
-
-        if (Input.GetKey("p"))
-        {
-            StaticValues.SelfFPS.SetActive(true);
-            //mainView.enabled = true;
-            //topView.enabled = false;
-            // Cursor.visible = false;
-            //Cursor.lockState = CursorLockMode.Locked;
-            _hand.SetActive(false);
-            addStoneMenu.SetActive(false);
-            saveButtons.SetActive(false);
-            editStoneButtons.SetActive(false);
-            showMoreButtons.SetActive(false);
-            chat.SetActive(true);
-        }
-
+        
         if (Input.GetKeyDown("h"))
         {
             helpPane.SetActive(!helpPane.activeSelf);

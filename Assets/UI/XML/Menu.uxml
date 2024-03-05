@@ -1,8 +1,8 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <ui:Template name="LobbyScreen" src="project://database/Assets/UI/XML/LobbyScreen.uxml?fileID=9197481963319205126&amp;guid=f120bede35d54a243842a50ea57f7208&amp;type=3#LobbyScreen" />
-    <ui:Template name="LoadingScreen" src="project://database/Assets/UI/XML/LoadingScreen.uxml?fileID=9197481963319205126&amp;guid=ce720cfc816cd5f4990cab3c87ca2b88&amp;type=3#LoadingScreen" />
     <ui:Template name="MainMenu" src="project://database/Assets/UI/XML/MainMenu.uxml?fileID=9197481963319205126&amp;guid=6d168f19cacedff418e67959147dbbad&amp;type=3#MainMenu" />
-    <ui:Instance template="LobbyScreen" name="LobbyScreen" style="display: none; flex-grow: 1;" />
-    <ui:Instance template="MainMenu" name="MainMenu" style="flex-grow: 1; display: flex; position: absolute; width: 1920px; height: 1080px;" />
-    <ui:Instance template="LoadingScreen" name="LoadingScreen" style="overflow: visible; visibility: visible; display: flex; flex-grow: 1; position: absolute; width: 1920px; height: 1080px;" />
+    <ui:Template name="LoadingScreen" src="project://database/Assets/UI/XML/LoadingScreen.uxml?fileID=9197481963319205126&amp;guid=ce720cfc816cd5f4990cab3c87ca2b88&amp;type=3#LoadingScreen" />
+    <ui:Instance template="LobbyScreen" name="LobbyScreen" style="display: none; flex-grow: 1; width: 100%; height: 100%;" />
+    <ui:Instance template="MainMenu" name="MainMenu" style="flex-grow: 1; display: flex; position: absolute; width: 100%; height: 100%;" />
+    <ui:Instance template="LoadingScreen" name="LoadingScreen" style="overflow: visible; visibility: visible; display: flex; flex-grow: 1; position: absolute; width: 100%; height: 100%;" />
 </ui:UXML>

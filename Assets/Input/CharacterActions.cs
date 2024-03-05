@@ -254,6 +254,15 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Look"",
+                    ""type"": ""Value"",
+                    ""id"": ""dea5e22e-9903-44cd-b657-e2457494feca"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -366,6 +375,17 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
                     ""action"": ""SwitchMode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5467b458-e5c0-43c6-af13-7816b633d7e1"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -387,6 +407,7 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
         m_TopCamera_SwitchCamera = m_TopCamera.FindAction("SwitchCamera", throwIfNotFound: true);
         m_TopCamera_Float = m_TopCamera.FindAction("Float", throwIfNotFound: true);
         m_TopCamera_SwitchMode = m_TopCamera.FindAction("SwitchMode", throwIfNotFound: true);
+        m_TopCamera_Look = m_TopCamera.FindAction("Look", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -546,6 +567,7 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_TopCamera_SwitchCamera;
     private readonly InputAction m_TopCamera_Float;
     private readonly InputAction m_TopCamera_SwitchMode;
+    private readonly InputAction m_TopCamera_Look;
     public struct TopCameraActions
     {
         private @CharacterActions m_Wrapper;
@@ -554,6 +576,7 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
         public InputAction @SwitchCamera => m_Wrapper.m_TopCamera_SwitchCamera;
         public InputAction @Float => m_Wrapper.m_TopCamera_Float;
         public InputAction @SwitchMode => m_Wrapper.m_TopCamera_SwitchMode;
+        public InputAction @Look => m_Wrapper.m_TopCamera_Look;
         public InputActionMap Get() { return m_Wrapper.m_TopCamera; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -575,6 +598,9 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
             @SwitchMode.started += instance.OnSwitchMode;
             @SwitchMode.performed += instance.OnSwitchMode;
             @SwitchMode.canceled += instance.OnSwitchMode;
+            @Look.started += instance.OnLook;
+            @Look.performed += instance.OnLook;
+            @Look.canceled += instance.OnLook;
         }
 
         private void UnregisterCallbacks(ITopCameraActions instance)
@@ -591,6 +617,9 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
             @SwitchMode.started -= instance.OnSwitchMode;
             @SwitchMode.performed -= instance.OnSwitchMode;
             @SwitchMode.canceled -= instance.OnSwitchMode;
+            @Look.started -= instance.OnLook;
+            @Look.performed -= instance.OnLook;
+            @Look.canceled -= instance.OnLook;
         }
 
         public void RemoveCallbacks(ITopCameraActions instance)
@@ -624,5 +653,6 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
         void OnSwitchCamera(InputAction.CallbackContext context);
         void OnFloat(InputAction.CallbackContext context);
         void OnSwitchMode(InputAction.CallbackContext context);
+        void OnLook(InputAction.CallbackContext context);
     }
 }

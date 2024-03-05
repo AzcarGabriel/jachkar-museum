@@ -1,5 +1,14 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Styles/main_menu_buttons.uss?fileID=7433441132597879392&amp;guid=36fe9dc735abc5941a2804a0b0bbc98a&amp;type=3#main_menu_buttons" />
+    <Style src="project://database/Assets/UI/Styles/main_menu_labels.uss?fileID=7433441132597879392&amp;guid=c57f1bff1f759e24786ed81bc6cca0e8&amp;type=3#main_menu_labels" />
     <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgb(224, 33, 33); -unity-background-image-tint-color: rgba(214, 27, 27, 0.98);">
-        <ui:Button text="Back&#10;" display-tooltip-when-elided="true" name="BackButton" />
+        <ui:VisualElement name="Header" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); height: 30%;">
+            <ui:Label tabindex="-1" text="Escoge un personaje&#10;" display-tooltip-when-elided="true" name="Label" class="title-label" style="font-size: 60px;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Middle" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); height: 40%; flex-direction: row; justify-content: center;" />
+        <ui:VisualElement name="Bottom" style="height: 30%;">
+            <ui:TextField picking-mode="Ignore" value="Usuario" class="title-label" style="flex-direction: column; align-self: center; -unity-text-align: upper-center; font-size: 35px; width: 30%; margin-bottom: 2%; margin-top: 2%;" />
+            <ui:Button text="Listo" display-tooltip-when-elided="true" name="Button" class="main-menu-button" style="width: 30%; height: 30%; font-size: 37px; align-self: center;" />
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

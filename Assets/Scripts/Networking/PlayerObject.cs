@@ -39,7 +39,7 @@ namespace Networking
             {
                 _playerCamera.enabled = true;
                 _playerAudioListener.enabled = true;
-                //playerModel.SetActive(false);
+                StaticValues.IsLeader = _isLeader.Value;
                 playerModel.transform.localScale = Vector3.zero;
                 StaticValues.SelfFPS = transform.gameObject;
             } 

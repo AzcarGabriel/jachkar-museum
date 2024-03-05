@@ -11,9 +11,11 @@ namespace Player
         private Camera _playerCamera;
         private CharacterActions _playerActions;
         private Vector3 _moveInput;
+        private Vector2 _mouseLook;
         private float _sizeInput;
         
         public FirstPersonController FirstPersonController { set; private get; }
+        public PlayerLook PlayerLook { set; private get; }
 
 
         #region UIEvents
@@ -37,6 +39,12 @@ namespace Player
             StaticValues.TopCamera = _playerCamera;
             DontDestroyOnLoad(this);
         }
+
+        public void Init(PlayerLook playerLook)
+        {
+            PlayerLook = playerLook;
+            PlayerLook.playerCamera = _playerCamera.transform;
+        }
     
         private void OnEnable()
         {
@@ -49,6 +57,8 @@ namespace Player
             _playerActions.TopCamera.Float.performed += FloatPerformed;
             _playerActions.TopCamera.Float.canceled += FloatCancelled;
             _playerActions.TopCamera.SwitchMode.performed += SwitchMode;
+            _playerActions.TopCamera.Look.performed += ctx => _mouseLook = ctx.ReadValue<Vector2>();
+            _playerActions.TopCamera.Look.canceled += _ => _mouseLook = Vector2.zero;
         }
 
         private void OnDisable()
@@ -115,6 +125,11 @@ namespace Player
             if (_playerCamera.orthographic)
             {
                 _playerCamera.orthographicSize += _sizeInput * zoomSpeed * Time.deltaTime;
+            }
+            else
+            {
+                PlayerLook.ReceiveInput(_mouseLook);
+                PlayerLook.Update();
             }
         }
     }

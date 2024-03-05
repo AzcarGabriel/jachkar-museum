@@ -1,10 +1,9 @@
 using System;
 using Networking;
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace UI.XML
+namespace UI.UIScripts
 {
     public class MainMenuBehaviour
     {
@@ -49,7 +48,7 @@ namespace UI.XML
         private void OnServerClick()
         {
             //ServerManager.Instance.StartHost();
-            ServerManager.Instance.StartServer();
+            ServerManager.Instance.StartHost();
         }
 
         private void OnExitClick()
