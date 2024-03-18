@@ -1,16 +1,38 @@
-﻿public class Khachkar
-{
-    public int Id { get; set; }
-    public string Location { get; set; }
-    public string Scenario { get; set; }
-    public string Setting { get; set; }
-    public string Landscape { get; set; }
-    public string Accessibility { get; set; }
-    public string Category { get; set; }
+﻿using UnityEngine;
 
-    public string ProductionPeriod { get; set; }
-    public string CoonditionOfPreservation { get; set; }
-    public string Inscription { get; set; }
-    public string ImportantFeatures { get; set; }
-    public string Referances { get; set; }
+[System.Serializable]
+public class AssetProps
+{
+    public float scale;
+}
+
+
+[System.Serializable]
+public class Khachkar
+{
+    public int id;
+    public string location;
+    public string scenario;
+    public string setting;
+    public string landscape;
+    public string accessibility;
+    public string category;
+    public string productionPeriod;
+    public string coonditionOfPreservation;
+    public string inscription;
+    public string importantFeatures;
+    public string references;
+    public AssetProps assetProps;
+    public static Khachkar CreateFromJSON(string jsonString)
+    {
+        Debug.Log(jsonString);
+        Khachkar khachkar = JsonUtility.FromJson<Khachkar>(jsonString);
+        Debug.Log(khachkar.id);
+        Debug.Log(khachkar.location);
+        Debug.Log(khachkar.scenario);
+        
+        return khachkar;
+
+    }
+
 }

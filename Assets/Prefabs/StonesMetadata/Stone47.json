@@ -1,0 +1,23 @@
+﻿{
+  "id": 47,
+  "location": "",
+  "latLong": "",
+  "scenario": "Scenario: ",
+  "setting": "Setting: ",
+  "landscape": "Landscape: ",
+  "accessibility": "Accessibility: ",
+  "mastersName": "",
+  "category": "Category: ",
+  "productionPeriod": "Production Period: ",
+  "motive": "",
+  "coonditionOfPreservation": "",
+  "inscription": "Inscription: ",
+  "importantFeatures": "",
+  "backSide": "",
+  "historyOwnership": "",
+  "commemorativeActivities": "",
+  "references": "",
+  "assetProps": {
+    "scale": 50.0
+  }
+}
