@@ -90,12 +90,7 @@ public class StoneService : MonoBehaviour
 
     private string GetStoneName(int index)
     {
-        string prefix = "stone";
-        if (index < 10)
-        {
-            prefix += '0';
-        }
-        return prefix + index + ".prefab";
+        return "stone" + index + ".prefab";
     }
 
     private IEnumerator DownloadBundle(BundleName bundleName)
@@ -226,11 +221,6 @@ public class StoneService : MonoBehaviour
 
     public static BundleName CalculateAssetBundleNameByStoneIndex(int index)
     {
-        if (47 <= index)
-        {
-            return new BundleName("stones_" + index, "stones_metadata_" + index);
-        }
-
         // Stones start at Stone01
         int init = 1;
         int end = StonesValues.bundleSize;
