@@ -18,6 +18,9 @@
   "commemorativeActivities": "",
   "references": "",
   "assetProps": {
-    "scale": 50.0
+    "scale": 50.0,
+    "rotationX": 0,
+    "rotationY": 180,
+    "rotationZ": -180
   }
 }

@@ -18,6 +18,9 @@
   "commemorativeActivities": "",
   "references": "Hamlet Petrosyan, www.khachkar.am",
   "assetProps": {
-    "scale": 400.0
+    "scale": 400.0,
+    "offsetX": 0.0,
+    "offsetY": 5.0,
+    "offsetZ": 0.0
   }
 }
