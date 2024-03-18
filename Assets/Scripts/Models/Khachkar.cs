@@ -4,6 +4,12 @@
 public class AssetProps
 {
     public float scale;
+    public float rotationX = -90.0f;
+    public float rotationY = 0.0f;
+    public float rotationZ = 0.0f;
+    public float offsetX = 0.0f;
+    public float offsetY = 0.0f;
+    public float offsetZ = 0.0f;
 }
 
 
