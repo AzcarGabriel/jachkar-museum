@@ -19,8 +19,8 @@
   "references": "",
   "assetProps": {
     "scale": 50.0,
-    "rotationX": 0,
-    "rotationY": 180,
-    "rotationZ": -180
+    "rotationX": -180,
+    "rotationY": 0.0,
+    "rotationZ": 0.0
   }
 }
