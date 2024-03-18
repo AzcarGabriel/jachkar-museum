@@ -1,9 +1,10 @@
 ﻿using Networking;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class SelectionScript : MonoBehaviour
 {
-    public Camera tCamera;
+    public Camera topCamera { private get;  set; }
     public GameObject editStoneMenu;
 
     private Transform _selection;
@@ -19,7 +20,7 @@ public class SelectionScript : MonoBehaviour
     private Vector3 _deltaHitDef;
 
     [SerializeField]
-    private NetworkStoneSpawner networkStoneSpawner;
+    private NetworkStoneSpawner _networkStoneSpawner;
 
     // Use this for initialization
     private void Start () {
@@ -27,10 +28,17 @@ public class SelectionScript : MonoBehaviour
         editStoneMenu.SetActive(false);
     }
 
+
+    public void OnStoneSelect()
+    {
+        
+    }
+    
+
     // Update is called once per frame
     private void LateUpdate()
     {
-        if (tCamera == null) return;
+        if (topCamera == null) return;
         
         // Moving stone
         if (Input.GetMouseButtonDown(0))
@@ -41,12 +49,9 @@ public class SelectionScript : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
-
-            RaycastHit hit;
-            RaycastHit terrainHit;
-            Ray ray = tCamera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = topCamera.ScreenPointToRay(Input.mousePosition);
                 
-            if (_panning == false && _selection == null && Physics.Raycast(ray, out hit, Mathf.Infinity, StoneMask))
+            if (_panning == false && _selection == null && Physics.Raycast(ray, out var hit, Mathf.Infinity, StoneMask))
             {
                 editStoneMenu.SetActive(true);
 
@@ -58,19 +63,19 @@ public class SelectionScript : MonoBehaviour
             if (_selection != null) {
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, GroundMask))
                 {
-                    Vector3 GroundhitPoint = hit.point;
-                    if (_deltaHitDef.y == Mathf.Infinity)
+                    Vector3 groundhitPoint = hit.point;
+                    if (float.IsPositiveInfinity(_deltaHitDef.y))
                     {
-                        _deltaHitDef = GroundhitPoint;
+                        _deltaHitDef = groundhitPoint;
                     }
-                    GroundhitPoint += _selection.position - _deltaHitDef;
+                    groundhitPoint += _selection.position - _deltaHitDef;
                     _deltaHitDef = hit.point;
-                    _selection.position = GroundhitPoint;
+                    _selection.position = groundhitPoint;
                 }
-                else if (Terrain.activeTerrains.Length > 0 && Terrain.activeTerrain.GetComponent<Collider>().Raycast(ray, out terrainHit, Mathf.Infinity))
+                else if (Terrain.activeTerrains.Length > 0 && Terrain.activeTerrain.GetComponent<Collider>().Raycast(ray, out var terrainHit, Mathf.Infinity))
                 {
                     Vector3 hitPoint = terrainHit.point;
-                    if (_deltaHitDef.y == Mathf.Infinity)
+                    if (float.IsPositiveInfinity(_deltaHitDef.y))
                     {
                         _deltaHitDef = hitPoint;
                     }
@@ -79,7 +84,7 @@ public class SelectionScript : MonoBehaviour
                     _deltaHitDef = terrainHit.point;
                     _selection.position = hitPoint;
                     int stoneId = ServerManager.Instance.GetIdByStone(_selection.gameObject);
-                    networkStoneSpawner.UpdateStone(stoneId, _selection);
+                    _networkStoneSpawner.UpdateStone(stoneId, _selection);
                 }
             }
         }
@@ -96,22 +101,22 @@ public class SelectionScript : MonoBehaviour
         if (_rotation == null) return;
         _rotation.Rotate(Vector3.forward, 20.0f);
         int stoneId = ServerManager.Instance.GetIdByStone(_rotation.gameObject);
-        networkStoneSpawner.UpdateStone(stoneId, _rotation);
+        _networkStoneSpawner.UpdateStone(stoneId, _rotation);
     }
 
-    public void rotateDown()
+    public void RotateDown()
     {
         if (_rotation == null) return;
         _rotation.Rotate(Vector3.forward, -20.0f);
         int stoneId = ServerManager.Instance.GetIdByStone(_rotation.gameObject);
-        networkStoneSpawner.UpdateStone(stoneId, _rotation);
+        _networkStoneSpawner.UpdateStone(stoneId, _rotation);
     }
 
     public void DeleteStone()
     {
         if (_rotation == null) return;
         int stoneId = ServerManager.Instance.GetIdByStone(_rotation.gameObject);
-        if (stoneId == 0) Destroy(_rotation.gameObject); // Pre spawned stone from asset bundle
-        else networkStoneSpawner.DeleteStoneServerRpc(stoneId); // Spawned after connection stone
+        if (stoneId == 0) Object.Destroy(_rotation.gameObject); // Pre spawned stone from asset bundle
+        else _networkStoneSpawner.DeleteStoneServerRpc(stoneId); // Spawned after connection stone
     }
 }

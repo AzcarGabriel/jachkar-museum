@@ -4,7 +4,6 @@
     margin-right: 10%;
     margin-left: 10%;
     -unity-font-style: bold;
-    font-size: 62px;
     -unity-font: url('project://database/Assets/TextMesh%20Pro/Fonts/LiberationSans.ttf?fileID=12800000&guid=e3265ab4bf004d28a9537516768c1c75&type=3#LiberationSans');
     -unity-font-definition: initial;
     -unity-text-align: upper-center;
@@ -23,6 +22,7 @@
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     margin-bottom: 5%;
+    font-size: 300%;
 }
 
 .main-menu-button:hover {

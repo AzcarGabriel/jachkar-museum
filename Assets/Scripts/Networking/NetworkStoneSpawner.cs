@@ -47,7 +47,11 @@ namespace Networking
         public void SpawnStoneServerRpc(int stoneId, Vector3 sp, Quaternion rt)
         {
             int newId = ServerManager.Instance.spawnedStones.Count + 1;
-            ServerManager.Instance.AddSpawnedStone(newId, stoneId, null);
+            if (!IsHost)
+            {
+                ServerManager.Instance.AddSpawnedStone(newId, stoneId, null);
+            }
+
             SpawnStoneClientRpc(newId, stoneId, sp, rt);
         }
 

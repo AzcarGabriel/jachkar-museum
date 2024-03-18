@@ -15,6 +15,7 @@ using UnityEngine.UIElements;
 using Button = UnityEngine.UI.Button;
 using Cursor = UnityEngine.Cursor;
 using Image = UnityEngine.UI.Image;
+using Object = UnityEngine.Object;
 
 namespace ScenesScripts
 {
@@ -35,7 +36,7 @@ namespace ScenesScripts
         public InputField loadInputField;
         public VisualElement LoadScreen;
         public LayoutGroup addStoneMenuGrid;
-        private bool overwrite = false;
+        private bool overwrite;
         private StoneService stoneService;
 
         [SerializeField] private NetworkStoneSpawner networkStoneSpawner; 
@@ -156,18 +157,18 @@ namespace ScenesScripts
                 return;
             }
 
-            string f_name = "";
+            string fName = "";
             if (StaticValues.BackFromDetails)
             {
-                f_name = "temp_data_file";
+                fName = "temp_data_file";
             }
             else
             {
-                f_name = loadInputField.text;
+                fName = loadInputField.text;
             }
 
             // Recover the values
-            SaveGame.Load(f_name);
+            SaveGame.Load(fName);
 
             // Clear stones in scene
             object[] obj = FindObjectsOfType(typeof(GameObject));
@@ -210,19 +211,19 @@ namespace ScenesScripts
                 return;
             }
 
-            string f_name = "";
+            string fName = "";
             if (StaticValues.BackFromDetails)
             {
-                f_name = "temp_data_file";
+                fName = "temp_data_file";
             }
             else
             {
-                f_name = saveInputField.text;
+                fName = saveInputField.text;
             }
 
             // Get the actual stone's values
             // Modify SaveGame.Instance.Stones
-            string filePath = Path.Combine(Application.persistentDataPath, f_name + ".json");
+            string filePath = Path.Combine(Application.persistentDataPath, fName + ".json");
 
             if (File.Exists(filePath) && !StaticValues.BackFromDetails && !overwrite)
             {
@@ -237,34 +238,29 @@ namespace ScenesScripts
 
             SaveGame.Instance.Clear();
 
-            object[] obj = FindObjectsOfType(typeof(GameObject));
-            foreach (object o in obj) {
+            Object[] obj = FindObjectsOfType(typeof(GameObject));
+            foreach (var o in obj) {
                 GameObject g = (GameObject)o;
-                if (6 < g.name.Length)
-                {
-                    if (g.name.Substring(0, 5).Equals("Stone"))
-                    {
-                        SaveGame.Instance.StonesNames.Add(this.GetStoneIndex(g.name));
-                        SaveGame.Instance.StonesPositions.Add(g.transform.position);
-                        SaveGame.Instance.StonesRotations.Add(g.transform.rotation);
-                    }
-                }
+                if (6 >= g.name.Length) continue;
+                if (!g.name[..5].Equals("Stone")) continue;
+                SaveGame.Instance.StonesNames.Add(this.GetStoneIndex(g.name));
+                SaveGame.Instance.StonesPositions.Add(g.transform.position);
+                SaveGame.Instance.StonesRotations.Add(g.transform.rotation);
             }
 
             // Save values
-            SaveGame.Save(f_name);
+            SaveGame.Save(fName);
 
             saveDialog.SetActive(false);
             saveInputField.text = "";
         }
 
-        public int GetStoneIndex(string stoneName)
+        private int GetStoneIndex(string stoneName)
         {
             string clean = stoneName.Replace("Stone", "");
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < clean.Length; i++)
+            foreach (var c in clean)
             {
-                char c = clean[i];
                 if (int.TryParse(c.ToString(), out _))
                 {
                     sb.Append(c);
@@ -274,7 +270,6 @@ namespace ScenesScripts
                     break;
                 }
             }
-
             return int.Parse(sb.ToString());
         }
     }

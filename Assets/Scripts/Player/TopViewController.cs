@@ -13,6 +13,7 @@ namespace Player
         private Vector3 _moveInput;
         private Vector2 _mouseLook;
         private float _sizeInput;
+        //private SelectionScript _selector;
         
         public FirstPersonController FirstPersonController { set; private get; }
         public PlayerLook PlayerLook { set; private get; }
@@ -36,6 +37,8 @@ namespace Player
         {
             _playerCamera = GetComponent<Camera>();
             _playerActions = new CharacterActions();
+            //_selector = gameObject.AddComponent<SelectionScript>();
+            //_selector.topCamera = _playerCamera;
             StaticValues.TopCamera = _playerCamera;
             DontDestroyOnLoad(this);
         }
@@ -59,6 +62,7 @@ namespace Player
             _playerActions.TopCamera.SwitchMode.performed += SwitchMode;
             _playerActions.TopCamera.Look.performed += ctx => _mouseLook = ctx.ReadValue<Vector2>();
             _playerActions.TopCamera.Look.canceled += _ => _mouseLook = Vector2.zero;
+            _playerActions.TopCamera.Select.performed += OnMouseSelect;
         }
 
         private void OnDisable()
@@ -113,6 +117,11 @@ namespace Player
         private void SwitchMode(InputAction.CallbackContext ctx)
         {
             _playerCamera.orthographic = !_playerCamera.orthographic;
+        }
+
+        private void OnMouseSelect(InputAction.CallbackContext ctx)
+        {
+            //_selector.OnStoneSelect();
         }
         
         

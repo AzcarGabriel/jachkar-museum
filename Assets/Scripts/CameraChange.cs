@@ -37,7 +37,7 @@ public class CameraChange : MonoBehaviour
         _hand.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         addStoneMenu.SetActive(false);
-        saveButtons.SetActive(false);
+        //saveButtons.SetActive(false);
         editStoneButtons.SetActive(false);
         showMoreButtons.SetActive(false);
         saveDialog.SetActive(false);
@@ -94,10 +94,10 @@ public class CameraChange : MonoBehaviour
     {
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
-        _handScript.tCamera = StaticValues.TopCamera;
+        _handScript.topCamera = StaticValues.TopCamera;
         _hand.SetActive(true);
         addStoneMenu.SetActive(false);
-        saveButtons.SetActive(true);
+        //saveButtons.SetActive(true);
         showMoreButtons.SetActive(true);
         chat.SetActive(false);
     }
@@ -106,7 +106,7 @@ public class CameraChange : MonoBehaviour
     {
         _hand.SetActive(false);
         addStoneMenu.SetActive(false);
-        saveButtons.SetActive(false);
+        //saveButtons.SetActive(false);
         editStoneButtons.SetActive(false);
         showMoreButtons.SetActive(false);
         chat.SetActive(true);

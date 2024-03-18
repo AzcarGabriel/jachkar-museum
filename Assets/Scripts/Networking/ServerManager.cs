@@ -14,7 +14,8 @@ namespace Networking
 
         private bool _gameStarted;
 
-        private ulong _leader = 100;
+        public bool useLeader;
+        private ulong _leader;
     
         public struct StoneAssetData
         {
@@ -118,7 +119,7 @@ namespace Networking
             ClientData[request.ClientNetworkId] = new ClientData(request.ClientNetworkId);
             
             // Give leader to the first player joining
-            if (ClientData.Count == 1)
+            if (ClientData.Count == 1 && useLeader)
                 ClientData[request.ClientNetworkId].isLeader = true;
             _leader = request.ClientNetworkId;
         }
@@ -132,7 +133,7 @@ namespace Networking
         public void StartGame()
         {
             _gameStarted = true;
-            OpenScene("OnlineNoradus");
+            OpenScene(StaticValues.OfflineMode ? "Noradus" : "OnlineNoradus");
         }
 
         private void OnClientDisconnect(ulong clientId)
@@ -163,7 +164,7 @@ namespace Networking
 
         public bool GetLeadership(ulong clientId)
         {
-            return ClientData.TryGetValue(clientId, out ClientData data) && data.isLeader;
+            return ClientData.TryGetValue(clientId, out var data) && data.isLeader;
         }
 
         private void ResetServer()

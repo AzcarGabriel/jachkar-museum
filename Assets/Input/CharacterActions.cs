@@ -263,6 +263,15 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Select"",
+                    ""type"": ""Button"",
+                    ""id"": ""afa202a7-7fc5-4a9c-a91b-52847d6fe982"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -386,6 +395,17 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2ba4f261-4816-46f0-87c0-aaf6cb87c9cb"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -408,6 +428,7 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
         m_TopCamera_Float = m_TopCamera.FindAction("Float", throwIfNotFound: true);
         m_TopCamera_SwitchMode = m_TopCamera.FindAction("SwitchMode", throwIfNotFound: true);
         m_TopCamera_Look = m_TopCamera.FindAction("Look", throwIfNotFound: true);
+        m_TopCamera_Select = m_TopCamera.FindAction("Select", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -568,6 +589,7 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_TopCamera_Float;
     private readonly InputAction m_TopCamera_SwitchMode;
     private readonly InputAction m_TopCamera_Look;
+    private readonly InputAction m_TopCamera_Select;
     public struct TopCameraActions
     {
         private @CharacterActions m_Wrapper;
@@ -577,6 +599,7 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
         public InputAction @Float => m_Wrapper.m_TopCamera_Float;
         public InputAction @SwitchMode => m_Wrapper.m_TopCamera_SwitchMode;
         public InputAction @Look => m_Wrapper.m_TopCamera_Look;
+        public InputAction @Select => m_Wrapper.m_TopCamera_Select;
         public InputActionMap Get() { return m_Wrapper.m_TopCamera; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -601,6 +624,9 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
             @Look.started += instance.OnLook;
             @Look.performed += instance.OnLook;
             @Look.canceled += instance.OnLook;
+            @Select.started += instance.OnSelect;
+            @Select.performed += instance.OnSelect;
+            @Select.canceled += instance.OnSelect;
         }
 
         private void UnregisterCallbacks(ITopCameraActions instance)
@@ -620,6 +646,9 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
             @Look.started -= instance.OnLook;
             @Look.performed -= instance.OnLook;
             @Look.canceled -= instance.OnLook;
+            @Select.started -= instance.OnSelect;
+            @Select.performed -= instance.OnSelect;
+            @Select.canceled -= instance.OnSelect;
         }
 
         public void RemoveCallbacks(ITopCameraActions instance)
@@ -654,5 +683,6 @@ public partial class @CharacterActions: IInputActionCollection2, IDisposable
         void OnFloat(InputAction.CallbackContext context);
         void OnSwitchMode(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
+        void OnSelect(InputAction.CallbackContext context);
     }
 }
