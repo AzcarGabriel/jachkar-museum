@@ -25,12 +25,7 @@ public class Khachkar
     public AssetProps assetProps;
     public static Khachkar CreateFromJSON(string jsonString)
     {
-        Debug.Log(jsonString);
         Khachkar khachkar = JsonUtility.FromJson<Khachkar>(jsonString);
-        Debug.Log(khachkar.id);
-        Debug.Log(khachkar.location);
-        Debug.Log(khachkar.scenario);
-        
         return khachkar;
 
     }

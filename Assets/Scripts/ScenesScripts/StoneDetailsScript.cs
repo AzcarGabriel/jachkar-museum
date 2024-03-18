@@ -108,7 +108,6 @@ public class StoneDetailsScript : MonoBehaviour
                     metadata = mab.LoadAsset<TextAsset>(stoneName);
                 }
             }
-            Debug.Log(metadata.text);
             Khachkar khachkar = JsonUtility.FromJson<Khachkar>(metadata.text);
             metaText[0].text = khachkar.coonditionOfPreservation;
             metaText[1].text = khachkar.importantFeatures;
