@@ -20,6 +20,9 @@
       <HistoryOwnership></HistoryOwnership>
       <CommemorativeActivities></CommemorativeActivities>
       <Referances>Hamlet Petrosyan, www.khachkar.am</Referances>
+      <AssetProps>
+        <Scale>75.0</Scale>
+      </AssetProps>
     </Khachkar>
   </Khachkars>
 </Scene>

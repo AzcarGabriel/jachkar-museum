@@ -19,6 +19,9 @@
       <HistoryOwnership></HistoryOwnership>
       <CommemorativeActivities></CommemorativeActivities>
       <Referances></Referances>
+      <AssetProps>
+        <Scale></Scale>
+      </AssetProps>
     </Khachkar>
   </Khachkars>
 </Scene>

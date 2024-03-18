@@ -19,6 +19,9 @@
       <HistoryOwnership>Unknown</HistoryOwnership>
       <CommemorativeActivities>Unknown</CommemorativeActivities>
       <Referances>Hamlet Petrosyan, www.khachkar.am</Referances>
+      <AssetProps>
+        <Scale>100.0</Scale>
+      </AssetProps>
     </Khachkar>
   </Khachkars>
 </Scene>
