@@ -55,7 +55,7 @@ public class StoneService : MonoBehaviour
         }
     }
 
-    public IEnumerator SpawnStoneWithPositionAndRotation(int stoneId, Vector3 sp, Quaternion rt, Action doLast = null)
+    public IEnumerator SpawnStoneWithPositionAndRotation(int stoneId, Vector3 sp, Action doLast = null, bool addOffset = false)
     {
         // Check if the stone is already downloaded
         GameObject stone = this.SearchStone(stoneId);
@@ -66,10 +66,12 @@ public class StoneService : MonoBehaviour
             BundleName bundleName = CalculateAssetBundleNameByStoneIndex(stoneId);
             yield return StartCoroutine(this.DownloadBundle(bundleName));
         }
-
-        float scale = StoneSpawnHelper.GetStoneScaleById(stoneId);
+        AssetProps props = StoneSpawnHelper.GetStoneAssetPropsById(stoneId);
+        if (addOffset)
+            sp += new Vector3(props.offsetX, props.offsetY, props.offsetZ);
+        Quaternion rt = Quaternion.Euler(props.rotationX, props.rotationY, props.rotationZ);
         GameObject obj = Instantiate(this.SearchStone(stoneId), sp, rt);
-        obj.transform.localScale *= scale;
+        obj.transform.localScale *= props.scale;
 
         doLast?.Invoke();
     }
@@ -90,12 +92,7 @@ public class StoneService : MonoBehaviour
 
     private string GetStoneName(int index)
     {
-        string prefix = "stone";
-        if (index < 10)
-        {
-            prefix += '0';
-        }
-        return prefix + index + ".prefab";
+        return "stone" + index + ".prefab";
     }
 
     private IEnumerator DownloadBundle(BundleName bundleName)
@@ -226,11 +223,6 @@ public class StoneService : MonoBehaviour
 
     public static BundleName CalculateAssetBundleNameByStoneIndex(int index)
     {
-        if (47 <= index)
-        {
-            return new BundleName("stones_" + index, "stones_metadata_" + index);
-        }
-
         // Stones start at Stone01
         int init = 1;
         int end = StonesValues.bundleSize;

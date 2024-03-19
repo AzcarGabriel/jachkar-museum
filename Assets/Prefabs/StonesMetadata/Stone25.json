@@ -1,0 +1,26 @@
+﻿{
+  "id": 25,
+  "location": "Amaghu Valley, Vayodz Dzor Province, Armenia",
+  "latLong": "39.684061°N 45.232872°E",
+  "scenario": "Freestanding, sculptural object at Noravank Monastery Complex",
+  "setting": "Narrow gorge",
+  "landscape": "Mountain",
+  "accessibility": "Difficult",
+  "mastersName": "Unknown",
+  "category": "Standart",
+  "productionPeriod": "Probably 13th century",
+  "motive": "Unknown",
+  "coonditionOfPreservation": "Very bad",
+  "inscription": "Difficult to understand",
+  "importantFeatures": "Khachkar is in bad condition, and if we look on the bottom line of the main cross, we can assure that the two wings of the cross had two triple-loops. Rosette has a form of a flower, which has various palm decorations inside. There are also palm leaves originating from the bottom part of the rosette. The right and the left sides have various geometric ornaments",
+  "backSide": "",
+  "historyOwnership": "",
+  "commemorativeActivities": "",
+  "references": "Hamlet Petrosyan, www.khachkar.am",
+  "assetProps": {
+    "scale": 200.0,
+    "offsetX": 0.0,
+    "offsetY": 1.0,
+    "offsetZ": 0.0
+  }
+}
