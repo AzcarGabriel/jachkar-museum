@@ -66,13 +66,12 @@ public class StoneService : MonoBehaviour
             BundleName bundleName = CalculateAssetBundleNameByStoneIndex(stoneId);
             yield return StartCoroutine(this.DownloadBundle(bundleName));
         }
-
-        float scale = StoneSpawnHelper.GetStoneScaleById(stoneId);
+        AssetProps props = StoneSpawnHelper.GetStoneAssetPropsById(stoneId);
         if (addOffset)
-            sp += StoneSpawnHelper.GetStoneSpawnPointOffsetById(stoneId);
-        Quaternion rt = StoneSpawnHelper.GetStoneRotationById(stoneId);
+            sp += new Vector3(props.offsetX, props.offsetY, props.offsetZ);
+        Quaternion rt = Quaternion.Euler(props.rotationX, props.rotationY, props.rotationZ);
         GameObject obj = Instantiate(this.SearchStone(stoneId), sp, rt);
-        obj.transform.localScale *= scale;
+        obj.transform.localScale *= props.scale;
 
         doLast?.Invoke();
     }
