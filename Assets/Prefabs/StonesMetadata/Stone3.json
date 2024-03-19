@@ -1,0 +1,23 @@
+﻿{
+  "id": 3,
+  "location": "Ejmiatsin",
+  "latLong": "",
+  "scenario": "",
+  "setting": "",
+  "landscape": "",
+  "accessibility": "",
+  "mastersName": "Could be Master Grigor",
+  "category": "Standart",
+  "productionPeriod": "21th century replica of 17th century khachkar",
+  "motive": "",
+  "coonditionOfPreservation": "Good",
+  "inscription": "No inscription",
+  "importantFeatures": "Replica of Jugha khachkars",
+  "backSide": "",
+  "historyOwnership": "",
+  "commemorativeActivities": "",
+  "references": "Hamlet Petrosyan, www.khachkar.am",
+  "assetProps": {
+    "scale": 200.0
+  }
+}

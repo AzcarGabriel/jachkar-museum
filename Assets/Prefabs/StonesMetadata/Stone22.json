@@ -1,0 +1,26 @@
+﻿{
+  "id": 22,
+  "location": "Amaghu Valley, Vayodz Dzor Province, Armenia",
+  "latLong": "",
+  "scenario": "",
+  "setting": "",
+  "landscape": "",
+  "accessibility": "",
+  "mastersName": "Unknown",
+  "category": "Standart",
+  "productionPeriod": "12-14th century",
+  "motive": "",
+  "coonditionOfPreservation": "Good but broken corner on the right top",
+  "inscription": "There is an inscription",
+  "importantFeatures": "",
+  "backSide": "",
+  "historyOwnership": "",
+  "commemorativeActivities": "",
+  "references": "Hamlet Petrosyan, www.khachkar.am",
+  "assetProps": {
+    "scale": 100.0,
+    "offsetX": 0.0,
+    "offsetY": 1.0,
+    "offsetZ": 0.0
+  }
+}

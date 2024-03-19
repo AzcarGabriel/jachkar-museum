@@ -1,0 +1,29 @@
+﻿{
+  "id": 48,
+  "location": "",
+  "latLong": "",
+  "scenario": "Scenario: ",
+  "setting": "Setting: ",
+  "landscape": "Landscape: ",
+  "accessibility": "Accessibility: ",
+  "mastersName": "",
+  "category": "Category: ",
+  "productionPeriod": "Production Period: ",
+  "motive": "",
+  "coonditionOfPreservation": "",
+  "inscription": "Inscription: ",
+  "importantFeatures": "",
+  "backSide": "",
+  "historyOwnership": "",
+  "commemorativeActivities": "",
+  "references": "",
+  "assetProps": {
+    "scale": 50.0,
+    "rotationX": 180.0,
+    "rotationY": 20.0,
+    "rotationZ": 0.0,
+    "offsetX": 0.0,
+    "offsetY": 6.5,
+    "offsetZ": 0.0
+  }
+}
