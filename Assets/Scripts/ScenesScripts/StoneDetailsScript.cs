@@ -84,19 +84,18 @@ namespace ScenesScripts
 
         public void SpawnStone(int stoneId)
         {
-            float scale = StoneSpawnHelper.GetStoneScaleById(stoneId);
             Vector3 pos = this.stone.transform.position;
-            Quaternion q = StoneSpawnHelper.GetStoneRotationById(stoneId);
-            StartCoroutine(this.stoneService.SpawnStoneWithPositionAndRotation(-1, stoneId, pos, q, FinishConfig, true));
+            Debug.Log("Spawning stone " + stoneId);
+            StartCoroutine(this.stoneService.SpawnStoneWithPositionAndRotation(-1, stoneId, pos, FinishConfig, true, addOffset: true));
         }
 
         public void FinishConfig()
         {
             FindStoneObject("detailStone");
-            loadXml(StaticValues.StoneName);
+            loadJSON(StaticValues.StoneName);
         }
 
-        IEnumerator loadXml(string stoneName)
+        IEnumerator loadJSON(string stoneName)
         {
             if (stoneName.Contains("Clone")) {
                 stoneName = stoneName.Split('(')[0];
@@ -115,20 +114,15 @@ namespace ScenesScripts
                         metadata = mab.LoadAsset<TextAsset>(stoneName);
                     }
                 }
-
-                XmlDocument xmldoc = new XmlDocument();
-                xmldoc.LoadXml(metadata.text);
-                XmlNodeList xnList = xmldoc.SelectNodes("/Scene/Khachkars/Khachkar");
-                foreach (XmlNode xn in xnList)
-                {
-                    metaText[0].text = this.FormatMetaText(Convert.ToString(xn["CoonditionOfPreservation"].InnerText));
-                    metaText[1].text = this.FormatMetaText(Convert.ToString(xn["ImportantFeatures"].InnerText));
-                    metaText[2].text = this.FormatMetaText(Convert.ToString(xn["Location"].InnerText));
-                    metaText[3].text = "Scenario: " + this.FormatMetaText(Convert.ToString(xn["Scenario"].InnerText));
-                    metaText[4].text = "Accessibility: " + this.FormatMetaText(Convert.ToString(xn["Accessibility"].InnerText));
-                    metaText[5].text = "Category: " + this.FormatMetaText(Convert.ToString(xn["Category"].InnerText));
-                    metaText[6].text = "Production Period: " + this.FormatMetaText(Convert.ToString(xn["ProductionPeriod"].InnerText));
-                }
+                Khachkar khachkar = JsonUtility.FromJson<Khachkar>(metadata.text);
+                metaText[0].text = khachkar.coonditionOfPreservation;
+                metaText[1].text = khachkar.importantFeatures;
+                metaText[2].text = khachkar.location;
+                metaText[3].text = "Scenario: " + khachkar.scenario;
+                metaText[4].text = "Accessibility: " + khachkar.accessibility;
+                metaText[5].text = "Category: " + khachkar.category;
+                metaText[6].text = "Production Period: " + khachkar.productionPeriod;
+                
             }
             catch (FormatException)
             {
