@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1582116856
+CRC: 3532749
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 730d880e2b04a96ce122bf55b7851b8e
+    Hash: eecbfb1fc9c05f8f8025ae7c7743b086
   TypeTreeHash:
     serializedVersion: 2
     Hash: 2612ac43db082a73502ee80f2eceb73f
@@ -29,6 +29,7 @@ Assets:
 - Assets/Thumbs/AllStones/5.png
 - Assets/Thumbs/AllStones/31.png
 - Assets/Thumbs/AllStones/21.png
+- Assets/Thumbs/AllStones/49.png
 - Assets/Thumbs/AllStones/17.png
 - Assets/Thumbs/AllStones/4.png
 - Assets/Thumbs/AllStones/20.png
@@ -38,8 +39,10 @@ Assets:
 - Assets/Thumbs/AllStones/26.png
 - Assets/Thumbs/AllStones/29.png
 - Assets/Thumbs/AllStones/40.png
+- Assets/Thumbs/AllStones/47.png
 - Assets/Thumbs/AllStones/6.jpg
 - Assets/Thumbs/AllStones/2.png
+- Assets/Thumbs/AllStones/48.png
 - Assets/Thumbs/AllStones/16.png
 - Assets/Thumbs/AllStones/10.png
 - Assets/Thumbs/AllStones/9.png

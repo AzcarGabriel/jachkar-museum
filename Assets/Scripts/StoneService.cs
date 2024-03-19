@@ -42,7 +42,7 @@ public class StoneService : MonoBehaviour
     public VisualElement LoadScreen;
 
     public string thumbsBundleName = "stones_thumbs";
-    private const string Domain = "https://corsproxy.io/?https://saduewa.dcc.uchile.cl/museum/AssetBundles/";
+    private const string Domain = "https://corsproxy.io/?https://saduewa.dcc.uchile.cl/online-museum/StreamingAssets/";
 
     public IEnumerator DownloadThumbs(Action doLast = null)
     {
@@ -51,7 +51,7 @@ public class StoneService : MonoBehaviour
         doLast?.Invoke();
     }
 
-    public IEnumerator SpawnStoneWithPositionAndRotation(int dictId, int stoneId, Vector3 sp, Quaternion rt, Action doLast = null, bool isDetailStone = false)
+    public IEnumerator SpawnStoneWithPositionAndRotation(int dictId, int stoneId, Vector3 sp, Action doLast = null, bool isDetailStone = false, bool addOffset = false)
     {
         Debug.Log("Rotation");
         // Check if the stone is already downloaded
@@ -64,9 +64,12 @@ public class StoneService : MonoBehaviour
             yield return StartCoroutine(this.DownloadBundle(bundleName));
         }
 
-        float scale = StoneSpawnHelper.GetStoneScaleById(stoneId);
+        AssetProps props = StoneSpawnHelper.GetStoneAssetPropsById(stoneId);
+        if (addOffset)
+            sp += new Vector3(props.offsetX, props.offsetY, props.offsetZ);
+        Quaternion rt = Quaternion.Euler(props.rotationX, props.rotationY, props.rotationZ);
         GameObject obj = Instantiate(this.SearchStone(stoneId), sp, rt);
-        obj.transform.localScale *= scale;
+        obj.transform.localScale *= props.scale;
 
         // add the spawned stone to the list
         if (!isDetailStone) ServerManager.Instance.AddSpawnedStone(dictId, stoneId, obj);
@@ -109,12 +112,7 @@ public class StoneService : MonoBehaviour
 
     private string GetStoneName(int index)
     {
-        string prefix = "stone";
-        if (index < 10)
-        {
-            prefix += '0';
-        }
-        return prefix + index + ".prefab";
+        return "stone" + index + ".prefab";
     }
 
     private IEnumerator DownloadBundle(BundleName bundleName)
@@ -212,7 +210,7 @@ public class StoneService : MonoBehaviour
             }
             else
             {
-                //Debug.Log("Loaded offline " + bundleName.thumbsBundleName);
+                Debug.Log("Loaded offline " + bundleName.thumbsBundleName);
                 thumbsBundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, bundleName.thumbsBundleName));
             }
 
@@ -243,12 +241,7 @@ public class StoneService : MonoBehaviour
 
     public static BundleName CalculateAssetBundleNameByStoneIndex(int index)
     {
-        if (47 <= index)
-        {
-            return new BundleName("stones_" + index, "stones_metadata_" + index);
-        }
-
-        // Stones start at Stone01
+        // Stones start at Stone1
         int init = 1;
         int end = StonesValues.bundleSize;
         while (!(init <= index && index <= end))

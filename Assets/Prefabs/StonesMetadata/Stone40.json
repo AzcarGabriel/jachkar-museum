@@ -1,0 +1,26 @@
+﻿{
+  "id": 40,
+  "location": "Noratus historical village, Gegharkunik Province, Armenia",
+  "latLong": "40°22′48″N 45°10′48″E",
+  "scenario": "Freestanding sculptural objects on a pedestal in Noradus cemetery",
+  "setting": "Medieval cemetery",
+  "landscape": "Flat land",
+  "accessibility": "Normal",
+  "mastersName": "Unknown",
+  "category": "Standart",
+  "productionPeriod": "Approximately  11-13th century",
+  "motive": "Khachkars are a gravestone",
+  "coonditionOfPreservation": " 1 and 2 Good, 3 and 4 Bad",
+  "inscription": "",
+  "importantFeatures": "All four khachkars have two wings that have two triple- loops. The middle loops are stretched and have a form of a flower bud that gives a blossoming and vegetative appearance to the crosses. There are two pomegranates beneath the wings of the khachkars and stimulate the Christian allegory of fruits: under the sour rind, there are sweet seeds (Petrosyan, H.2008). All khachkars have cornices that represent interlaced geometric ornaments. The second khachkar from the left has a unique interlaced niche. The palm decors of the 3rd and the 4th khachkars are barely seen because of the mold and moss. Those originate from the cross. Such a perception corresponds to the Christian notions of the cross as an all bearing tree (Petrosyan, H. 2008). The palm decors of the 1st and the 2nd khachkar also originate from the cross and transform into snakes that symbolize the defense of the garden-paradise (paradise-tree). The right and the left parts of the khachkars represent various geometric and vegetative ornaments",
+  "backSide": "",
+  "historyOwnership": "",
+  "commemorativeActivities": "",
+  "references": "Hamlet Petrosyan, www.khachkar.am",
+  "assetProps": {
+    "scale": 400.0,
+    "offsetX": 0.0,
+    "offsetY": 5.0,
+    "offsetZ": 0.0
+  }
+}

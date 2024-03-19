@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2466698585
+CRC: 2645644937
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: fa561a04ade4b9156f2bcd2b5e17b263
+    Hash: aca4ba1e5c0531335d2cb89367920249
   TypeTreeHash:
     serializedVersion: 2
     Hash: 5ad585dd02dfb5016c0dad519eab8f49
@@ -13,9 +13,9 @@ ClassTypes:
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
-- Assets/Prefabs/StonesMetadata/Stone43.xml
-- Assets/Prefabs/StonesMetadata/Stone44.xml
-- Assets/Prefabs/StonesMetadata/Stone45.xml
-- Assets/Prefabs/StonesMetadata/Stone41.xml
-- Assets/Prefabs/StonesMetadata/Stone42.xml
+- Assets/Prefabs/StonesMetadata/Stone43.json
+- Assets/Prefabs/StonesMetadata/Stone45.json
+- Assets/Prefabs/StonesMetadata/Stone44.json
+- Assets/Prefabs/StonesMetadata/Stone41.json
+- Assets/Prefabs/StonesMetadata/Stone42.json
 Dependencies: []

@@ -92,11 +92,9 @@ namespace ScenesScripts
 
         public void SpawnStone(int stoneId)
         {
+            // Esto se tuvo que cambiar de orden para que no de error (hay que ver como manejar este caso)
+            networkStoneSpawner.SpawnStoneServerRpc(stoneId, spawnPoint.position, addOffset: true);
             if (!StaticValues.IsLeader && ServerManager.Instance.UseLeader) return;
-        
-            Quaternion rt = StoneSpawnHelper.GetStoneRotationById(stoneId);
-            Vector3 sp = spawnPoint.position + StoneSpawnHelper.GetStoneSpawnPointOffsetById(stoneId);
-            networkStoneSpawner.SpawnStoneServerRpc(stoneId, sp, rt);
         }
 
         public void ShowMenus()
@@ -192,8 +190,7 @@ namespace ScenesScripts
                     this.stoneService.SpawnStoneWithPositionAndRotation(
                         0, // ESTO DEBERIA GUARDARSE en lugar de estar hardcodeado
                         SaveGame.Instance.StonesNames[i],
-                        SaveGame.Instance.StonesPositions[i],
-                        SaveGame.Instance.StonesRotations[i]
+                        SaveGame.Instance.StonesPositions[i]
                     )
                 );
             }

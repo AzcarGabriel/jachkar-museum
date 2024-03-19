@@ -11,14 +11,14 @@ public static class SceneHelper
         // path = Path.Combine(Environment.CurrentDirectory, path);
 
         Scene scene = XmlHelper.FromXmlFile<Scene>(path);
-        Khachkar khachkar = scene.Khachkars.Find(x => x.Id == 1);
+        Khachkar khachkar = scene.Khachkars.Find(x => x.id == 1);
         return khachkar.ToDictionary();
     }
 
     public static IDictionary<string, object> GetKhachkarByXML(string xml)
     {
         Scene scene = XmlHelper.FromXml<Scene>(xml);
-        Khachkar khachkar = scene.Khachkars.Find(x => x.Id == 1);
+        Khachkar khachkar = scene.Khachkars.Find(x => x.id == 1);
         return khachkar.ToDictionary();
     }
 }
