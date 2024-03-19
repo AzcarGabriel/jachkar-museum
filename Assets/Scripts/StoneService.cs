@@ -42,7 +42,7 @@ public class StoneService : MonoBehaviour
     public VisualElement LoadScreen;
 
     public string thumbsBundleName = "stones_thumbs";
-    private const string Domain = "https://corsproxy.io/?https://saduewa.dcc.uchile.cl/museum/AssetBundles/";
+    private const string Domain = "https://corsproxy.io/?https://saduewa.dcc.uchile.cl/online-museum/StreamingAssets/";
 
     public IEnumerator DownloadThumbs(Action doLast = null)
     {
