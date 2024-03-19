@@ -48,7 +48,7 @@ public class MainMenuScript : MonoBehaviour
             Console.WriteLine("Starting server...");
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData("0.0.0.0", 25565);
             ServerManager.Instance.StartServer();
-            ServerManager.Instance.useLeader = _useLeader;
+            ServerManager.Instance.UseLeader = _useLeader;
             Console.WriteLine("Server on");
         }
     }

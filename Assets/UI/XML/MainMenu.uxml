@@ -9,6 +9,10 @@
             <ui:Button text="Dev Server" display-tooltip-when-elided="true" name="Server" class="main-menu-button" />
             <ui:Button text="Salir" display-tooltip-when-elided="true" name="Exit" class="main-menu-button" />
         </ui:VisualElement>
-        <ui:VisualElement name="Image" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/UI/Backgrounds/Stone.png?fileID=2800000&amp;guid=154a700a30a8ab54289c4b774c9e8fc8&amp;type=3#Stone&apos;); -unity-background-scale-mode: scale-and-crop; -unity-slice-top: 0; -unity-slice-left: 0; -unity-slice-right: 0; -unity-slice-bottom: 0; align-self: stretch; justify-content: space-around; align-items: stretch; flex-direction: row-reverse;" />
+        <ui:VisualElement name="Image" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/UI/Backgrounds/Stone.png?fileID=2800000&amp;guid=154a700a30a8ab54289c4b774c9e8fc8&amp;type=3#Stone&apos;); -unity-background-scale-mode: scale-and-crop; -unity-slice-top: 0; -unity-slice-left: 0; -unity-slice-right: 0; -unity-slice-bottom: 0; align-self: stretch; justify-content: flex-end; align-items: flex-start; flex-direction: column-reverse; flex-wrap: wrap-reverse;">
+            <ui:Foldout text="Secret Settings" value="false" style="justify-content: flex-end; -unity-font-style: bold;">
+                <ui:TextField picking-mode="Ignore" value="146.83.30.62" />
+            </ui:Foldout>
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

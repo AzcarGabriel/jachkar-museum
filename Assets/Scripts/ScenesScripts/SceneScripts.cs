@@ -92,7 +92,7 @@ namespace ScenesScripts
 
         public void SpawnStone(int stoneId)
         {
-            if (!StaticValues.IsLeader) return;
+            if (!StaticValues.IsLeader && ServerManager.Instance.UseLeader) return;
         
             Quaternion rt = StoneSpawnHelper.GetStoneRotationById(stoneId);
             Vector3 sp = spawnPoint.position + StoneSpawnHelper.GetStoneSpawnPointOffsetById(stoneId);

@@ -1,3 +1,4 @@
+using System;
 using Networking.Character;
 using TMPro;
 using Unity.Collections;
@@ -17,12 +18,18 @@ namespace Networking.Lobby
         [SerializeField] private TMP_Text characterNameText;
         [SerializeField] private Button readyButton;
         [SerializeField] private TMP_InputField inputField;
+        [SerializeField] private GameObject LeaderMark;
         
         private NetworkList<CharacterSelectState> _players;
 
         private void Awake()
         {
             _players = new NetworkList<CharacterSelectState>();
+        }
+
+        private void Start()
+        {
+            LeaderMark.SetActive(ServerManager.Instance.UseLeader);
         }
 
         public override void OnNetworkSpawn()

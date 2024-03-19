@@ -63,6 +63,7 @@ namespace Player
             _playerActions.TopCamera.Look.performed += ctx => _mouseLook = ctx.ReadValue<Vector2>();
             _playerActions.TopCamera.Look.canceled += _ => _mouseLook = Vector2.zero;
             _playerActions.TopCamera.Select.performed += OnMouseSelect;
+            Cursor.lockState = CursorLockMode.None;
         }
 
         private void OnDisable()

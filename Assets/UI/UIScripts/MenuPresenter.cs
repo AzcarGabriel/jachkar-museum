@@ -14,7 +14,7 @@ namespace UI.UIScripts
         {
             VisualElement root = GetComponent<UIDocument>().rootVisualElement;
             _mainMenu = root.Q("MainMenu");
-            _lobbyScreen = root.Q("LobbyScreen");
+            //_lobbyScreen = root.Q("LobbyScreen");
             LoadScreen = root.Q("LoadingScreen");
             Debug.Log(LoadScreen);
 
@@ -27,14 +27,14 @@ namespace UI.UIScripts
                 }
             };
 
-            LobbyScreenBehaviour lobbyScreenBehaviour = new(_lobbyScreen)
-            {
-                OpenMainMenu = () =>
-                {
-                    _lobbyScreen.Display(false);
-                    _mainMenu.Display(true);
-                }
-            };
+            // LobbyScreenBehaviour lobbyScreenBehaviour = new(_lobbyScreen)
+            // {
+            //    OpenMainMenu = () =>
+            //    {
+            //        _lobbyScreen.Display(false);
+            //        _mainMenu.Display(true);
+            //    }
+            //};
 
 
         }

@@ -88,7 +88,9 @@ namespace Player
             
             if (IsOwner) {
                 _topViewController = Instantiate(topViewPrefab).GetComponent<TopViewController>();
+                _topViewController.Init(playerLook);
                 _topViewController.FirstPersonController = this;
+                transform.position = new Vector3(0, -10, 0); // spawn
             }
             base.OnNetworkDespawn();
         }
@@ -105,6 +107,7 @@ namespace Player
             _playerActions.FirstPerson.Jump.performed += OnJump;
             _playerActions.FirstPerson.SwitchCamera.performed += SwitchCamera;
             _playerActions.FirstPerson.Ping.performed += MarkPing;
+            Cursor.lockState = CursorLockMode.Locked;
         }
 
         private void OnDisable()
@@ -127,22 +130,24 @@ namespace Player
             fovKick.Setup(playerCamera);
             headBob.Setup(playerCamera, stepInterval);
             mouseLook.Init(transform , playerCamera.transform);
-            _topViewController.Init(playerLook);
         }
+        #endregion
         
         private void Update()
         {
             RotateView();
-        
-            if (StaticValues.ShouldLock) {
-                StaticValues.ShouldLock = false;
-                mouseLook.SetLocked(true);
-            }
+            
             if (!_previouslyGrounded && _characterController.isGrounded) OnLanding();
             if (!_characterController.isGrounded && !_jumping && _previouslyGrounded) _moveDirection.y = 0f;
             _previouslyGrounded = _characterController.isGrounded;
+            
+            // Fall out of bounds check
+            if (transform.position.y <= -20)
+            {
+                transform.position = new Vector3(0, -10, 0);
+            }
         }
-        #endregion
+        
     
         private void PlayLandingSound()
         {

@@ -11,10 +11,14 @@ namespace Networking
     public class ServerManager : NetworkBehaviour
     {
         public static ServerManager Instance { get; private set; }
+        private readonly NetworkVariable<bool> _useLeader = new(false);
+        public bool UseLeader
+        {
+            get => _useLeader.Value;
+            set => _useLeader.Value = value;
+        }
 
         private bool _gameStarted;
-
-        public bool useLeader;
         private ulong _leader;
     
         public struct StoneAssetData
@@ -119,7 +123,7 @@ namespace Networking
             ClientData[request.ClientNetworkId] = new ClientData(request.ClientNetworkId);
             
             // Give leader to the first player joining
-            if (ClientData.Count == 1 && useLeader)
+            if (ClientData.Count == 1 && UseLeader)
                 ClientData[request.ClientNetworkId].isLeader = true;
             _leader = request.ClientNetworkId;
         }

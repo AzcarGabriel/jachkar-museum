@@ -21,5 +21,10 @@ public class AssetBundleCreator : MonoBehaviour
     {
         BuildPipeline.BuildAssetBundles("Assets/AssetBundles", BuildAssetBundleOptions.None, BuildTarget.WebGL);
     }
+    [MenuItem("Assets/Build Mac Asset Bundle")]
+    static void BuildMacLBundles()
+    {
+        BuildPipeline.BuildAssetBundles("Assets/AssetBundles", BuildAssetBundleOptions.None, BuildTarget.StandaloneOSX);
+    }
 }
 #endif
