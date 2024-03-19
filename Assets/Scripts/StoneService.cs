@@ -55,7 +55,7 @@ public class StoneService : MonoBehaviour
         }
     }
 
-    public IEnumerator SpawnStoneWithPositionAndRotation(int stoneId, Vector3 sp, Quaternion rt, Action doLast = null)
+    public IEnumerator SpawnStoneWithPositionAndRotation(int stoneId, Vector3 sp, Action doLast = null, bool addOffset = false)
     {
         // Check if the stone is already downloaded
         GameObject stone = this.SearchStone(stoneId);
@@ -68,6 +68,9 @@ public class StoneService : MonoBehaviour
         }
 
         float scale = StoneSpawnHelper.GetStoneScaleById(stoneId);
+        if (addOffset)
+            sp += StoneSpawnHelper.GetStoneSpawnPointOffsetById(stoneId);
+        Quaternion rt = StoneSpawnHelper.GetStoneRotationById(stoneId);
         GameObject obj = Instantiate(this.SearchStone(stoneId), sp, rt);
         obj.transform.localScale *= scale;
 

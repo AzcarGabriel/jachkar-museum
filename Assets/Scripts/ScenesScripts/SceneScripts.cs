@@ -91,9 +91,7 @@ public class SceneScripts : MonoBehaviour
 
     public void SpawnStone(int stoneId)
     {
-        Quaternion rt = StoneSpawnHelper.GetStoneRotationById(stoneId);
-        Vector3 sp = spawnPoint.position + StoneSpawnHelper.GetStoneSpawnPointOffsetById(stoneId);
-        StartCoroutine(this.stoneService.SpawnStoneWithPositionAndRotation(stoneId, sp, rt));
+        StartCoroutine(this.stoneService.SpawnStoneWithPositionAndRotation(stoneId, spawnPoint.position, addOffset: true));
     }
 
     public void ShowMenus()
@@ -188,8 +186,7 @@ public class SceneScripts : MonoBehaviour
             StartCoroutine(
                 this.stoneService.SpawnStoneWithPositionAndRotation(
                     SaveGame.Instance.StonesNames[i],
-                    SaveGame.Instance.StonesPositions[i],
-                    SaveGame.Instance.StonesRotations[i]
+                    SaveGame.Instance.StonesPositions[i]
                 )
             );
         }
