@@ -15,7 +15,7 @@ public static class StoneSpawnHelper
         StoneService.BundleName bundleName = StoneService.CalculateAssetBundleNameByStoneIndex(stoneId);
         string stoneName = "Stone" + stoneId;
 
-        AssetProps assetProps = null;
+        AssetProps assetProps = new AssetProps();
         foreach (AssetBundle mab in StonesValues.metadataAssetBundles)
         {
             if (mab.name == bundleName.metadataBundleName)
