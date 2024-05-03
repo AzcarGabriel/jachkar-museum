@@ -3,8 +3,8 @@
 [System.Serializable]
 public class AssetProps
 {
-    public float scale;
-    public float rotationX = -90.0f;
+    public float scale = 1.0f;
+    public float rotationX = 0.0f;
     public float rotationY = 0.0f;
     public float rotationZ = 0.0f;
     public float offsetX = 0.0f;
