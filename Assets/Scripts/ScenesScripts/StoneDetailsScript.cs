@@ -106,28 +106,26 @@ namespace ScenesScripts
                 int index = Int32.Parse(stoneName.Replace("Stone", ""));
                 StoneService.BundleName bundleName = StoneService.CalculateAssetBundleNameByStoneIndex(index);
 
-                TextAsset metadata = null;
-                foreach (AssetBundle mab in StonesValues.metadataAssetBundles)
-                {
-                    if (mab.name == bundleName.metadataBundleName)
-                    {
-                        metadata = mab.LoadAsset<TextAsset>(stoneName);
-                    }
-                }
-                Khachkar khachkar = JsonUtility.FromJson<Khachkar>(metadata.text);
-                metaText[0].text = khachkar.coonditionOfPreservation;
-                metaText[1].text = khachkar.importantFeatures;
-                metaText[2].text = khachkar.location;
-                metaText[3].text = "Scenario: " + khachkar.scenario;
-                metaText[4].text = "Accessibility: " + khachkar.accessibility;
-                metaText[5].text = "Category: " + khachkar.category;
-                metaText[6].text = "Production Period: " + khachkar.productionPeriod;
-                
-            }
-            catch (FormatException)
+            TextAsset metadata = null;
+            foreach (AssetBundle mab in StonesValues.metadataAssetBundles)
             {
-                Debug.Log("Error loading metadata");
+                if (mab.name == bundleName.metadataBundleName)
+                {
+                    metadata = mab.LoadAsset<TextAsset>(stoneName);
+                }
             }
+            Khachkar khachkar = JsonUtility.FromJson<Khachkar>(metadata.text);
+            metaText[0].text = khachkar.conditionOfPreservation;
+            metaText[1].text = khachkar.importantFeatures;
+            metaText[2].text = khachkar.location;
+            metaText[4].text = "Accessibility: " + khachkar.accessibility;
+            metaText[6].text = "Production Period: " + khachkar.productionPeriod;
+            
+        }
+        catch (FormatException)
+        {
+            Debug.Log("Error loading metadata");
+        }
 
             return null;
         }
