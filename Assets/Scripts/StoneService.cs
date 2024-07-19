@@ -38,7 +38,7 @@ public class StoneService : MonoBehaviour
     public Slider slider;
 
     public string thumbsBundleName = "stones_thumbs";
-    private const string domain = "https://saduewa.dcc.uchile.cl/museum/AssetBundles/";
+    private const string domain = "https://saduewa.dcc.uchile.cl/StreamingAssets/";
 
     // Use this for initialization
     void Start()
@@ -97,7 +97,10 @@ public class StoneService : MonoBehaviour
 
     private IEnumerator DownloadBundle(BundleName bundleName)
     {
-        Caching.ClearCache();
+
+        #if !UNITY_WEBGL
+           UnityEngine.Caching.ClearOtherCachedVersions("anything", new Hash128());
+        #endif
 
         loadScreen.SetActive(true);
         Cursor.visible = false;
