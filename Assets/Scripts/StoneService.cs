@@ -97,10 +97,7 @@ public class StoneService : MonoBehaviour
 
     private IEnumerator DownloadBundle(BundleName bundleName)
     {
-
-        #if !UNITY_WEBGL
-           UnityEngine.Caching.ClearOtherCachedVersions("anything", new Hash128());
-        #endif
+        Caching.ClearCache();
 
         loadScreen.SetActive(true);
         Cursor.visible = false;
