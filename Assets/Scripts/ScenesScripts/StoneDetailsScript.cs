@@ -63,7 +63,7 @@ namespace ScenesScripts
 
                 if (Input.GetMouseButton(0))
                 {
-                    this.stone.transform.Rotate(Vector3.forward, -20.0f * Input.GetAxis("Mouse X"));
+                    this.stone.transform.Rotate(rh.transform.up, -20.0f * Input.GetAxis("Mouse X"));
                 }
 
                 if (Input.GetMouseButton(1))
