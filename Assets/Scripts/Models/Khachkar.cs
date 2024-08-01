@@ -3,8 +3,8 @@
 [System.Serializable]
 public class AssetProps
 {
-    public float scale;
-    public float rotationX = -90.0f;
+    public float scale = 1.0f;
+    public float rotationX = 0.0f;
     public float rotationY = 0.0f;
     public float rotationZ = 0.0f;
     public float offsetX = 0.0f;
@@ -18,13 +18,10 @@ public class Khachkar
 {
     public int id;
     public string location;
-    public string scenario;
-    public string setting;
     public string landscape;
     public string accessibility;
-    public string category;
     public string productionPeriod;
-    public string coonditionOfPreservation;
+    public string conditionOfPreservation;
     public string inscription;
     public string importantFeatures;
     public string references;

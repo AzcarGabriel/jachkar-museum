@@ -60,7 +60,7 @@ public class StoneDetailsScript : MonoBehaviour
 
             if (Input.GetMouseButton(0))
             {
-                this.stone.transform.Rotate(Vector3.forward, -20.0f * Input.GetAxis("Mouse X"));
+                this.stone.transform.Rotate(rh.transform.up, -20.0f * Input.GetAxis("Mouse X"));
             }
 
             if (Input.GetMouseButton(1))
@@ -107,12 +107,10 @@ public class StoneDetailsScript : MonoBehaviour
                 }
             }
             Khachkar khachkar = JsonUtility.FromJson<Khachkar>(metadata.text);
-            metaText[0].text = khachkar.coonditionOfPreservation;
+            metaText[0].text = khachkar.conditionOfPreservation;
             metaText[1].text = khachkar.importantFeatures;
             metaText[2].text = khachkar.location;
-            metaText[3].text = "Scenario: " + khachkar.scenario;
             metaText[4].text = "Accessibility: " + khachkar.accessibility;
-            metaText[5].text = "Category: " + khachkar.category;
             metaText[6].text = "Production Period: " + khachkar.productionPeriod;
             
         }

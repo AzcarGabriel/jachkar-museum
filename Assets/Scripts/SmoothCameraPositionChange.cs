@@ -49,8 +49,7 @@ public class SmoothCameraPositionChange : MonoBehaviour
             Cursor.visible = false;
             scrollView.SetActive(false);
         }
-        else if (Physics.Raycast(cameraPosition.position, cameraPosition.forward, out hit, 21.0f, stoneMask)
-                 && Vector3.Dot(cameraPosition.forward, hit.transform.up) > 0.0f)
+        else if (Physics.Raycast(cameraPosition.position, cameraPosition.forward, out hit, 21.0f, stoneMask))
         {
             targetGameObject = hit.transform;
 
