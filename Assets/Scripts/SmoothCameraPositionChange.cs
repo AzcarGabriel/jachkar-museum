@@ -44,12 +44,6 @@ public class SmoothCameraPositionChange : MonoBehaviour
         RaycastHit hit;
         Vector3 pond = new Vector3(0.0f, 1.0f, 20.0f);
 
-        if (StaticValues.ShouldEnable) 
-        {
-            StaticValues.ShouldEnable = false;
-            fps.enabled = true;
-        }
-
         if (Input.GetKeyDown("e") && !fps.enabled)
         {
             targetGameObject = null;

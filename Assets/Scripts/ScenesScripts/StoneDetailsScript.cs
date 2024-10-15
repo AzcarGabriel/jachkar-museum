@@ -72,13 +72,12 @@ namespace ScenesScripts
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.E))
             {
                 StaticValues.ShouldLock = true;
                 StaticValues.ShouldEnable = true;
                 Destroy(stone);
                 SceneManager.UnloadSceneAsync("StoneDetails");
-            
             }
         }
 
