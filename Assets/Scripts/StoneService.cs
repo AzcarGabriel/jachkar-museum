@@ -42,7 +42,7 @@ public class StoneService : MonoBehaviour
     public VisualElement LoadScreen;
 
     public string thumbsBundleName = "stones_thumbs";
-    private const string Domain = "https://corsproxy.io/?https://saduewa.dcc.uchile.cl/online-museum/StreamingAssets/";
+    private const string Domain = "https://saduewa.dcc.uchile.cl/StreamingAssets/";
 
     public IEnumerator DownloadThumbs(Action doLast = null)
     {
@@ -132,7 +132,7 @@ public class StoneService : MonoBehaviour
             AssetBundle metadataBundle = null;
             AssetBundle stonesBundle = null;
 
-            if (StaticValues.Online)
+            if (StaticValues.OnlineAssetBundles)
             {
                 // Download metadata
                 using (UnityWebRequest uwr = UnityWebRequestAssetBundle.GetAssetBundle(Domain + bundleName.metadataBundleName))
@@ -192,7 +192,7 @@ public class StoneService : MonoBehaviour
         {
             // Download thumbs
             AssetBundle thumbsBundle = null;
-            if (StaticValues.Online)
+            if (StaticValues.OnlineAssetBundles)
             {
                 using UnityWebRequest uwr = UnityWebRequestAssetBundle.GetAssetBundle(Domain + bundleName.thumbsBundleName);
                 yield return uwr.SendWebRequest();
