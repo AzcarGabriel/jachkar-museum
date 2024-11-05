@@ -8,7 +8,11 @@ namespace Player
 {
     [RequireComponent(typeof (CharacterController))]
     [RequireComponent(typeof (AudioSource))]
+    #if USE_MULTIPLAYER
     public class FirstPersonController : NetworkBehaviour
+    #else
+    public class FirstPersonController : MonoBehaviour
+    #endif
     {
         [Header("Player settings")]
         [SerializeField] private float walkSpeed;
@@ -59,6 +63,9 @@ namespace Player
         private float _speed;
         private bool _isWalking;
         private TopViewController _topViewController;
+        #if !USE_MULTIPLAYER
+        private bool IsOwner = true;
+        #endif
         private bool _networkReady;
 
         #region NetworkFields
@@ -81,7 +88,11 @@ namespace Player
             _jumping = false;
         }
 
+        #if USE_MULTIPLAYER
         public override void OnNetworkSpawn()
+        #else
+        public void OnLocalSpawn()
+        #endif
         {
             _networkReady = true;
             OnEnable(); // Call on enable again when network is ready
@@ -92,7 +103,9 @@ namespace Player
                 _topViewController.FirstPersonController = this;
                 transform.position = new Vector3(0, -10, 0); // spawn
             }
+            #if USE_MULTIPLAYER
             base.OnNetworkDespawn();
+            #endif
         }
 
         private void OnEnable()
@@ -130,6 +143,9 @@ namespace Player
             fovKick.Setup(playerCamera);
             headBob.Setup(playerCamera, stepInterval);
             mouseLook.Init(transform , playerCamera.transform);
+            #if !USE_MULTIPLAYER
+            OnLocalSpawn();
+            #endif
         }
         #endregion
         
