@@ -83,8 +83,7 @@ public class SelectionScript : MonoBehaviour
                     hitPoint += _selection.position - hitPoint + _deltaHitDef;
                     _deltaHitDef = terrainHit.point;
                     _selection.position = hitPoint;
-                    int stoneId = ServerManager.Instance.GetIdByStone(_selection.gameObject);
-                    _networkStoneSpawner.UpdateStone(stoneId, _selection);
+                    this.UpdateStone(_selection);
                 }
             }
         }
@@ -100,16 +99,14 @@ public class SelectionScript : MonoBehaviour
     {
         if (_rotation == null) return;
         _rotation.Rotate(Vector3.forward, 20.0f);
-        int stoneId = ServerManager.Instance.GetIdByStone(_rotation.gameObject);
-        _networkStoneSpawner.UpdateStone(stoneId, _rotation);
+        this.UpdateStone(_rotation);
     }
 
     public void RotateDown()
     {
         if (_rotation == null) return;
         _rotation.Rotate(Vector3.forward, -20.0f);
-        int stoneId = ServerManager.Instance.GetIdByStone(_rotation.gameObject);
-        _networkStoneSpawner.UpdateStone(stoneId, _rotation);
+        this.UpdateStone(_rotation);
     }
 
     public void DeleteStone()
@@ -118,5 +115,10 @@ public class SelectionScript : MonoBehaviour
         int stoneId = ServerManager.Instance.GetIdByStone(_rotation.gameObject);
         if (stoneId == 0) Object.Destroy(_rotation.gameObject); // Pre spawned stone from asset bundle
         else _networkStoneSpawner.DeleteStoneServerRpc(stoneId); // Spawned after connection stone
+    }
+
+    private void UpdateStone(Transform transform) {
+        int stoneId = ServerManager.Instance.GetIdByStone(transform.gameObject);
+        _networkStoneSpawner.UpdateStone(stoneId, transform);
     }
 }

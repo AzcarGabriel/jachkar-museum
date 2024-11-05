@@ -1,6 +1,10 @@
+// That script is responsible for spawning the character prefabs for each connected client.
+// It is called when the server is started and it will spawn the character prefab for each connected client.
+// The character prefab is determined by the characterId that is stored in the client data.
 using Unity.Netcode;
 using UnityEngine;
 
+#if USE_MULTIPLAYER
 namespace Networking.Character
 {
     public class CharacterSpawner : NetworkBehaviour
@@ -24,3 +28,4 @@ namespace Networking.Character
         }
     }
 }
+#endif

@@ -94,7 +94,9 @@ namespace ScenesScripts
         {
             // Esto se tuvo que cambiar de orden para que no de error (hay que ver como manejar este caso)
             networkStoneSpawner.SpawnStoneServerRpc(stoneId, spawnPoint.position, addOffset: true);
+            #if USE_MULTIPLAYER
             if (!StaticValues.IsLeader && ServerManager.Instance.UseLeader) return;
+            #endif
         }
 
         public void ShowMenus()

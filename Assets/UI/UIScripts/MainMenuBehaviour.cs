@@ -1,3 +1,4 @@
+//#define USE_MULTIPLAYER
 using System;
 using Networking;
 using UnityEngine;
@@ -35,7 +36,9 @@ namespace UI.UIScripts
         {
             StaticValues.OfflineMode = true;
             ServerManager.Instance.StartHost();
-            ServerManager.Instance.OpenScene("OfflineNoradus");
+            #if USE_MULTIPLAYER
+                ServerManager.Instance.OpenScene("OfflineNoradus");
+            #endif
         }
 
         private void OnStartClick()

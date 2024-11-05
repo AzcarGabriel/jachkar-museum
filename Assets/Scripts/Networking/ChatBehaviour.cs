@@ -1,3 +1,4 @@
+#if USE_MULTIPLAYER
 using System.Collections.Generic;
 using TMPro;
 using Unity.Collections;
@@ -109,3 +110,4 @@ namespace Networking
         }
     }
 }
+#endif
