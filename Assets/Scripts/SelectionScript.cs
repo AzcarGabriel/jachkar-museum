@@ -20,7 +20,7 @@ public class SelectionScript : MonoBehaviour
     private Vector3 _deltaHitDef;
 
     [SerializeField]
-    private NetworkStoneSpawner _networkStoneSpawner;
+    private NetworkStoneSpawner _networkStoneSpawner; // Only used in multiplayer mode
 
     // Use this for initialization
     private void Start () {
@@ -114,11 +114,19 @@ public class SelectionScript : MonoBehaviour
         if (_rotation == null) return;
         int stoneId = ServerManager.Instance.GetIdByStone(_rotation.gameObject);
         if (stoneId == 0) Object.Destroy(_rotation.gameObject); // Pre spawned stone from asset bundle
+        #if USE_MULTIPLAYER
         else _networkStoneSpawner.DeleteStoneServerRpc(stoneId); // Spawned after connection stone
+        #else
+        else ServerManager.Instance.RemoveSpawnedStone(stoneId);
+        #endif
     }
 
     private void UpdateStone(Transform transform) {
         int stoneId = ServerManager.Instance.GetIdByStone(transform.gameObject);
+        #if USE_MULTIPLAYER
         _networkStoneSpawner.UpdateStone(stoneId, transform);
+        #else
+        ServerManager.Instance.UpdateTransform(stoneId, transform.position, transform.rotation, transform.localScale);
+        #endif
     }
 }

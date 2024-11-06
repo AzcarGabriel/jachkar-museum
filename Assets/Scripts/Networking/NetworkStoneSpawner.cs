@@ -6,6 +6,7 @@ namespace Networking
     [RequireComponent(typeof(StoneService))]
     public class NetworkStoneSpawner : NetworkBehaviour
     {
+        #if USE_MULTIPLAYER
         StoneService _stoneService;
 
         [SerializeField]
@@ -90,5 +91,6 @@ namespace Networking
             if (NetworkManager.Singleton.LocalClientId == originalSender) return;
             ServerManager.Instance.UpdateTransform(stoneId, sp, rot, scl);
         }
+        #endif
     }
 }

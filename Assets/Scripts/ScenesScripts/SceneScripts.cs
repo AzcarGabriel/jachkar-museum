@@ -39,7 +39,7 @@ namespace ScenesScripts
         private bool overwrite;
         private StoneService stoneService;
 
-        [SerializeField] private NetworkStoneSpawner networkStoneSpawner; 
+        [SerializeField] private NetworkStoneSpawner networkStoneSpawner; // Only used in multiplayer mode
 
         // Use this for initialization
         void Start() {
@@ -93,9 +93,12 @@ namespace ScenesScripts
         public void SpawnStone(int stoneId)
         {
             // Esto se tuvo que cambiar de orden para que no de error (hay que ver como manejar este caso)
-            networkStoneSpawner.SpawnStoneServerRpc(stoneId, spawnPoint.position, addOffset: true);
             #if USE_MULTIPLAYER
+            networkStoneSpawner.SpawnStoneServerRpc(stoneId, spawnPoint.position, addOffset: true);
             if (!StaticValues.IsLeader && ServerManager.Instance.UseLeader) return;
+            #else
+            int newId = ServerManager.Instance.spawnedStones.Count + 1;
+            StartCoroutine(this.stoneService.SpawnStoneWithPositionAndRotation(newId, stoneId, spawnPoint.position, addOffset: true));
             #endif
         }
 
