@@ -35,23 +35,28 @@ namespace UI.UIScripts
         private void OnPreVisualizeClick()
         {
             StaticValues.OfflineMode = true;
-            ServerManager.Instance.StartHost();
             #if USE_MULTIPLAYER
+                ServerManager.Instance.StartHost();
                 ServerManager.Instance.OpenScene("OfflineNoradus");
+            #else
+                ServerManager.Instance.StartGame();
             #endif
         }
 
         private void OnStartClick()
         {
             //OpenLobby();
+            #if USE_MULTIPLAYER
             StaticValues.OfflineMode = true;
             ServerManager.Instance.StartClient();
+            #endif
         }
 
         private void OnServerClick()
         {
-            //ServerManager.Instance.StartHost();
+            #if USE_MULTIPLAYER
             ServerManager.Instance.StartHost();
+            #endif
         }
 
         private void OnExitClick()

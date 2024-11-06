@@ -187,7 +187,6 @@ namespace Networking
 public class ServerManager : MonoBehaviour
 {
     public static ServerManager Instance { get; private set; }
-    //private bool _gameStarted;
     private ulong _leader;
     
     public struct StoneAssetData
@@ -208,22 +207,6 @@ public class ServerManager : MonoBehaviour
         }
     }
 
-    public void StartServer()
-    {
-        OpenScene("LobbyTempScene");
-    }
-
-    public void StartHost()
-    { 
-        OpenScene("LobbyTempScene");
-    }
-
-    public void StartClient()
-    {
-        //NetworkManager.Singleton.GetComponent<UnityTransport>().SetClientSecrets(SecureParameters.ServerCommonName);
-        //NetworkManager.Singleton.StartClient();
-    }
-    
     #region Stones
     
     private GameObject GetStoneInstanceById(int id)
@@ -266,41 +249,15 @@ public class ServerManager : MonoBehaviour
 
     public void StartGame()
     {
-        //_gameStarted = true;
-        OpenScene("Noradus");
-        //CharacterSpawner.SpawnCharacter();
+        SetCharacter(0, 0);
+        OpenScene("BaseNoradus");
     }
 
-    private void OnClientDisconnect(ulong clientId)
-    {
-        //if (!ClientData.ContainsKey(clientId)) return;
-        //ClientData.Remove(clientId);
-        //
-        //if (ClientData.Count == 0)
-        //    ResetServer();
-    }
-    
     public void SetCharacter(ulong clientId, int characterId)
     {
-        Debug.Log("Setting character");
-        Debug.Log("Client id: " + clientId);
-        Debug.Log("Character id: " + characterId);
         var spawnPos = new Vector3(Random.Range(-3f, 3f), 0f, Random.Range(-3f, 3f));
-        GameObject characterPrefab = Instantiate(Resources.Load("FPSControllerOLD"), spawnPos, Quaternion.identity) as GameObject;
+        GameObject characterPrefab = Instantiate(Resources.Load("OfflineFPSController"), spawnPos, Quaternion.identity) as GameObject;
         DontDestroyOnLoad(characterPrefab);
-        //if (ClientData.TryGetValue(clientId, out ClientData data))
-        //    data.characterId = characterId;
-    }
-
-    public void SetUsername(ulong clientId, FixedString32Bytes username)
-    {
-        //if (ClientData.TryGetValue(clientId, out ClientData data))
-        //    data.username = username;
-    }
-
-    public FixedString32Bytes GetUsername(ulong clientId)
-    {
-        return "aa"; //ClientData.TryGetValue(clientId, out ClientData data) ? data.username : "";
     }
 
     public bool GetLeadership(ulong clientId)
@@ -308,11 +265,6 @@ public class ServerManager : MonoBehaviour
         return true; //ClientData.TryGetValue(clientId, out var data) && data.isLeader;
     }
 
-    private void ResetServer()
-    {
-        //_gameStarted = false;
-        OpenScene("LobbyTempScene");
-    }
 }
 
 #endif

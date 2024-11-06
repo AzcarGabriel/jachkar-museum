@@ -15,7 +15,9 @@ public class MainMenuScript : MonoBehaviour
     [SerializeField] private MenuPresenter menuPresenter;
 
     private bool _isServer;
+    #if USE_MULTIPLAYER
     private bool _useLeader;
+    #endif
     
     private StoneService _stoneService;
     private GameMode _gameMode;
@@ -24,9 +26,9 @@ public class MainMenuScript : MonoBehaviour
     private void Start ()
     {
         string[] args = Environment.GetCommandLineArgs();
-        if (args.Any(arg => arg == "-leader")) _useLeader = true;
 
         #if USE_MULTIPLAYER
+            if (args.Any(arg => arg == "-leader")) _useLeader = true;
             if (args.Any(arg => arg == "-dedicatedServer")) _isServer = true;
             if (_isServer) {
                 Console.WriteLine("Starting server...");

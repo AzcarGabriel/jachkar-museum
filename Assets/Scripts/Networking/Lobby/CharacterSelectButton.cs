@@ -1,3 +1,5 @@
+#if USE_MULTIPLAYER
+
 using Networking.Character;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,3 +26,4 @@ namespace Networking.Lobby
         }
     }
 }
+#endif

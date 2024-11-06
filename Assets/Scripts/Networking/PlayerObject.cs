@@ -1,3 +1,4 @@
+#if USE_MULTIPLAYER
 using TMPro;
 using Unity.Collections;
 using Unity.Netcode;
@@ -52,3 +53,4 @@ namespace Networking
         }
     }
 }
+#endif
