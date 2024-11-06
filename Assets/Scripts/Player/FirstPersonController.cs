@@ -63,16 +63,15 @@ namespace Player
         private float _speed;
         private bool _isWalking;
         private TopViewController _topViewController;
+        private bool _networkReady;
         #if !USE_MULTIPLAYER
         private bool IsOwner = true;
-        #endif
-        private bool _networkReady;
-
         #region NetworkFields
         private static readonly int SpeedX = Animator.StringToHash("SpeedX");
         private static readonly int SpeedZ = Animator.StringToHash("SpeedZ");
 
         #endregion
+        #endif
 
     
         #region Initialization
@@ -178,7 +177,9 @@ namespace Player
             PlayLandingSound();
             _moveDirection.y = 0f;
             _jumping = false;
+            #if USE_MULTIPLAYER
             animator.SetBool("Is Jumping", false);
+            #endif
         }
     
         private void FixedUpdate()
@@ -207,7 +208,9 @@ namespace Player
                     PlayJumpSound();
                     _jump = false;
                     _jumping = true;
+                    #if USE_MULTIPLAYER
                     animator.SetBool("Is Jumping", true);
+                    #endif
                 }
             }
             else
@@ -218,7 +221,9 @@ namespace Player
 
             ProgressStepCycle();
             PerformHeadBob();
+            #if USE_MULTIPLAYER
             animator.SetFloat("SpeedY", _moveDirection.y);
+            #endif
         }
     
         private void PlayJumpSound()
@@ -301,17 +306,19 @@ namespace Player
         {
             _moveInput = ctx.ReadValue<Vector2>();
             if (_moveInput.sqrMagnitude > 1) _moveInput.Normalize();
-            
+            #if USE_MULTIPLAYER
             animator.SetFloat(SpeedX, _moveInput.x);
             animator.SetFloat(SpeedZ, _moveInput.y);
+            #endif
         }
 
         private void OnMoveCancelled(InputAction.CallbackContext ctx)
         {
             _moveInput = Vector2.zero;
-            
+            #if USE_MULTIPLAYER
             animator.SetFloat(SpeedX, _moveInput.x);
             animator.SetFloat(SpeedZ, _moveInput.y);
+            #endif
         }
 
         private void OnSprintPerformed(InputAction.CallbackContext ctx)
