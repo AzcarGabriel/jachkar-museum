@@ -64,7 +64,7 @@ namespace ScenesScripts
 
         // Update is called once per frame
         void Update() {
-            if (Input.GetKeyDown("e") && !StaticValues.Writing) {
+            if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.E)) && !StaticValues.Writing) {
                 StaticValues.BackFromDetails = true;
                 Save(false);
             }
@@ -92,7 +92,6 @@ namespace ScenesScripts
 
         public void SpawnStone(int stoneId)
         {
-            // Esto se tuvo que cambiar de orden para que no de error (hay que ver como manejar este caso)
             #if USE_MULTIPLAYER
             networkStoneSpawner.SpawnStoneServerRpc(stoneId, spawnPoint.position, addOffset: true);
             if (!StaticValues.IsLeader && ServerManager.Instance.UseLeader) return;
