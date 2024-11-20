@@ -13,4 +13,6 @@
     border-right-width: 0;
     border-top-width: 0;
     border-bottom-width: 0;
+    max-width: 100%;
+    white-space: normal;
 }

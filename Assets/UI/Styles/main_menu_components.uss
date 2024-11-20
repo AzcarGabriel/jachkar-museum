@@ -1,0 +1,17 @@
+.main-menu-title {
+    -unity-background-image-tint-color: rgb(19, 16, 16);
+    font-size: 80px;
+    margin-bottom: 40px;
+    padding: 0;
+}
+
+.main-menu-sidebar {
+    flex-grow: 0;
+    flex-shrink: 1;
+    width: 45%;
+    -unity-background-scale-mode: scale-to-fit;
+    justify-content: center;
+    align-items: stretch;
+    background-color: rgb(34, 28, 28);
+    color: rgb(72, 64, 64);
+}
