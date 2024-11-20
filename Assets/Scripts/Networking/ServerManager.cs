@@ -250,7 +250,7 @@ public class ServerManager : MonoBehaviour
     public void StartGame()
     {
         SetCharacter(0, 0);
-        OpenScene("BaseNoradus");
+        OpenScene("MapSelector");
     }
 
     public void SetCharacter(ulong clientId, int characterId)
