@@ -25,11 +25,17 @@ namespace UI.UIScripts
         }
 
         private void SetupButtons()
-        {
+        {   
+            #if !USE_MULTIPLAYER
+                _preVisualize.text = "Start";
+                _start.style.display = DisplayStyle.None;
+                _server.style.display = DisplayStyle.None;
+            #else
+                _start.clicked += OnStartClick;
+                _server.clicked += OnServerClick;
+            #endif
             _preVisualize.clicked += OnPreVisualizeClick;
-            _start.clicked += OnStartClick;
             _exit.clicked += OnExitClick;
-            _server.clicked += OnServerClick;
         }
         
         private void OnPreVisualizeClick()
