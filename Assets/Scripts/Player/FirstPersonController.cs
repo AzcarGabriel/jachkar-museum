@@ -72,7 +72,7 @@ namespace Player
         private static readonly int SpeedZ = Animator.StringToHash("SpeedZ");
 
         #endregion
-
+        private Vector3 _baseCharacterPosition = new Vector3(0, 0, 0);
     
         #region Initialization
         private void Awake()
@@ -100,7 +100,7 @@ namespace Player
                 _topViewController = Instantiate(topViewPrefab).GetComponent<TopViewController>();
                 _topViewController.Init(playerLook);
                 _topViewController.FirstPersonController = this;
-                transform.position = new Vector3(0, -10, 0); // spawn
+                transform.position = _baseCharacterPosition; // spawn
             }
             #if USE_MULTIPLAYER
             base.OnNetworkDespawn();
@@ -157,9 +157,9 @@ namespace Player
             _previouslyGrounded = _characterController.isGrounded;
             
             // Fall out of bounds check
-            if (transform.position.y <= -20)
+            if (transform.position.y <= _baseCharacterPosition.y - 10)
             {
-                transform.position = new Vector3(0, -10, 0);
+                transform.position = _baseCharacterPosition;
             }
         }
         

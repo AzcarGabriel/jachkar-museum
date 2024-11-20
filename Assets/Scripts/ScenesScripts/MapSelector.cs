@@ -14,6 +14,7 @@ public class MapSelector : MonoBehaviour
     {
         enterScreen.SetActive(true);
         SceneManager.LoadScene(name, LoadSceneMode.Single);
+        ServerManager.Instance.SetCharacter(0, 0); // Set the character to the default one (This shouldn't be hardcoded in multiplayer mode)
     }
     #endif
 

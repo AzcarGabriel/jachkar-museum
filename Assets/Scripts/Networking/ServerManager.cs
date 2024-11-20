@@ -249,15 +249,12 @@ public class ServerManager : MonoBehaviour
 
     public void StartGame()
     {
-        SetCharacter(0, 0);
         OpenScene("MapSelector");
     }
 
     public void SetCharacter(ulong clientId, int characterId)
     {
-        var spawnPos = new Vector3(Random.Range(-3f, 3f), 0f, Random.Range(-3f, 3f));
-        GameObject characterPrefab = Instantiate(Resources.Load("OfflineFPSController"), spawnPos, Quaternion.identity) as GameObject;
-        DontDestroyOnLoad(characterPrefab);
+        Instantiate(Resources.Load("OfflineFPSController"));
     }
 
     public bool GetLeadership(ulong clientId)
