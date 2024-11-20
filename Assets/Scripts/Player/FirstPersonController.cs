@@ -66,12 +66,12 @@ namespace Player
         private bool _networkReady;
         #if !USE_MULTIPLAYER
         private bool IsOwner = true;
+        #endif
         #region NetworkFields
         private static readonly int SpeedX = Animator.StringToHash("SpeedX");
         private static readonly int SpeedZ = Animator.StringToHash("SpeedZ");
 
         #endregion
-        #endif
 
     
         #region Initialization
