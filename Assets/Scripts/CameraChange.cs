@@ -99,7 +99,9 @@ public class CameraChange : MonoBehaviour
         addStoneMenu.SetActive(false);
         //saveButtons.SetActive(true);
         showMoreButtons.SetActive(true);
-        chat.SetActive(false);
+        #if USE_MULTIPLAYER
+            chat.SetActive(false);
+        #endif
     }
 
     private void CloseUI()
@@ -109,6 +111,8 @@ public class CameraChange : MonoBehaviour
         //saveButtons.SetActive(false);
         editStoneButtons.SetActive(false);
         showMoreButtons.SetActive(false);
-        chat.SetActive(true);
+        #if USE_MULTIPLAYER
+            chat.SetActive(true);
+        #endif
     }
 }
