@@ -37,7 +37,9 @@ public class CameraChange : MonoBehaviour
         _hand.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         addStoneMenu.SetActive(false);
-        //saveButtons.SetActive(false);
+        #if !USE_MULTIPLAYER
+            saveButtons.SetActive(false);
+        #endif
         editStoneButtons.SetActive(false);
         showMoreButtons.SetActive(false);
         saveDialog.SetActive(false);
