@@ -45,7 +45,7 @@ namespace Networking
         }
 
         [ServerRpc(RequireOwnership = false)]
-        public void SpawnStoneServerRpc(int stoneId, Vector3 sp, bool addOffset = false)
+        public void SpawnStoneServerRpc(int stoneId, Vector3 sp, Quaternion sp_rot, bool addOffset = false)
         {
             int newId = ServerManager.Instance.spawnedStones.Count + 1;
             if (!IsHost)
@@ -53,13 +53,13 @@ namespace Networking
                 ServerManager.Instance.AddSpawnedStone(newId, stoneId, null);
             }
 
-            SpawnStoneClientRpc(newId, stoneId, sp, addOffset);
+            SpawnStoneClientRpc(newId, stoneId, sp, sp_rot, addOffset);
         }
 
         [ClientRpc]
-        public void SpawnStoneClientRpc(int dictId, int stoneId, Vector3 sp, bool addOffset = false)
+        public void SpawnStoneClientRpc(int dictId, int stoneId, Vector3 sp, Quaternion sp_rot, bool addOffset = false)
         {
-            StartCoroutine(_stoneService.SpawnStoneWithPositionAndRotation(dictId, stoneId, sp, addOffset: addOffset));
+            StartCoroutine(_stoneService.SpawnStoneWithPositionAndRotation(dictId, stoneId, sp, sp_rot, addOffset: addOffset));
         }
 
         [ServerRpc(RequireOwnership = false)]

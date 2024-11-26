@@ -51,7 +51,7 @@ public class StoneService : MonoBehaviour
         doLast?.Invoke();
     }
 
-    public IEnumerator SpawnStoneWithPositionAndRotation(int dictId, int stoneId, Vector3 sp, Action doLast = null, bool isDetailStone = false, bool addOffset = false)
+    public IEnumerator SpawnStoneWithPositionAndRotation(int dictId, int stoneId, Vector3 sp, Quaternion sp_rot, Action doLast = null, bool isDetailStone = false, bool addOffset = false)
     {
         Debug.Log("Rotation");
         // Check if the stone is already downloaded
@@ -67,7 +67,7 @@ public class StoneService : MonoBehaviour
         AssetProps props = StoneSpawnHelper.GetStoneAssetPropsById(stoneId);
         if (addOffset)
             sp += new Vector3(props.offsetX, props.offsetY, props.offsetZ);
-        Quaternion rt = Quaternion.Euler(props.rotationX, props.rotationY, props.rotationZ);
+        Quaternion rt = Quaternion.Euler(props.rotationX, props.rotationY, props.rotationZ) * sp_rot;
         GameObject obj = Instantiate(this.SearchStone(stoneId), sp, rt);
         obj.transform.localScale *= props.scale;
 

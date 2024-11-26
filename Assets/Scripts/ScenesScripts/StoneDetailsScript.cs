@@ -84,8 +84,9 @@ namespace ScenesScripts
         public void SpawnStone(int stoneId)
         {
             Vector3 pos = this.stone.transform.position;
+            Quaternion rot = Quaternion.Euler(0, 0, 0);
             Debug.Log("Spawning stone " + stoneId);
-            StartCoroutine(this.stoneService.SpawnStoneWithPositionAndRotation(-1, stoneId, pos, FinishConfig, true, addOffset: true));
+            StartCoroutine(this.stoneService.SpawnStoneWithPositionAndRotation(-1, stoneId, pos, rot, FinishConfig, true, addOffset: true));
         }
 
         public void FinishConfig()

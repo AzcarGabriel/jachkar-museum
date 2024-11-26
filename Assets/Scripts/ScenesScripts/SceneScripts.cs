@@ -93,11 +93,11 @@ namespace ScenesScripts
         public void SpawnStone(int stoneId)
         {
             #if USE_MULTIPLAYER
-            networkStoneSpawner.SpawnStoneServerRpc(stoneId, spawnPoint.position, addOffset: true);
+            networkStoneSpawner.SpawnStoneServerRpc(stoneId, spawnPoint.position, spawnPoint.rotation, addOffset: true);
             if (!StaticValues.IsLeader && ServerManager.Instance.UseLeader) return;
             #else
             int newId = ServerManager.Instance.spawnedStones.Count + 1;
-            StartCoroutine(this.stoneService.SpawnStoneWithPositionAndRotation(newId, stoneId, spawnPoint.position, addOffset: true));
+            StartCoroutine(this.stoneService.SpawnStoneWithPositionAndRotation(newId, stoneId, spawnPoint.position, spawnPoint.rotation, addOffset: true));
             #endif
         }
 
@@ -188,13 +188,15 @@ namespace ScenesScripts
             }
 
             // Load stones in scene
+            Quaternion baseRotation = Quaternion.Euler(0, 0, 0);
             for (int i = 0; i < SaveGame.Instance.StonesNames.Count; i++)
             {
                 StartCoroutine(
                     this.stoneService.SpawnStoneWithPositionAndRotation(
                         0, // ESTO DEBERIA GUARDARSE en lugar de estar hardcodeado
                         SaveGame.Instance.StonesNames[i],
-                        SaveGame.Instance.StonesPositions[i]
+                        SaveGame.Instance.StonesPositions[i],
+                        baseRotation
                     )
                 );
             }
