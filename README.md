@@ -4,11 +4,12 @@
 ## Setup
 <details>
 <summary>Click to expand</summary>
+
 This project is made for Unity **2022.3.31f1**. Compability with other Unity versions is not guaranteed.
 
 1) [Download Unity hub](https://unity.com/es/download) 
 
-2) Donwload the version **2022.3.31f1**
+2) Download the version **2022.3.31f1**
 
 3) Add WebGL module (required if you want to build for web browser)
 </details>
